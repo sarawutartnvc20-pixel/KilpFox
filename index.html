@@ -476,7 +476,8 @@ class Component extends DCLogic {
           KF.edit((p) => { const o = p.audios.find((k) => k.id === a.id); const r = o.rate || 1; const b = { ...o, id: KF.uid(), start: o.start + cut, from: (o.from || 0) + cut * r, len: o.len - cut }; o.len = cut; p.audios.push(b); });
         }));
       }
-      if (linked) tools.push(tool('ทำซับ', I.sub, () => { KF.ui.subClip = a.clip || null; KF.ui.capTab = 'lines'; KF.go('Captions'); }));
+      const fromClip = linked || (KF.media[a.src] && KF.media[a.src].lib === 'xa');
+      if (fromClip) tools.push(tool('ซับ AI', I.ai, () => { KF.ui.subClip = a.clip || null; KF.ui.subAudio = a.id; KF.ui.capTab = 'lines'; KF.go('Captions'); }));
       else tools.push(tool('เสียงร้อง/ดนตรี', I.mic, () => KF.go('VocalSplit')));
       tools.push(tool('เพลงอื่น', I.music, () => KF.go('Music')));
       tools.push(tool('ลบ', I.del, () => { KF.removeAudio(a.id); KF.ui.sel = null; this.setState({ strip: null }); }));
@@ -1096,7 +1097,7 @@ class Component extends DCLogic {
     KF.loadFont(KF.project().subs.style.font);
     KF.replayAnim();
   }
-  onHide() { KF.ui.subPreview = false; KF.ui.subClip = null; KF.pause(); KF.requestDraw(); }
+  onHide() { KF.ui.subPreview = false; KF.ui.subClip = null; KF.ui.subAudio = null; KF.pause(); KF.requestDraw(); }
   renderVals() {
     const accent = this.props.accent ?? '#2FD3C4';
     const P = KF.project();
@@ -1150,6 +1151,7 @@ class Component extends DCLogic {
     const hasLines = lines.length > 0;
     const A = KF.asr, M = A.MODELS;
     const P0 = KF.project(), subClip = KF.ui.subClip ? P0.clips.find((c) => c.id === KF.ui.subClip) : null;
+    const subAud = KF.ui.subAudio ? P0.audios.find((x) => x.id === KF.ui.subAudio) : null;
     const models = ['typhoon', 'thai', 'small', 'turbo'].filter((k) => M[k]).map((k) => ({ name: M[k].name, label: M[k].label, note: M[k].note, size: A.sizeLabel(k),
       border: A.key === k ? accent : '#2A2F39', dot: A.key === k ? accent : 'transparent', pick: () => A.choose(k) }));
     const dlMB = (A.dl.loaded / 1048576), totMB = (A.dl.total / 1048576);
@@ -1167,10 +1169,10 @@ class Component extends DCLogic {
       dlPct: totMB ? Math.min(100, Math.round(dlMB / totMB * 100)) : 0,
       dlText: totMB ? (totMB >= 1000 ? (dlMB / 1024).toFixed(2) + ' / ' + (totMB / 1024).toFixed(2) + ' GB' : Math.round(dlMB) + ' / ' + Math.round(totMB) + ' MB') : 'กำลังเริ่ม…',
       langs, engine: A.device === 'webgpu' ? 'GPU' : 'CPU',
-      runLabel: subClip ? 'ถอดซับคลิปนี้' + (hasLines ? ' (แทนที่ซับช่วงนี้)' : '') : hasLines ? 'ถอดเสียงใหม่ (แทนที่ซับเดิม)' : 'ถอดเสียงจากคลิปเป็นซับ',
-      hasClip: !!subClip, clipText: subClip ? 'คลิปที่ ' + (P0.clips.indexOf(subClip) + 1) + ' · ' + KF.fmtShort(KF.clipStart(subClip.id)) + '–' + KF.fmtShort(KF.clipStart(subClip.id) + KF.clipDur(subClip)) + ' · ซับช่วงอื่นไม่ถูกแก้' : '',
-      allClips: () => { KF.ui.subClip = null; KF.changed(); },
-      run: async () => { const n = await A.process({ wpl: this.state.wpl, clipId: subClip ? subClip.id : null }); if (n) this.setState({ rebuild: false }); },
+      runLabel: subAud ? 'ถอดซับจากเสียงนี้' + (hasLines ? ' (แทนที่ซับช่วงนี้)' : '') : subClip ? 'ถอดซับคลิปนี้' + (hasLines ? ' (แทนที่ซับช่วงนี้)' : '') : hasLines ? 'ถอดเสียงใหม่ (แทนที่ซับเดิม)' : 'ถอดเสียงจากคลิปเป็นซับ',
+      hasClip: !!subClip || !!subAud, clipText: subAud ? 'เสียง "' + (subAud.name || 'ที่แยกมา') + '" · ถอดจากเสียงนี้โดยตรง · ซับช่วงอื่นไม่ถูกแก้' : subClip ? 'คลิปที่ ' + (P0.clips.indexOf(subClip) + 1) + ' · ' + KF.fmtShort(KF.clipStart(subClip.id)) + '–' + KF.fmtShort(KF.clipStart(subClip.id) + KF.clipDur(subClip)) + ' · ซับช่วงอื่นไม่ถูกแก้' : '',
+      allClips: () => { KF.ui.subClip = null; KF.ui.subAudio = null; KF.changed(); },
+      run: async () => { const n = await A.process({ wpl: this.state.wpl, clipId: subClip ? subClip.id : null, audioId: subAud ? subAud.id : null }); if (n) this.setState({ rebuild: false }); },
       open: () => { if (A.status === 'error') { A.status = 'need'; A.error = ''; } this.setState({ pop: true, tab: 'lines' }); KF.changed(); },
       runPct: A.run.pct, runText: A.run.label,
     };
@@ -1196,7 +1198,7 @@ class Component extends DCLogic {
       ].map(([key, name, hint]) => { const on = O[key] !== false; return { name, hint, checked: String(on), bg: on ? accent : '#3C4452', knob: on ? '21px' : '3px', toggle: () => A.setOpts({ [key]: !on }) }; }),
       cta: (() => { const p0 = []; if (O.cut) p0.push('ตัดช่วงเงียบ'); if (O.subs !== false) p0.push('ทำซับ'); return p0.length ? 'เริ่ม: ' + p0.join(' + ') : 'ติ๊กอย่างน้อย 1 อย่าง'; })(),
       needLabel: O.subs !== false ? 'ทำซับอัตโนมัติ' : (O.cut ? 'เริ่ม: ตัดช่วงเงียบ' : 'ติ๊กอย่างน้อย 1 อย่าง'),
-      needGo: () => { if (O.subs !== false) ai.open(); else if (O.cut) A.process({ wpl: this.state.wpl, clipId: subClip ? subClip.id : null }); },
+      needGo: () => { if (O.subs !== false) ai.open(); else if (O.cut) A.process({ wpl: this.state.wpl, clipId: subClip ? subClip.id : null, audioId: subAud ? subAud.id : null }); },
       changeModel: () => { A._back = A.key; A.status = 'need'; KF.changed(); this.setState({ pop: true }); },
     });
     if (O.cut || O.subs === false) ai.runLabel = ai.cta;
@@ -4363,7 +4365,7 @@ setVidSound(v, vidGainOf(c, PL.t));
     if (!box) { box = document.createElement('pre'); box.id = 'kf-hud'; box.style.cssText = 'position:fixed;left:4px;bottom:4px;z-index:99999;margin:0;padding:6px 8px;background:rgba(0,0,0,.78);color:#7CFFB2;font:10.5px/1.35 monospace;border-radius:6px;pointer-events:none;max-width:96vw;white-space:pre-wrap'; document.body.appendChild(box); }
     const v = PL.el, q = v && v.getVideoPlaybackQuality ? v.getVideoPlaybackQuality() : null;
     const nfc = v ? (v.__nfc || 0) : 0, fps = hudTick.nfc != null && dt ? Math.round((nfc - hudTick.nfc) * 1000 / dt) : 0; hudTick.nfc = nfc;
-    box.textContent = 'mode ' + (DV.mode ? 'DIRECT' : 'canvas') + ' · play ' + PL.playing + ' · mixer ' + MX.on + '\n'
+    box.textContent = 'build v50 · mode ' + (DV.mode ? 'DIRECT' : 'canvas') + ' · play ' + PL.playing + ' · mixer ' + MX.on + '\n'
       + (v ? 'video ' + v.videoWidth + 'x' + v.videoHeight + ' ready ' + v.readyState + ' paused ' + v.paused + ' rate ' + v.playbackRate.toFixed(2) + '\n'
       + 'v.t ' + v.currentTime.toFixed(2) + ' PL.t ' + PL.t.toFixed(2) + ' diff ' + (v.currentTime - PL.t).toFixed(2) + '\n'
       + 'pictures/s ' + fps + (q ? ' · dropped ' + q.droppedVideoFrames + '/' + q.totalVideoFrames : '') + ' · stuck ' + (v.__stuck || 0) : 'no video') + '\n'
@@ -12081,9 +12083,10 @@ self.onmessage = async (e) => {
   }
 
   // ------------------------------------------------------------------ the whole job: (cut silence) + (subtitles)
-  A.process = async ({ wpl, clipId }) => {
+  A.process = async ({ wpl, clipId, audioId }) => {
     const o = A.opts;
-    const wantSubs = o.subs !== false, wantCut = !!o.cut;
+    const ax0 = audioId ? KF.project().audios.find((x) => x.id === audioId) : null;   // a separated sound the person tapped
+    const wantSubs = o.subs !== false, wantCut = !!o.cut && !ax0;
     if (!wantSubs && !wantCut) { KF.toast('ติ๊ก "ตัดช่วงเงียบ" หรือ "ใส่ซับให้" อย่างน้อย 1 อย่าง'); return 0; }
     const st = A.CUT_STYLES[o.style] || A.CUT_STYLES.story;
     const pace = (A.PACES[o.pace] || A.PACES[1])[1];
@@ -12091,7 +12094,9 @@ self.onmessage = async (e) => {
     if (wantSubs && !asrOk) return 0;
     const useAsr = asrOk && (wantSubs || (wantCut && (st.fillers || st.restarts)));
     const P = KF.project();
-    const clips = P.clips.filter((c) => KF.media[c.src] && KF.media[c.src].kind === 'video' && ((c.vol ?? 100) > 0 || (c.xa && c.xa.length)) && (!clipId || c.id === clipId));
+    const clips = ax0 && !ax0.clip && KF.media[ax0.src]
+      ? [{ id: 'aud:' + ax0.id, src: ax0.src, in: ax0.from || 0, out: (ax0.from || 0) + ax0.len * (ax0.rate || 1), speed: ax0.rate || 1, vol: 100, __start: ax0.start }]
+      : P.clips.filter((c) => KF.media[c.src] && KF.media[c.src].kind === 'video' && ((c.vol ?? 100) > 0 || (c.xa && c.xa.length)) && (!clipId || c.id === clipId));
     if (!clips.length) { KF.toast(clipId ? 'คลิปนี้ไม่มีเสียงให้ถอด' : 'ยังไม่มีคลิปวิดีโอที่มีเสียง'); return 0; }
     clips.forEach((c) => KF.primeAudio && KF.primeAudio(KF.media[c.src]));
     KF.pause();
@@ -12116,12 +12121,16 @@ self.onmessage = async (e) => {
         const prog = (q, label) => set({ run: { pct: Math.round(((i + Math.min(1, q)) / clips.length) * 100), label } });
         prog(0, tag + ' · กำลังอ่านเสียง…');
         let a;
-        try { a = await decode16k(m, (label, q) => prog((q || 0) * 0.15, tag + ' · ' + label)); }
+        // which file is listened to, and where in it: a separated sound is its own file (time in it = source time - the part's offset)
+        let segIn = c.in, segOut = c.out, base = c.in;
+        const dm = ax0 && ax0.clip === c.id && KF.media[ax0.src] ? KF.media[ax0.src] : m;
+        if (dm !== m) { const xo = (c.xa || []).find((q) => q.k === ax0.xa); base = (ax0.from || 0) + ((xo && xo.off) || 0); segIn = ax0.from || 0; segOut = segIn + Math.max(0.1, c.out - base); }
+        try { a = await decode16k(dm, (label, q) => prog((q || 0) * 0.15, tag + ' · ' + label)); }
         catch (e) { log('อ่านเสียงไม่ได้: ' + ((e && e.message) || e) + (e && e.detail ? ' | ' + e.detail.replace(/\n/g, ' | ') : '')); decodeErr = decodeErr || e; continue; }
-        let seg = a.subarray(Math.floor(c.in * 16000), Math.floor(c.out * 16000));
+        let seg = a.subarray(Math.floor(segIn * 16000), Math.floor(segOut * 16000));
         if (rms(seg, 0, seg.length) < 0.002) { quiet++; continue; }
         // songs: listen to the singing voice only
-        if (song && useAsr) {
+        if (song && useAsr && !ax0) {
           prog(0.15, tag + ' · กำลังแยกเสียงร้องออกจากดนตรี…');
           try { const v = KF.tools && KF.tools.vocal16k ? await KF.tools.vocal16k(m, c.in, c.out) : null; if (v && v.length > 16000 * 0.5) seg = v; } catch (e) { log('แยกเสียงร้องไม่ได้: ' + e.message); }
         }
@@ -12135,7 +12144,7 @@ self.onmessage = async (e) => {
           speech = regions(sp.probs, o.type === 'interview' ? { merge: 0.18 } : song ? { on: 0.4, off: 0.25, merge: 0.6, pad: 0.2 } : {});
         }
         let segs = null;
-        if (useAsr) segs = await asrClip(seg, c.in, o.vad && !song ? speech : null, p, tag, (q, label) => prog(0.35 + q * 0.62, label));
+        if (useAsr) segs = await asrClip(seg, base, o.vad && !song ? speech : null, p, tag, (q, label) => prog(0.35 + q * 0.62, label));
         results.push({ c, m, speech: speech || [], segs });
       }
       if (!results.length) {
@@ -12184,7 +12193,7 @@ self.onmessage = async (e) => {
               s = ns; e = ne;
             } else {
               const sp = r.c.speed || 1;
-              const cs = KF.clipStart(r.c.id);
+              const cs = r.c.__start != null ? r.c.__start : KF.clipStart(r.c.id);
               s = cs + (s - r.c.in) / sp; e = cs + (e - r.c.in) / sp;
             }
             lines.push({ id: KF.uid(), text: l.text, start: +s.toFixed(2), end: +e.toFixed(2) });
@@ -12192,7 +12201,10 @@ self.onmessage = async (e) => {
         });
         lines.sort((x, y) => x.start - y.start);
         if (!lines.length && !cutSec) throw new Error('ถอดเสียงแล้วไม่พบคำพูด ลองเลือกภาษาหรือชนิดเสียงให้ตรงกับคลิป');
-        if (clipId) {
+        if (ax0 && !ax0.clip) {
+          const s0 = ax0.start, e0 = ax0.start + ax0.len;
+          KF.edit((pp) => { pp.subs.lines = pp.subs.lines.filter((l) => l.end <= s0 + 0.05 || l.start >= e0 - 0.05).concat(lines).sort((a, b) => a.start - b.start); });
+        } else if (clipId) {
           const c0 = KF.project().clips.find((c) => c.id === clipId) || clips[0];
           const s0 = KF.clipStart(c0.id), e0 = s0 + KF.clipDur(c0);
           KF.edit((pp) => { pp.subs.lines = pp.subs.lines.filter((l) => l.end <= s0 + 0.05 || l.start >= e0 - 0.05).concat(lines).sort((a, b) => a.start - b.start); });
