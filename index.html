@@ -3883,6 +3883,9 @@ class Component extends DCLogic {
   // stutter). Media elements remain the fallback while a sound is still decoding, for sped-up items (keeps the
   // pitch) and for very long files.
   const IOS_DEV = /iPhone|iPod|iPad/.test(navigator.userAgent) || (/Mac/.test(navigator.platform) && navigator.maxTouchPoints > 1);
+  // iPhone: the <video> is the clock (its own sound, never chased with seeks). Chasing a separate sound clock made the picture
+  // seek again and again, and a phone video seeks slowly (long GOPs), which looked like stutter and then a frozen frame.
+  if (IOS_DEV && window.KF_MIXER_IOS !== true) window.KF_NO_MIXER = true;
   const MX = { bufs: {}, busy: false, nodes: new Map(), on: false, t0: 0, c0: 0, sig: '', lastPrep: 0, failed: {}, total: 0 };
   const MX_ONE = IOS_DEV ? 240 : 600, MX_ALL = IOS_DEV ? 420 : 1800;   // seconds of sound kept decoded
   KF.mixer = MX;
