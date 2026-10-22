@@ -672,21 +672,21 @@ class Component extends DCLogic {
         d.v = (ev.clientY - d.y) / Math.max(1, now - d.t); d.y = ev.clientY; d.t = now;
         if (Math.abs(ev.clientY - d.y0) > 4) d.moved = true;
         let v = d.h0 - (ev.clientY - d.y0) / (KF.zoom || 1);
-        if (v < MIN) v = MIN - (MIN - v) * 0.25;
-        if (v > MAX) v = MAX + (v - MAX) * 0.25;
-        box.style.height = Math.round(v) + 'px';
+        if (v < MIN) v = MIN - (MIN - v) * 0.4;
+        if (v > MAX) v = MAX + (v - MAX) * 0.4;
+        box.style.height = v.toFixed(1) + 'px';   // follows the finger 1:1, no snapping
+        if (KF.dvSync) KF.dvSync();               // the native picture follows the preview box while it is resized
       };
       const up = () => {
         h.removeEventListener('pointermove', move); h.removeEventListener('pointerup', up); h.removeEventListener('pointercancel', up);
         const cur = parseFloat(box.style.height) || d.h0;
         let target;
-        if (!d.moved) target = d.h0 < 220 ? 258 : 160;                                  // tap: toggle
-        else if (Math.abs(d.v) > 0.5) target = d.v > 0 ? (STOPS.find((x) => x < cur - 4) ?? STOPS[STOPS.length - 1]) : ([...STOPS].reverse().find((x) => x > cur + 4) ?? STOPS[0]);
-        else target = STOPS.reduce((a, b) => (Math.abs(b - cur) < Math.abs(a - cur) ? b : a));
-        box.style.transition = 'height .24s cubic-bezier(.2,.8,.2,1)';
+        if (!d.moved) { target = d.h0 < 220 ? 258 : 160; box.style.transition = 'height .18s ease-out'; }   // tap: toggle
+        else target = Math.round(Math.min(MAX, Math.max(MIN, cur)));                                         // drag: stay exactly where the finger left it
         box.style.height = target + 'px';
         KF.ui.tlH = target;
-        setTimeout(() => { box.style.transition = ''; this.setState({}); KF.requestDraw(); }, 260);
+        // rebuild the screen only after the motion has ended (the rebuild is the heavy part)
+        setTimeout(() => { box.style.transition = ''; this.setState({}); KF.requestDraw(); if (KF.dvSync) KF.dvSync(); }, d.moved ? 120 : 220);
       };
       h.addEventListener('pointermove', move); h.addEventListener('pointerup', up); h.addEventListener('pointercancel', up);
     });
@@ -4203,6 +4203,7 @@ class Component extends DCLogic {
     document.__hudN = n - (document.__hudAt || 0) < 700 ? (document.__hudN || 0) + 1 : 1; document.__hudAt = n;
     if (document.__hudN >= 5) { document.__hudN = 0; KF.hud = !KF.hud; if (!KF.hud) { const b = document.getElementById('kf-hud'); if (b) b.remove(); } }
   });
+  KF.dvSync = () => { if (DV.slot) dvMount(); };
   function dvMount() {
     const l = dvLayer(), cv = previewCanvas;
     const scr = cv && cv.isConnected ? cv.closest('.screen') : null;
