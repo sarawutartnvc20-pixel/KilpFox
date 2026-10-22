@@ -1,16 +1,7 @@
-KlipFox – self-hosted AI library (transformers.js)
-==================================================
-
-The subtitle / AI features load @huggingface/transformers. The app looks for it here first:
-
-    lib/transformers-3.7.1/transformers.min.js      (+ the onnxruntime .mjs/.wasm files beside it)
-
-How to fill this folder (run once, on a computer with Node.js, from the folder that holds index.html):
-
-    sh lib/fetch-lib.sh
-
-Then deploy as usual. When the local copy is in place you can stop the app from ever using the CDN:
-add   <script>window.KF_LIB_CDN = false;</script>   to the <head> of index.html.
-
-Note: the AI model files (Whisper etc., ~290 MB) are still downloaded from huggingface.co on first use.
-That is data, not code, and is cached in the browser afterwards.
+umxl-vocals.bin.gz  (13.3 MB)
+  The "vocals" network of Open-Unmix UMX-L (https://github.com/sigsep/open-unmix-pytorch), 8/16-bit per-tensor
+  quantised, taken from the ggml conversion in https://github.com/sevagh/free-music-demixer (models/ggml-model-umxl-u8.bin.gz,
+  vocals = 4th network in that file, copied unchanged). Format: ggml-style records (see umx/extract.py in the build notes).
+LICENSE: the Open-Unmix pre-trained UMX-L weights are CC BY-NC-SA 4.0 (non-commercial, share-alike, attribution:
+  Stoter, Uhlich, Liutkus, Mitsufuji - "Open-Unmix for Music Source Separation", JOSS 2019). The code that runs it
+  (index.html, worker) is KlipFox's own. To switch the feature off, set window.KF_NO_UMX = true and delete this folder.
