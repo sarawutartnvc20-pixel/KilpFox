@@ -44,6 +44,13 @@ button{font-family:inherit}
 .screen { position: absolute; inset: 0; }
 .screen[hidden] { display: none; }
 .screen > div:first-child { width: 100% !important; height: 100% !important; }
+/* landscape iPad: the screens that have a preview + a settings sheet put them side by side (picture left, tools right);
+   list-style screens become a centred column */
+html.wide .screen.pane > div:first-child { display: grid !important; grid-template-columns: minmax(0, 1fr) 470px; grid-template-rows: auto minmax(0, 1fr); }
+html.wide .screen.pane > div > header { grid-column: 1 / -1; grid-row: 1; }
+html.wide .screen.pane > div > div:first-of-type { grid-column: 1; grid-row: 2; max-height: none !important; min-height: 0 !important; height: auto !important; }
+html.wide .screen.pane > div > section { grid-column: 2; grid-row: 2; max-height: none !important; min-height: 0 !important; height: auto !important; border-radius: 0 !important; border-left: 1px solid #22262E; margin-top: 0 !important; }
+html.wide .screen.col2 > div:first-child { width: 600px !important; margin: 0 auto; box-shadow: 0 0 0 1px #22262E; }
 .col > * { flex-shrink: 0; }
 .screen input[type=search] { font-size: 16px !important; }
 .desk #app { align-items: center; background: #07080A; }
@@ -9754,13 +9761,14 @@ self.onmessage = async (e) => {
   const stage = document.getElementById('stage');
   const live = {};
 
+  const PANES = new Set(['Captions', 'Effects', 'TextEdit', 'Stickers', 'Overlay', 'Filters', 'BgRemove', 'Retouch', 'ExtractAudio', 'ClipEdit', 'LayerEdit', 'GreenKey']);
   function getScreen(name) {
     if (live[name]) return live[name];
     const def = SCREENS[name];
     const tplEl = document.createElement('template');
     tplEl.innerHTML = def.tpl;
     const host = document.createElement('div');
-    host.className = 'screen';
+    host.className = 'screen' + (PANES.has(name) ? ' pane' : name === 'Editor' ? '' : ' col2');
     host.dataset.name = name;
     host.hidden = true;
     stage.appendChild(host);
@@ -9858,7 +9866,7 @@ self.onmessage = async (e) => {
     // iPad / tablets (touch screens wider than a phone): same app, scaled up to fill the screen
     const tablet = !phone && ((navigator.maxTouchPoints || 0) > 1 || /iPad|Tablet|Android/.test(navigator.userAgent) || (/Mac/.test(navigator.platform) && 'ontouchend' in document) || (window.matchMedia && matchMedia('(pointer: coarse)').matches));
     // landscape iPad: the editing screen uses the whole width (video on top, wide timeline under it)
-    const wide = tablet && W > H && W >= 900 && curName === 'Editor';
+    const wide = tablet && W > H && W >= 900;
     let z, h, sw = 390;
     if (phone) { z = W / 390; h = Math.max(H / z, 640); }
     else if (wide) { z = Math.min(1.15, Math.max(1, H / 700)); sw = W / z; h = H / z; }
