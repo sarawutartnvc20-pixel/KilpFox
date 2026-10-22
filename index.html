@@ -89,7 +89,7 @@ class DCLogic {
 }
 </script>
 <script>
-KF_SCREENS["Main"] = { tpl: "<div style=\"width: 390px; height: 844px; box-sizing: border-box; background: #0F1115; color: #EEF1F6; font-family: 'IBM Plex Sans Thai', sans-serif; display: flex; flex-direction: column; overflow: hidden; position: relative\">\n\n  <header style=\"display: flex; align-items: center; justify-content: space-between; padding: 18px 20px 8px\">\n    <div style=\"display: flex; align-items: center; gap: 10px\">\n      <img src=\"/_blob/730d817f691b422f35ad27d1da9d831c\" alt=\"\" aria-hidden=\"true\" style=\"width: 38px; height: 38px; border-radius: 10px; display: block; flex-shrink: 0; filter: drop-shadow(0 0 6px rgba(59, 232, 176, 0.25))\">\n      <div aria-label=\"KlipFox\" style=\"font-family: 'Leelawadee UI', 'Noto Sans Thai', 'Segoe UI', Tahoma, system-ui, sans-serif; font-size: 22px; font-weight: 800; font-style: italic; letter-spacing: -0.3px; white-space: nowrap\"><span style=\"color: #45E8B4\">Klip<\/span><span style=\"color: #F1F6F8\">Fox<\/span><\/div>\n    <\/div>\n    <div style=\"display: flex; gap: 6px\">\n      <button aria-label=\"ค้นหาเครื่องมือ\" style=\"width: 44px; height: 44px; border-radius: 12px; border: 0; background: #1B1F27; color: #C3CAD6; display: flex; align-items: center; justify-content: center\">\n        <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"><\/circle><path d=\"M20 20l-3.5-3.5\"><\/path><\/svg>\n      <\/button>\n      <button aria-label=\"ตั้งค่า\" style=\"width: 44px; height: 44px; border-radius: 12px; border: 0; background: #1B1F27; color: #C3CAD6; display: flex; align-items: center; justify-content: center\">\n        <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"3\"><\/circle><path d=\"M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z\"><\/path><\/svg>\n      <\/button>\n    <\/div>\n  <\/header>\n\n  <div style=\"flex: 1; overflow: hidden; padding: 8px 20px 0; display: flex; flex-direction: column; gap: 20px\">\n\n    <a href=\"#\" onClick=\"{{newProject}}\" style=\"text-decoration: none; background: {{accent}}; color: #06201D; border-radius: 20px; padding: 0 20px; height: 104px; box-sizing: border-box; display: flex; align-items: center; gap: 16px\">\n      <span style=\"width: 52px; height: 52px; border-radius: 16px; background: #06201D; color: {{accent}}; display: flex; align-items: center; justify-content: center; flex-shrink: 0\"><svg width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M12 5v14M5 12h14\"><\/path><\/svg><\/span>\n      <span style=\"display: flex; flex-direction: column; gap: 2px\">\n        <span style=\"font-size: 19px; font-weight: 700\">สร้างโปรเจกต์ใหม่<\/span>\n        <span style=\"font-size: 12.5px; opacity: .8\">เลือกวิดีโอ/รูปจากเครื่อง ได้หลายไฟล์<\/span>\n      <\/span>\n    <\/a>\n\n    <section>\n      <div style=\"display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px\">\n        <h2 style=\"margin: 0; font-size: 15px; font-weight: 600\">เครื่องมือ<\/h2>\n        <a href=\"#\" style=\"font-size: 13px; text-decoration: none\">ทั้งหมด<\/a>\n      <\/div>\n      <div style=\"display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px\">\n        <sc-for list=\"{{tools}}\" as=\"t\" hint-placeholder-count=\"6\">\n          <button onClick=\"{{t.pick}}\" style=\"border: 0; background: #161A21; color: #EEF1F6; border-radius: 16px; padding: 14px 4px 12px; display: flex; flex-direction: column; align-items: center; gap: 8px; min-height: 96px; position: relative\">\n            <span style=\"width: 38px; height: 38px; border-radius: 11px; background: #1F242D; display: flex; align-items: center; justify-content: center; color: {{accent}}\">\n              <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"{{t.icon}}\"><\/path><\/svg>\n            <\/span>\n            <span style=\"font-size: 13px; line-height: 1.25; text-align: center; color: #D5DAE3\">{{t.label}}<\/span>\n            <sc-if value=\"{{t.ai}}\" hint-placeholder-val=\"{{ false }}\">\n              <span style=\"position: absolute; top: 6px; right: 6px; font-size: 9px; font-weight: 700; background: #2A3550; color: #9FC3FF; border-radius: 5px; padding: 0 4px\">AI<\/span>\n            <\/sc-if>\n          <\/button>\n        <\/sc-for>\n      <\/div>\n    <\/section>\n\n    <section>\n      <div style=\"display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px\">\n        <h2 style=\"margin: 0; font-size: 15px; font-weight: 600\">โปรเจกต์ล่าสุด<\/h2>\n        <a href=\"#\" style=\"font-size: 13px; text-decoration: none\">ดูทั้งหมด<\/a>\n      <\/div>\n      <div style=\"display: flex; gap: 10px\">\n        <sc-for list=\"{{projects}}\" as=\"p\" hint-placeholder-count=\"3\">\n          <a href=\"Editor.dc.html\" data-project style=\"text-decoration: none; color: #EEF1F6; width: 108px; flex-shrink: 0; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; touch-action: manipulation\">\n            <div style=\"width: 108px; height: 150px; border-radius: 12px; overflow: hidden; position: relative; background: #1B1F27\">\n              <img src=\"/_blob/93d9cdb498d4605ad9e50f6ffc7faed5\" alt=\"\" draggable=\"false\" style=\"-webkit-touch-callout: none; pointer-events: none; width: 100%; height: 100%; object-fit: cover; filter: {{p.filter}}\">\n              <span style=\"position: absolute; right: 6px; bottom: 6px; font-size: 10.5px; background: rgba(0,0,0,.7); border-radius: 5px; padding: 1px 5px\">{{p.dur}}<\/span>\n            <\/div>\n            <div style=\"font-size: 12.5px; margin-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis\">{{p.name}}<\/div>\n            <div style=\"font-size: 11px; color: #A9B1BE\">{{p.when}}<\/div>\n          <\/a>\n        <\/sc-for>\n        <sc-if value=\"{{noProjects}}\" hint-placeholder-val=\"{{ false }}\">\n          <div style=\"flex: 1; border-radius: 14px; border: 1px dashed #2A2F39; padding: 16px; font-size: 12.5px; color: #A9B1BE; line-height: 1.6\">ยังไม่มีโปรเจกต์ แตะ \"สร้างโปรเจกต์ใหม่\" แล้วเลือกวิดีโอหรือรูปจากคลังภาพ เลือกได้หลายไฟล์พร้อมกัน<\/div>\n        <\/sc-if>\n      <\/div>\n    <\/section>\n    <sc-if value=\"{{menuOpen}}\" hint-placeholder-val=\"{{ false }}\">\n      <div onClick=\"{{menuClose}}\" style=\"position: absolute; inset: 0; background: rgba(8,10,13,.72); display: flex; align-items: flex-end; z-index: 10\">\n        <div onClick=\"{{stop}}\" role=\"dialog\" aria-label=\"จัดการโปรเจกต์\" style=\"width: 100%; background: #171A20; border-radius: 20px 20px 0 0; padding: 18px 20px 26px; display: flex; flex-direction: column; gap: 10px; box-sizing: border-box\">\n          <div style=\"font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis\">{{curTitle}}<\/div>\n          <button onClick=\"{{menuDelete}}\" style=\"height: 48px; border: 0; border-radius: 14px; background: #3A1D22; color: #FF6B78; font-size: 15px; font-weight: 700\">ลบโปรเจกต์นี้<\/button>\n          <button onClick=\"{{menuClose}}\" style=\"height: 44px; border-radius: 14px; border: 1px solid #2A2F39; background: transparent; color: #EEF1F6; font-size: 14px\">ยกเลิก<\/button>\n        <\/div>\n      <\/div>\n    <\/sc-if>\n    <sc-if value=\"{{confirmNew}}\" hint-placeholder-val=\"{{ false }}\">\n      <div style=\"position: absolute; inset: 0; background: rgba(8,10,13,.72); display: flex; align-items: flex-end; z-index: 9\">\n        <div style=\"width: 100%; background: #171A20; border-radius: 20px 20px 0 0; padding: 20px 20px 26px; display: flex; flex-direction: column; gap: 12px; box-sizing: border-box\">\n          <div style=\"font-size: 16px; font-weight: 700\">เริ่มโปรเจกต์ใหม่?<\/div>\n          <div style=\"font-size: 13.5px; color: #A9B1BE; line-height: 1.6\">เวอร์ชันนี้เก็บได้ทีละโปรเจกต์ โปรเจกต์ \"{{curTitle}}\" จะถูกแทนที่ ถ้ายังไม่ได้ส่งออก ให้กลับไปส่งออกก่อน<\/div>\n          <button onClick=\"{{confirmYes}}\" style=\"height: 48px; border: 0; border-radius: 14px; background: {{accent}}; color: #06201D; font-size: 15px; font-weight: 700\">เลือกไฟล์และเริ่มใหม่<\/button>\n          <button onClick=\"{{confirmNo}}\" style=\"height: 44px; border-radius: 14px; border: 1px solid #2A2F39; background: transparent; color: #EEF1F6; font-size: 14px\">ยกเลิก<\/button>\n        <\/div>\n      <\/div>\n    <\/sc-if>\n  <\/div>\n\n  <nav aria-label=\"เมนูหลัก\" style=\"display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid #22262E; background: #13161B; padding: 6px 4px 14px\">\n    <sc-for list=\"{{nav}}\" as=\"n\" hint-placeholder-count=\"4\">\n      <a href=\"#\" style=\"text-decoration: none; color: {{n.color}}; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 0; font-size: 11.5px; font-weight: {{n.weight}}\">\n        <svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"{{n.icon}}\"><\/path><\/svg>\n        {{n.label}}\n      <\/a>\n    <\/sc-for>\n  <\/nav>\n<\/div>\n<\/x-dc>", props: {"accent": {"editor": "color", "default": "#2FD3C4", "options": ["#2FD3C4", "#FF8A3D", "#7C8CFF"]}, "$preview": {"width": 390, "height": 844}}, title: "KlipFox · หน้าหลัก",
+KF_SCREENS["Main"] = { tpl: "<div style=\"width: 390px; height: 844px; box-sizing: border-box; background: #0F1115; color: #EEF1F6; font-family: 'IBM Plex Sans Thai', sans-serif; display: flex; flex-direction: column; overflow: hidden; position: relative\">\n\n  <header style=\"display: flex; align-items: center; justify-content: space-between; padding: 18px 20px 8px\">\n    <div style=\"display: flex; align-items: center; gap: 10px\">\n      <img src=\"/_blob/730d817f691b422f35ad27d1da9d831c\" alt=\"\" aria-hidden=\"true\" style=\"width: 38px; height: 38px; border-radius: 10px; display: block; flex-shrink: 0; filter: drop-shadow(0 0 6px rgba(59, 232, 176, 0.25))\">\n      <div aria-label=\"KlipFox\" style=\"font-family: 'Leelawadee UI', 'Noto Sans Thai', 'Segoe UI', Tahoma, system-ui, sans-serif; font-size: 22px; font-weight: 800; font-style: italic; letter-spacing: -0.3px; white-space: nowrap\"><span style=\"color: #45E8B4\">Klip<\/span><span style=\"color: #F1F6F8\">Fox<\/span><\/div>\n    <\/div>\n    <div style=\"display: flex; gap: 6px\">\n      <button aria-label=\"ค้นหาเครื่องมือ\" style=\"width: 44px; height: 44px; border-radius: 12px; border: 0; background: #1B1F27; color: #C3CAD6; display: flex; align-items: center; justify-content: center\">\n        <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"><\/circle><path d=\"M20 20l-3.5-3.5\"><\/path><\/svg>\n      <\/button>\n      <button aria-label=\"ตั้งค่า\" style=\"width: 44px; height: 44px; border-radius: 12px; border: 0; background: #1B1F27; color: #C3CAD6; display: flex; align-items: center; justify-content: center\">\n        <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"3\"><\/circle><path d=\"M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z\"><\/path><\/svg>\n      <\/button>\n    <\/div>\n  <\/header>\n\n  <div style=\"flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 8px 20px 16px; display: flex; flex-direction: column; gap: 20px\">\n\n    <a href=\"#\" onClick=\"{{newProject}}\" style=\"text-decoration: none; background: {{accent}}; color: #06201D; border-radius: 20px; padding: 0 20px; height: 104px; flex-shrink: 0; box-sizing: border-box; display: flex; align-items: center; gap: 16px\">\n      <span style=\"width: 52px; height: 52px; border-radius: 16px; background: #06201D; color: {{accent}}; display: flex; align-items: center; justify-content: center; flex-shrink: 0\"><svg width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M12 5v14M5 12h14\"><\/path><\/svg><\/span>\n      <span style=\"display: flex; flex-direction: column; gap: 2px\">\n        <span style=\"font-size: 19px; font-weight: 700\">สร้างโปรเจกต์ใหม่<\/span>\n        <span style=\"font-size: 12.5px; opacity: .8\">เลือกวิดีโอ/รูปจากเครื่อง ได้หลายไฟล์<\/span>\n      <\/span>\n    <\/a>\n\n    <section style=\"flex-shrink: 0\">\n      <div style=\"display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px\">\n        <h2 style=\"margin: 0; font-size: 15px; font-weight: 600\">เครื่องมือ<\/h2>\n        <a href=\"#\" style=\"font-size: 13px; text-decoration: none\">ทั้งหมด<\/a>\n      <\/div>\n      <div style=\"display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px\">\n        <sc-for list=\"{{tools}}\" as=\"t\" hint-placeholder-count=\"6\">\n          <button onClick=\"{{t.pick}}\" style=\"border: 0; background: #161A21; color: #EEF1F6; border-radius: 16px; padding: 14px 4px 12px; display: flex; flex-direction: column; align-items: center; gap: 8px; min-height: 96px; position: relative\">\n            <span style=\"width: 38px; height: 38px; border-radius: 11px; background: #1F242D; display: flex; align-items: center; justify-content: center; color: {{accent}}\">\n              <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"{{t.icon}}\"><\/path><\/svg>\n            <\/span>\n            <span style=\"font-size: 13px; line-height: 1.25; text-align: center; color: #D5DAE3\">{{t.label}}<\/span>\n            <sc-if value=\"{{t.ai}}\" hint-placeholder-val=\"{{ false }}\">\n              <span style=\"position: absolute; top: 6px; right: 6px; font-size: 9px; font-weight: 700; background: #2A3550; color: #9FC3FF; border-radius: 5px; padding: 0 4px\">AI<\/span>\n            <\/sc-if>\n          <\/button>\n        <\/sc-for>\n      <\/div>\n    <\/section>\n\n    <section id=\"kf-projects\" style=\"flex-shrink: 0\">\n      <div style=\"display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px\">\n        <h2 style=\"margin: 0; font-size: 15px; font-weight: 600\">โปรเจกต์<\/h2>\n        <a href=\"#\" onClick=\"{{toProjects}}\" style=\"font-size: 13px; text-decoration: none\">ดูทั้งหมด<\/a>\n      <\/div>\n      <div style=\"display: flex; flex-wrap: wrap; gap: 14px 10px\">\n        <sc-for list=\"{{projects}}\" as=\"p\" hint-placeholder-count=\"3\">\n          <a href=\"#\" data-project data-pid=\"{{p.id}}\" onClick=\"{{p.open}}\" style=\"text-decoration: none; color: #EEF1F6; width: 108px; flex-shrink: 0; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; touch-action: manipulation\">\n            <div style=\"width: 108px; height: 150px; border-radius: 12px; overflow: hidden; position: relative; background: #1B1F27\">\n              <img src=\"{{p.poster}}\" alt=\"\" draggable=\"false\" style=\"-webkit-touch-callout: none; pointer-events: none; width: 100%; height: 100%; object-fit: cover; filter: {{p.filter}}\">\n              <span style=\"position: absolute; right: 6px; bottom: 6px; font-size: 10.5px; background: rgba(0,0,0,.7); border-radius: 5px; padding: 1px 5px\">{{p.dur}}<\/span>\n            <\/div>\n            <div style=\"font-size: 12.5px; margin-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis\">{{p.name}}<\/div>\n            <div style=\"font-size: 11px; color: #A9B1BE\">{{p.when}}<\/div>\n          <\/a>\n        <\/sc-for>\n        <sc-if value=\"{{noProjects}}\" hint-placeholder-val=\"{{ false }}\">\n          <div style=\"flex: 1; border-radius: 14px; border: 1px dashed #2A2F39; padding: 16px; font-size: 12.5px; color: #A9B1BE; line-height: 1.6\">ยังไม่มีโปรเจกต์ แตะ \"สร้างโปรเจกต์ใหม่\" แล้วเลือกวิดีโอหรือรูปจากคลังภาพ เลือกได้หลายไฟล์พร้อมกัน<\/div>\n        <\/sc-if>\n      <\/div>\n    <\/section>\n    <sc-if value=\"{{menuOpen}}\" hint-placeholder-val=\"{{ false }}\">\n      <div onClick=\"{{menuClose}}\" style=\"position: absolute; inset: 0; background: rgba(8,10,13,.72); display: flex; align-items: flex-end; z-index: 10\">\n        <div onClick=\"{{stop}}\" role=\"dialog\" aria-label=\"จัดการโปรเจกต์\" style=\"width: 100%; background: #171A20; border-radius: 20px 20px 0 0; padding: 18px 20px 26px; display: flex; flex-direction: column; gap: 10px; box-sizing: border-box\">\n          <div style=\"font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis\">{{curTitle}}<\/div>\n          <button onClick=\"{{menuDelete}}\" style=\"height: 48px; border: 0; border-radius: 14px; background: #3A1D22; color: #FF6B78; font-size: 15px; font-weight: 700\">ลบโปรเจกต์นี้<\/button>\n          <button onClick=\"{{menuClose}}\" style=\"height: 44px; border-radius: 14px; border: 1px solid #2A2F39; background: transparent; color: #EEF1F6; font-size: 14px\">ยกเลิก<\/button>\n        <\/div>\n      <\/div>\n    <\/sc-if>\n    <sc-if value=\"{{confirmNew}}\" hint-placeholder-val=\"{{ false }}\">\n      <div style=\"position: absolute; inset: 0; background: rgba(8,10,13,.72); display: flex; align-items: flex-end; z-index: 9\">\n        <div style=\"width: 100%; background: #171A20; border-radius: 20px 20px 0 0; padding: 20px 20px 26px; display: flex; flex-direction: column; gap: 12px; box-sizing: border-box\">\n          <div style=\"font-size: 16px; font-weight: 700\">เริ่มโปรเจกต์ใหม่?<\/div>\n          <div style=\"font-size: 13.5px; color: #A9B1BE; line-height: 1.6\">เวอร์ชันนี้เก็บได้ทีละโปรเจกต์ โปรเจกต์ \"{{curTitle}}\" จะถูกแทนที่ ถ้ายังไม่ได้ส่งออก ให้กลับไปส่งออกก่อน<\/div>\n          <button onClick=\"{{confirmYes}}\" style=\"height: 48px; border: 0; border-radius: 14px; background: {{accent}}; color: #06201D; font-size: 15px; font-weight: 700\">เลือกไฟล์และเริ่มใหม่<\/button>\n          <button onClick=\"{{confirmNo}}\" style=\"height: 44px; border-radius: 14px; border: 1px solid #2A2F39; background: transparent; color: #EEF1F6; font-size: 14px\">ยกเลิก<\/button>\n        <\/div>\n      <\/div>\n    <\/sc-if>\n  <\/div>\n\n  <nav aria-label=\"เมนูหลัก\" style=\"display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid #22262E; background: #13161B; padding: 6px 4px 14px\">\n    <sc-for list=\"{{nav}}\" as=\"n\" hint-placeholder-count=\"4\">\n      <a href=\"#\" onClick=\"{{n.go}}\" style=\"text-decoration: none; color: {{n.color}}; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 0; font-size: 11.5px; font-weight: {{n.weight}}\">\n        <svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"{{n.icon}}\"><\/path><\/svg>\n        {{n.label}}\n      <\/a>\n    <\/sc-for>\n  <\/nav>\n<\/div>\n<\/x-dc>", props: {"accent": {"editor": "color", "default": "#2FD3C4", "options": ["#2FD3C4", "#FF8A3D", "#7C8CFF"]}, "$preview": {"width": 390, "height": 844}}, title: "KlipFox · หน้าหลัก",
   Component: (function () {
 
 class Component extends DCLogic {
@@ -104,7 +104,7 @@ class Component extends DCLogic {
       const card = e.target.closest && e.target.closest('[data-project]');
       if (!card) return;
       sx = e.clientX; sy = e.clientY; clear();
-      tm = setTimeout(() => { tm = 0; fired = Date.now(); if (navigator.vibrate) { try { navigator.vibrate(15); } catch (_) {} } this.setState({ menu: true }); }, 480);
+      tm = setTimeout(() => { tm = 0; fired = Date.now(); this.menuId = card.getAttribute('data-pid') || null; if (navigator.vibrate) { try { navigator.vibrate(15); } catch (_) {} } this.setState({ menu: true }); }, 480);
     });
     host.addEventListener('pointermove', (e) => { if (tm && Math.hypot(e.clientX - sx, e.clientY - sy) > 10) clear(); });
     ['pointerup', 'pointercancel', 'pointerleave'].forEach((n) => host.addEventListener(n, clear));
@@ -151,13 +151,21 @@ class Component extends DCLogic {
       { name: 'คลิปเที่ยวเชียงใหม่', dur: '02:10', when: '3 วันก่อน', filter: 'grayscale(1)' },
     ];
     const nav = [
-      { label: 'หน้าหลัก', icon: I.home, color: accent, weight: 600 },
-      { label: 'เทมเพลต', icon: I.tpl, color: '#8E97A6', weight: 400 },
-      { label: 'โปรเจกต์', icon: I.folder, color: '#8E97A6', weight: 400 },
-      { label: 'ฉัน', icon: I.me, color: '#8E97A6', weight: 400 },
+      { label: 'หน้าหลัก', icon: I.home, color: accent, weight: 600, go: (e) => { e.preventDefault(); const el = document.getElementById('kf-projects'); const sc = el && el.parentElement; if (sc) sc.scrollTo({ top: 0, behavior: 'smooth' }); } },
+      { label: 'โปรเจกต์', icon: I.folder, color: '#8E97A6', weight: 400, go: (e) => { e.preventDefault(); const el = document.getElementById('kf-projects'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); } },
+      { label: 'ฉัน', icon: I.me, color: '#8E97A6', weight: 400, go: (e) => e.preventDefault() },
     ];
     const P = KF.project();
-    const real = KF.hasProject() ? [{ name: P.title, dur: KF.fmtShort(KF.duration()), when: 'แก้ล่าสุด ' + new Date(P.updated).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' }), filter: 'none' }] : [];
+    const fmtWhen = (t) => {
+      const d = new Date(t), n = new Date(), hm = d.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
+      if (d.toDateString() === n.toDateString()) return 'วันนี้ ' + hm;
+      const y = new Date(n.getTime() - 86400000);
+      return d.toDateString() === y.toDateString() ? 'เมื่อวาน ' + hm : d.toLocaleDateString('th-TH', { day: 'numeric', month: 'short' }) + ' ' + hm;
+    };
+    const frameFb = (window.KF_BLOBS && window.KF_BLOBS['93d9cdb498d4605ad9e50f6ffc7faed5']) || '';
+    const list = KF.projectList();
+    const real = list.map((it) => ({ id: it.id, name: it.title, dur: KF.fmtShort(it.dur), when: fmtWhen(it.updated), filter: 'none', poster: it.poster || frameFb,
+      open: (e) => { e.preventDefault(); KF.openProject(it.id).then(() => KF.go('Editor')); } }));
     const pick = () => KF.pickMedia('new', () => KF.go('Editor'));
     const GO = { 'ซับอัตโนมัติ': 'Captions', 'ลบพื้นหลัง': 'BgRemove', 'ตัดช่วงเงียบ': 'SilenceCut', 'โหลดจากลิงก์': 'LinkDownload', 'แยกเสียงร้อง': 'VocalSplit', 'ปรับความเร็ว': 'Editor', 'รีทัชหน้า': 'Retouch', 'กรีนสกรีน': 'GreenScreen' };
     const open = (label) => {
@@ -174,11 +182,12 @@ class Component extends DCLogic {
       KF.pickMedia('new', () => open(t.label));
     } }));
     return { accent, tools: toolsOut, projects: real, noProjects: !real.length, nav,
-      newProject: (e) => { e.preventDefault(); if (KF.hasProject()) this.setState({ confirm: true }); else pick(); },
+      newProject: (e) => { e.preventDefault(); pick(); },
+      toProjects: (e) => { e.preventDefault(); const el = document.getElementById('kf-projects'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); },
       menuOpen: this.state.menu, stop: (e) => e.stopPropagation(),
       menuClose: () => this.setState({ menu: false }),
-      menuDelete: () => { KF.deleteProject(); this.setState({ menu: false }); KF.toast('ลบโปรเจกต์แล้ว'); },
-      confirmNew: this.state.confirm, curTitle: P.title,
+      menuDelete: () => { KF.deleteProject(this.menuId || undefined); this.menuId = null; this.setState({ menu: false }); KF.toast('ลบโปรเจกต์แล้ว'); },
+      confirmNew: false, curTitle: ((list.find((x) => x.id === this.menuId) || {}).title) || P.title,
       confirmYes: () => { this.setState({ confirm: false }); pick(); }, confirmNo: () => this.setState({ confirm: false }) };
   }
 }
@@ -3594,7 +3603,15 @@ class Component extends DCLogic {
     });
   }
   let saveT = 0;
-  function saveSoon() { clearTimeout(saveT); saveT = setTimeout(() => idb('kv', 'readwrite', (s) => s.put(JSON.parse(JSON.stringify(P)), 'project')), 400); }
+  // every project is kept under its own key 'p:<id>'; 'project' = the one that is open now (restored at start)
+  const plist = new Map();
+  function persist() {
+    const snap = JSON.parse(JSON.stringify(P));
+    const live = snap.clips.length > 0 || snap.texts.length > 0;
+    if (live) { try { snap.dur = KF.duration(); snap.poster = KF.poster(); } catch (_) {} plist.set(snap.id, snap); } else plist.delete(snap.id);
+    return idb('kv', 'readwrite', (st) => { st.put(snap, 'project'); return live ? st.put(snap, 'p:' + snap.id) : st.delete('p:' + snap.id); });
+  }
+  function saveSoon() { clearTimeout(saveT); saveT = setTimeout(persist, 400); }
   function putMedia(m) {
     const rec = { id: m.id, kind: m.kind, name: m.name, lib: m.lib, pxId: m.pxId, ext: m.ext, dur: m.dur, w: m.w, h: m.h, thumbs: m.thumbs, thumbV: m.thumbV, blob: m.blob };
     return idb('media', 'readwrite', (s) => s.put(rec));
@@ -3609,49 +3626,85 @@ class Component extends DCLogic {
   }
   KF.soundMedia = builtinMedia;
 
+  function adoptProject(saved) {
+    P = Object.assign(newProject(), saved);
+    P.subs.style = Object.assign(defaultSubStyle(), P.subs.style || {});
+    const ids = new Set();
+    P.clips.forEach((c) => ids.add(c.src));
+    P.audios.forEach((a) => ids.add(a.src));
+    P.clips.forEach((c) => (c.xa || []).forEach((x) => ids.add(x.mid)));
+    ids.forEach((id) => { if (id && id.startsWith('b:')) builtinMedia(id); });
+    P.clips = P.clips.filter((c) => KF.media[c.src]);
+    P.audios = P.audios.filter((a) => KF.media[a.src]);
+    P.fxs = P.fxs || []; P.tracks = P.tracks || {}; P.overlays = (P.overlays || []).filter((o) => (o.kind !== 'img' && o.kind !== 'media') || KF.media[o.ref]);
+    Object.values(KF.media).forEach((m) => { if (m.kind === 'video' && (!m.thumbs || !m.thumbs.length)) queueThumbs(m); });
+    syncLinked(P);
+  }
   KF.ready = (async () => {
     try {
       const saved = await idb('kv', 'readonly', (s) => s.get('project'));
-      if (saved && saved.v === 1) {
-        P = Object.assign(newProject(), saved);
-        P.subs.style = Object.assign(defaultSubStyle(), P.subs.style || {});
-        const ids = new Set();
-        P.clips.forEach((c) => ids.add(c.src));
-        P.audios.forEach((a) => ids.add(a.src));
-        P.clips.forEach((c) => (c.xa || []).forEach((x) => ids.add(x.mid)));
+      const allp = (await idb('kv', 'readonly', (s) => s.getAll(IDBKeyRange.bound('p:', 'p:\uffff')))) || [];
+      if ((saved && saved.v === 1) || allp.length) {
         const all = (await idb('media', 'readonly', (s) => s.getAll())) || [];
         for (const r of all) {
           if (!r.blob) continue;
           KF.media[r.id] = { id: r.id, kind: r.kind, name: r.name, lib: r.lib, pxId: r.pxId, ext: r.ext, dur: r.dur, w: r.w, h: r.h, thumbs: r.thumbV === 2 ? (r.thumbs || []) : [], thumbV: r.thumbV, blob: r.blob, url: URL.createObjectURL(r.blob) };
         }
-        ids.forEach((id) => { if (id && id.startsWith('b:')) builtinMedia(id); });
-        P.clips = P.clips.filter((c) => KF.media[c.src]);
-        P.audios = P.audios.filter((a) => KF.media[a.src]);
-        P.fxs = P.fxs || []; P.tracks = P.tracks || {}; P.overlays = (P.overlays || []).filter((o) => (o.kind !== 'img' && o.kind !== 'media') || KF.media[o.ref]);
-        Object.values(KF.media).forEach((m) => { if (m.kind === 'video' && (!m.thumbs || !m.thumbs.length)) queueThumbs(m); });
-        syncLinked(P);
+        allp.forEach((r) => { if (r && r.v === 1 && r.id && ((r.clips || []).length || (r.texts || []).length)) plist.set(r.id, r); });
+        if (saved && saved.v === 1) {
+          adoptProject(saved);
+          if (P.clips.length || P.texts.length) persist();   // a project saved by the old single-project version joins the list
+        }
       }
     } catch (e) { console.warn('restore failed', e); }
     seekEls(); requestDraw(); changed();
   })();
 
-  KF.hasProject = () => P.clips.length > 0 || P.texts.length > 0;
-  /** delete the project on the phone: the project itself and the clips / pictures that were stored for it */
-  KF.deleteProject = () => {
+  /** all projects for the home screen, newest first */
+  KF.projectList = () => {
+    const out = [];
+    const posterOf = (r) => { if (r.poster) return r.poster; const c = (r.clips || [])[0], m = c && KF.media[c.src]; return (m && m.thumbs && m.thumbs[Math.min(m.thumbs.length - 1, 1)]) || null; };
+    plist.forEach((r) => { if (r.id !== P.id) out.push({ id: r.id, title: r.title, updated: r.updated || 0, dur: r.dur || 0, poster: posterOf(r) }); });
+    if (KF.hasProject()) out.push({ id: P.id, title: P.title, updated: P.updated || 0, dur: KF.duration(), poster: KF.poster() });
+    return out.sort((x, y) => y.updated - x.updated);
+  };
+  /** open another saved project (the current one is saved first and stays in the list) */
+  KF.openProject = async (id) => {
+    if (id === P.id) return true;
+    const rec = plist.get(id);
+    if (!rec) return false;
+    clearTimeout(saveT); await persist();
     KF.pause();
-    undo.length = 0; redo.length = 0;
-    P = newProject();
+    undo.length = 0; redo.length = 0; lastKey = '';
+    adoptProject(JSON.parse(JSON.stringify(rec)));
     KF.ui.sel = null; PL.t = 0;
+    seekEls(); requestDraw(); changed();
+    persist();
+    return true;
+  };
+
+  KF.hasProject = () => P.clips.length > 0 || P.texts.length > 0;
+  /** delete one project on the phone (default: the open one) with the clips / pictures stored only for it */
+  KF.deleteProject = (id) => {
+    id = id || P.id;
+    const cur = id === P.id;
+    const target = JSON.stringify(cur ? P : (plist.get(id) || {}));
+    const others = [];
+    plist.forEach((r) => { if (r.id !== id) others.push(JSON.stringify(r)); });
+    if (!cur) others.push(JSON.stringify(P));
+    plist.delete(id);
+    idb('kv', 'readwrite', (st) => st.delete('p:' + id));
+    if (cur) { KF.pause(); undo.length = 0; redo.length = 0; P = newProject(); KF.ui.sel = null; PL.t = 0; }
     Object.values(KF.media).forEach((m) => {
       if (m.builtin || m.kind === 'audio' && m.lib !== 'xa' || (m.lib && m.lib !== 'xa')) return;   // the sound library and built-in sounds stay
+      if (target.indexOf(m.id) < 0 || others.some((o) => o.indexOf(m.id) >= 0)) return;   // still used by another project
       idb('media', 'readwrite', (st) => st.delete(m.id));
       if (m.url) URL.revokeObjectURL(m.url);
       delete KF.media[m.id];
       ['v:', 'o:'].forEach((k) => { const el = els[k + m.id]; if (el) { el.removeAttribute('src'); el.remove(); delete els[k + m.id]; } });
     });
-    clearTimeout(saveT);
-    idb('kv', 'readwrite', (st) => st.put(JSON.parse(JSON.stringify(P)), 'project'));
-    seekEls(); requestDraw(); changed();
+    if (cur) { clearTimeout(saveT); idb('kv', 'readwrite', (st) => st.put(JSON.parse(JSON.stringify(P)), 'project')); seekEls(); requestDraw(); }
+    changed();
   };
   KF.poster = () => {
     const c = P.clips[0];
@@ -3694,20 +3747,12 @@ class Component extends DCLogic {
       if (mode === 'audio' || mode === 'sticker' || mode === 'bgimage' || mode === 'overlay') { changed(); if (then) then(ms[0]); return; }
       const mk = (m) => ({ id: uid(), src: m.id, in: 0, out: m.kind === 'image' ? 3 : m.dur, speed: 1, vol: 100, rot: 0, flip: false, fit: 'contain' });
       if (mode === 'new') {
+        clearTimeout(saveT); await persist();   // the old project stays in the list
         undo.length = 0; redo.length = 0;
         P = newProject();
         P.title = ms[0].name.replace(/\.[^.]+$/, '').slice(0, 40) || 'โปรเจกต์ใหม่';
         P.clips = ms.map(mk);
         KF.ui.sel = null; PL.t = 0;
-        // forget clips of the old project (imported sounds stay for "ของฉัน")
-        const keep = new Set(P.clips.map((c) => c.src));
-        Object.values(KF.media).forEach((m) => {
-          if ((m.kind === 'audio' && m.lib !== 'xa') || (m.lib && m.lib !== 'xa') || keep.has(m.id)) return;
-          idb('media', 'readwrite', (st) => st.delete(m.id));
-          if (m.url && !m.builtin) URL.revokeObjectURL(m.url);
-          delete KF.media[m.id];
-          const el = els['v:' + m.id]; if (el) { el.removeAttribute('src'); el.remove(); delete els['v:' + m.id]; }
-        });
         saveSoon(); seekEls(); requestDraw(); changed();
       } else {
         KF.edit((p) => {
