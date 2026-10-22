@@ -3826,7 +3826,7 @@ class Component extends DCLogic {
     if (tag === 'video') {
       el.addEventListener('seeked', requestDraw); el.addEventListener('loadeddata', requestDraw);
       // remember when the decoder has a new picture, so a 30 fps clip is not redrawn twice on a 60 Hz screen
-      if (el.requestVideoFrameCallback) { el.__rvfc = true; const nf = () => { el.__nf = true; el.requestVideoFrameCallback(nf); }; el.requestVideoFrameCallback(nf); }
+      if (el.requestVideoFrameCallback) { el.__rvfc = true; const nf = () => { el.__nf = true; el.__nfc = (el.__nfc || 0) + 1; el.requestVideoFrameCallback(nf); }; el.requestVideoFrameCallback(nf); }
     }
     if (tag === 'video') { el.style.cssText = 'position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;pointer-events:none;z-index:1;object-fit:contain;transform-origin:50% 50%'; dvLayer().appendChild(el); }
     else pool.appendChild(el);
@@ -4171,6 +4171,28 @@ class Component extends DCLogic {
   };
   KF.attachPreview = (cv) => { if (cv !== previewCanvas) { previewCanvas = cv; dirty = true; } };
 
+  // tiny status panel for finding why a phone stutters: tap the time label 5 times to show / hide it
+  function hudTick(now) {
+    if (!KF.hud) return;
+    if (now - (hudTick.at || 0) < 500) return;
+    const dt = now - (hudTick.at || now); hudTick.at = now;
+    let box = document.getElementById('kf-hud');
+    if (!box) { box = document.createElement('pre'); box.id = 'kf-hud'; box.style.cssText = 'position:fixed;left:4px;bottom:4px;z-index:99999;margin:0;padding:6px 8px;background:rgba(0,0,0,.78);color:#7CFFB2;font:10.5px/1.35 monospace;border-radius:6px;pointer-events:none;max-width:96vw;white-space:pre-wrap'; document.body.appendChild(box); }
+    const v = PL.el, q = v && v.getVideoPlaybackQuality ? v.getVideoPlaybackQuality() : null;
+    const nfc = v ? (v.__nfc || 0) : 0, fps = hudTick.nfc != null && dt ? Math.round((nfc - hudTick.nfc) * 1000 / dt) : 0; hudTick.nfc = nfc;
+    box.textContent = 'mode ' + (DV.mode ? 'DIRECT' : 'canvas') + ' · play ' + PL.playing + ' · mixer ' + MX.on + '\n'
+      + (v ? 'video ' + v.videoWidth + 'x' + v.videoHeight + ' ready ' + v.readyState + ' paused ' + v.paused + ' rate ' + v.playbackRate.toFixed(2) + '\n'
+      + 'v.t ' + v.currentTime.toFixed(2) + ' PL.t ' + PL.t.toFixed(2) + ' diff ' + (v.currentTime - PL.t).toFixed(2) + '\n'
+      + 'pictures/s ' + fps + (q ? ' · dropped ' + q.droppedVideoFrames + '/' + q.totalVideoFrames : '') + ' · stuck ' + (v.__stuck || 0) : 'no video') + '\n'
+      + 'preview scale ' + KF.pvScale + ' · ' + (navigator.userAgent.match(/OS [\d_]+/) || [''])[0];
+  }
+  document.addEventListener('click', (e) => {
+    const t = e.target && e.target.closest && e.target.closest('[data-kf-time]');
+    if (!t) return;
+    const n = performance.now();
+    document.__hudN = n - (document.__hudAt || 0) < 700 ? (document.__hudN || 0) + 1 : 1; document.__hudAt = n;
+    if (document.__hudN >= 5) { document.__hudN = 0; KF.hud = !KF.hud; if (!KF.hud) { const b = document.getElementById('kf-hud'); if (b) b.remove(); } }
+  });
   function dvMount() {
     const l = dvLayer(), cv = previewCanvas;
     const scr = cv && cv.isConnected ? cv.closest('.screen') : null;
@@ -4244,6 +4266,13 @@ class Component extends DCLogic {
     if (PL.playing && !dirty && !animating && !PL.exporting && PL.el && PL.el.__rvfc && !PL.el.__nf
       && !P.texts.length && !P.overlays.length && !(P.fxs && P.fxs.length) && !(P.subs && P.subs.lines && P.subs.lines.length)) dup = true;
     if (PL.el) PL.el.__nf = false;
+    // frozen picture (the decoder stopped giving new frames while the clock runs on): flush it with a tiny seek
+    { const el = PL.el;
+      if (PL.playing && el && el.__rvfc && !el.paused && !el.seeking && el.readyState >= 2) {
+        if (!el.__wd || el.__wd.id !== el.__nfc) el.__wd = { id: el.__nfc, at: now };
+        else if (now - el.__wd.at > 900) { el.__wd.at = now; el.__stuck = (el.__stuck || 0) + 1; try { el.currentTime = el.currentTime + 0.04; } catch (_) {} el.play().catch(() => {}); }
+      } else if (el) el.__wd = null; }
+    hudTick(now);
     // native picture: show the <video> itself while a plain clip plays
     if (now - (loop.dvAt || 0) > (DV.mode ? 100 : 250)) { loop.dvAt = now; dvMount(); }
     const di = PL.playing && DV.slot ? directInfo(PL.t) : null;
