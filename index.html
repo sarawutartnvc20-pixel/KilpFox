@@ -2505,7 +2505,7 @@ class Component extends DCLogic {
 
   return Component;
 })() };
-KF_SCREENS["VocalSplit"] = { tpl: "<div style=\"width: 390px; height: 844px; box-sizing: border-box; background: #0F1115; color: #EEF1F6; font-family: 'IBM Plex Sans Thai', sans-serif; display: flex; flex-direction: column; overflow: hidden\">\n  <header style=\"display: flex; align-items: center; gap: 6px; padding: 12px 12px 6px\">\n    <a href=\"Editor.dc.html\" aria-label=\"กลับ\" style=\"width: 44px; height: 44px; color: #C3CAD6; display: flex; align-items: center; justify-content: center\">\n      <svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M15 6l-6 6 6 6\"><\/path><\/svg>\n    <\/a>\n    <h1 style=\"margin: 0; font-size: 18px; font-weight: 700; flex: 1\">แยกเสียงร้อง + ดนตรี<\/h1>\n  <\/header>\n\n  <div class=\"noscroll col\" style=\"flex: 1; min-height: 0; overflow-y: auto; padding: 4px 20px 16px; display: flex; flex-direction: column; gap: 14px\">\n    <div style=\"background: #171A20; border-radius: 16px; padding: 14px; display: flex; align-items: center; gap: 12px\">\n      <span style=\"width: 44px; height: 44px; border-radius: 12px; background: #1F2A2A; color: {{accent}}; display: flex; align-items: center; justify-content: center; font-size: 22px\">{{srcIcon}}<\/span>\n      <div style=\"flex: 1; min-width: 0\">\n        <div style=\"font-size: 12px; color: #8E97A6\">แยกเสียงจาก<\/div>\n        <div style=\"font-size: 14.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis\">{{srcName}}<\/div>\n      <\/div>\n    <\/div>\n    <div style=\"font-size: 12.5px; color: #A9B1BE; line-height: 1.6\">แยกเสียงร้องที่อยู่ตรงกลางออกจากดนตรีในเพลงสเตอริโอ ทำในเครื่อง ไม่ต้องโหลดอะไรเพิ่ม เหมาะกับเพลง MP3 หรือคลิปเพลงที่ได้มาจากต้นฉบับ ถ้าเป็นเสียงที่อัดจากมือถือหรือเสียงโมโนจะแยกไม่ได้ เลือกเพลงในแทร็กเสียงก่อนเข้าหน้านี้เพื่อแยกเพลงนั้น<\/div>\n\n    <div style=\"display: flex; flex-direction: column; gap: 4px\">\n      <div style=\"display: flex; justify-content: space-between; font-size: 13px\"><label for=\"vs-k\" style=\"font-weight: 600\">ความแรงการแยก<\/label><span style=\"color: #A9B1BE\">{{k}}<\/span><\/div>\n      <input id=\"vs-k\" type=\"range\" min=\"0\" max=\"100\" value=\"{{k}}\" onInput=\"{{setK}}\" style=\"width: 100%; accent-color: {{accent}}\">\n      <div style=\"display: flex; justify-content: space-between; font-size: 11px; color: #8E97A6\"><span>ดนตรีเต็ม เสียงร้องหลุดบ้าง<\/span><span>เสียงร้องหายมาก ดนตรีบางลง<\/span><\/div>\n    <\/div>\n\n    <sc-if value=\"{{isIdle}}\" hint-placeholder-val=\"{{ true }}\">\n      <button onClick=\"{{start}}\" style=\"height: 50px; border: 0; border-radius: 14px; background: {{accent}}; color: #06201D; font-size: 15px; font-weight: 700\">เริ่มแยกเสียง<\/button>\n    <\/sc-if>\n    <sc-if value=\"{{isBusy}}\" hint-placeholder-val=\"{{ false }}\">\n      <div style=\"display: flex; flex-direction: column; gap: 8px\">\n        <div style=\"display: flex; justify-content: space-between; font-size: 13px; color: #C3CAD6\"><span>{{busyLabel}}<\/span><span>{{pct}}%<\/span><\/div>\n        <div style=\"height: 8px; border-radius: 4px; background: #22262E; overflow: hidden\"><div style=\"height: 100%; width: {{pct}}%; background: {{accent}}\"><\/div><\/div>\n      <\/div>\n    <\/sc-if>\n    <sc-if value=\"{{hasError}}\" hint-placeholder-val=\"{{ false }}\">\n      <div style=\"font-size: 13px; color: #FFB4B4; line-height: 1.6; background: #2A1A1E; border-radius: 12px; padding: 10px 12px\">{{error}}<\/div>\n    <\/sc-if>\n    <sc-if value=\"{{isDone}}\" hint-placeholder-val=\"{{ false }}\">\n      <div style=\"display: flex; flex-direction: column; gap: 10px\">\n        <sc-for list=\"{{tracks}}\" as=\"t\" hint-placeholder-count=\"2\">\n          <div style=\"background: #171A20; border-radius: 14px; padding: 10px 12px; display: flex; align-items: center; gap: 12px\">\n            <button onClick=\"{{t.play}}\" aria-label=\"{{t.aria}}\" style=\"width: 42px; height: 42px; border-radius: 50%; border: 0; background: #EEF1F6; color: #0F1115; display: flex; align-items: center; justify-content: center\">\n              <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"{{t.icon}}\"><\/path><\/svg>\n            <\/button>\n            <div style=\"flex: 1\"><div style=\"font-size: 14px; font-weight: 700\">{{t.label}}<\/div><div style=\"font-size: 11.5px; color: #8E97A6\">{{t.note}}<\/div><\/div>\n          <\/div>\n        <\/sc-for>\n        <div style=\"font-size: 13px; font-weight: 600; margin-top: 4px\">ใส่ลงโปรเจกต์<\/div>\n        <button onClick=\"{{useBoth}}\" style=\"height: 48px; border: 0; border-radius: 14px; background: {{accent}}; color: #06201D; font-size: 14.5px; font-weight: 700\">ใส่ทั้งสองแทร็ก (ปรับเสียงแยกกันได้)<\/button>\n        <div style=\"display: grid; grid-template-columns: 1fr 1fr; gap: 10px\">\n          <button onClick=\"{{useMusic}}\" style=\"height: 46px; border-radius: 14px; border: 1px solid #2A2F39; background: transparent; color: #EEF1F6; font-size: 13.5px\">เอาแค่ดนตรี (คาราโอเกะ)<\/button>\n          <button onClick=\"{{useVocal}}\" style=\"height: 46px; border-radius: 14px; border: 1px solid #2A2F39; background: transparent; color: #EEF1F6; font-size: 13.5px\">เอาแค่เสียงร้อง<\/button>\n        <\/div>\n      <\/div>\n    <\/sc-if>\n  <\/div>\n<\/div>\n<\/x-dc>", props: {"accent": {"editor": "color", "default": "#2FD3C4"}, "$preview": {"width": 390, "height": 844}}, title: "KlipFox · แยกเสียงร้อง",
+KF_SCREENS["VocalSplit"] = { tpl: "<div style=\"width: 390px; height: 844px; box-sizing: border-box; background: #0F1115; color: #EEF1F6; font-family: 'IBM Plex Sans Thai', sans-serif; display: flex; flex-direction: column; overflow: hidden\">\n  <header style=\"display: flex; align-items: center; gap: 6px; padding: 12px 12px 6px\">\n    <a href=\"Editor.dc.html\" aria-label=\"กลับ\" style=\"width: 44px; height: 44px; color: #C3CAD6; display: flex; align-items: center; justify-content: center\">\n      <svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M15 6l-6 6 6 6\"><\/path><\/svg>\n    <\/a>\n    <h1 style=\"margin: 0; font-size: 18px; font-weight: 700; flex: 1\">แยกเสียงร้อง + ดนตรี<\/h1>\n  <\/header>\n\n  <div class=\"noscroll col\" style=\"flex: 1; min-height: 0; overflow-y: auto; padding: 4px 20px 16px; display: flex; flex-direction: column; gap: 14px\">\n    <div style=\"background: #171A20; border-radius: 16px; padding: 14px; display: flex; align-items: center; gap: 12px\">\n      <span style=\"width: 44px; height: 44px; border-radius: 12px; background: #1F2A2A; color: {{accent}}; display: flex; align-items: center; justify-content: center; font-size: 22px\">{{srcIcon}}<\/span>\n      <div style=\"flex: 1; min-width: 0\">\n        <div style=\"font-size: 12px; color: #8E97A6\">แยกเสียงจาก<\/div>\n        <div style=\"font-size: 14.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis\">{{srcName}}<\/div>\n      <\/div>\n    <\/div>\n    <div style=\"font-size: 12.5px; color: #A9B1BE; line-height: 1.6\">แยกเสียงร้องที่อยู่ตรงกลางออกจากดนตรีในเพลงสเตอริโอ ทำในเครื่อง ไม่ต้องโหลดอะไรเพิ่ม เหมาะกับเพลง MP3 หรือคลิปเพลงที่ได้มาจากต้นฉบับ ถ้าเป็นเสียงที่อัดจากมือถือหรือเสียงโมโนจะแยกไม่ได้ เลือกเพลงในแทร็กเสียงก่อนเข้าหน้านี้เพื่อแยกเพลงนั้น<\/div>\n\n    <div style=\"display: flex; flex-direction: column; gap: 4px\">\n      <div style=\"display: flex; justify-content: space-between; font-size: 13px\"><label for=\"vs-k\" style=\"font-weight: 600\">ความแรงการแยก<\/label><span style=\"color: #A9B1BE\">{{k}}<\/span><\/div>\n      <input id=\"vs-k\" type=\"range\" min=\"0\" max=\"100\" value=\"{{k}}\" onInput=\"{{setK}}\" style=\"width: 100%; accent-color: {{accent}}\">\n      <div style=\"display: flex; justify-content: space-between; font-size: 11px; color: #8E97A6\"><span>นุ่มนวล เก็บเสียงเดิมไว้มาก<\/span><span>แยกเข้ม สะอาดกว่า (เสียงอาจบางลง)<\/span><\/div>\n    <\/div>\n\n    <sc-if value=\"{{isIdle}}\" hint-placeholder-val=\"{{ true }}\">\n      <button onClick=\"{{start}}\" style=\"height: 50px; border: 0; border-radius: 14px; background: {{accent}}; color: #06201D; font-size: 15px; font-weight: 700\">เริ่มแยกเสียง<\/button>\n    <\/sc-if>\n    <sc-if value=\"{{isBusy}}\" hint-placeholder-val=\"{{ false }}\">\n      <div style=\"display: flex; flex-direction: column; gap: 8px\">\n        <div style=\"display: flex; justify-content: space-between; font-size: 13px; color: #C3CAD6\"><span>{{busyLabel}}<\/span><span>{{pct}}%<\/span><\/div>\n        <div style=\"height: 8px; border-radius: 4px; background: #22262E; overflow: hidden\"><div style=\"height: 100%; width: {{pct}}%; background: {{accent}}\"><\/div><\/div>\n      <\/div>\n    <\/sc-if>\n    <sc-if value=\"{{hasError}}\" hint-placeholder-val=\"{{ false }}\">\n      <div style=\"font-size: 13px; color: #FFB4B4; line-height: 1.6; background: #2A1A1E; border-radius: 12px; padding: 10px 12px\">{{error}}<\/div>\n    <\/sc-if>\n    <sc-if value=\"{{isDone}}\" hint-placeholder-val=\"{{ false }}\">\n      <div style=\"display: flex; flex-direction: column; gap: 10px\">\n        <sc-for list=\"{{tracks}}\" as=\"t\" hint-placeholder-count=\"2\">\n          <div style=\"background: #171A20; border-radius: 14px; padding: 10px 12px; display: flex; align-items: center; gap: 12px\">\n            <button onClick=\"{{t.play}}\" aria-label=\"{{t.aria}}\" style=\"width: 42px; height: 42px; border-radius: 50%; border: 0; background: #EEF1F6; color: #0F1115; display: flex; align-items: center; justify-content: center\">\n              <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"{{t.icon}}\"><\/path><\/svg>\n            <\/button>\n            <div style=\"flex: 1\"><div style=\"font-size: 14px; font-weight: 700\">{{t.label}}<\/div><div style=\"font-size: 11.5px; color: #8E97A6\">{{t.note}}<\/div><\/div>\n          <\/div>\n        <\/sc-for>\n        <div style=\"font-size: 13px; font-weight: 600; margin-top: 4px\">ใส่ลงโปรเจกต์<\/div>\n        <button onClick=\"{{useBoth}}\" style=\"height: 48px; border: 0; border-radius: 14px; background: {{accent}}; color: #06201D; font-size: 14.5px; font-weight: 700\">ใส่ทั้งสองแทร็ก (ปรับเสียงแยกกันได้)<\/button>\n        <div style=\"display: grid; grid-template-columns: 1fr 1fr; gap: 10px\">\n          <button onClick=\"{{useMusic}}\" style=\"height: 46px; border-radius: 14px; border: 1px solid #2A2F39; background: transparent; color: #EEF1F6; font-size: 13.5px\">เอาแค่ดนตรี (คาราโอเกะ)<\/button>\n          <button onClick=\"{{useVocal}}\" style=\"height: 46px; border-radius: 14px; border: 1px solid #2A2F39; background: transparent; color: #EEF1F6; font-size: 13.5px\">เอาแค่เสียงร้อง<\/button>\n        <\/div>\n      <\/div>\n    <\/sc-if>\n  <\/div>\n<\/div>\n<\/x-dc>", props: {"accent": {"editor": "color", "default": "#2FD3C4"}, "$preview": {"width": 390, "height": 844}}, title: "KlipFox · แยกเสียงร้อง",
   Component: (function () {
 
 class Component extends DCLogic {
@@ -2546,10 +2546,10 @@ class Component extends DCLogic {
       accent, k: s.k, setK: (e) => this.setState({ k: Number(e.target.value) }),
       srcIcon: t ? (t.kind === 'audio' ? '♪' : '🎬') : '?', srcName: t ? t.name : 'ยังไม่มีคลิปหรือเพลงในโปรเจกต์',
       isIdle: s.phase === 'idle' && !!t, isBusy: s.phase === 'busy', isDone: s.phase === 'done', hasError: !!s.error,
-      error: s.error, pct: s.pct, busyLabel: s.pct < 5 ? 'กำลังอ่านเสียง…' : 'กำลังแยกเสียง…',
+      error: s.error, pct: s.pct, busyLabel: s.pct < 5 ? 'กำลังอ่านเสียง…' : s.pct < 20 ? 'กำลังวิเคราะห์ซ้าย–ขวา…' : s.pct < 38 ? 'กำลังแยกกลอง / จังหวะออกจากเสียงร้อง…' : s.pct < 62 ? 'กำลังหาส่วนดนตรีที่เล่นซ้ำ…' : s.pct < 74 ? 'กำลังตามโน้ตเสียงร้อง…' : 'กำลังตัดแยกเสียง…',
       tracks: s.phase === 'done' ? [
-        { label: 'เสียงร้อง', note: 'เสียงที่อยู่กลางเวที', aria: 'ฟังเสียงร้อง', icon: s.playing === 'vocal' ? stop : play, play: () => this.play('vocal') },
-        { label: 'ดนตรี', note: 'เหลือแต่เครื่องดนตรี', aria: 'ฟังดนตรี', icon: s.playing === 'music' ? stop : play, play: () => this.play('music') },
+        { label: 'เสียงร้อง', note: 'เสียงร้องหลัก (ตัดดนตรีออก)', aria: 'ฟังเสียงร้อง', icon: s.playing === 'vocal' ? stop : play, play: () => this.play('vocal') },
+        { label: 'ดนตรี', note: 'เครื่องดนตรี (ตัดเสียงร้องออก)', aria: 'ฟังดนตรี', icon: s.playing === 'music' ? stop : play, play: () => this.play('music') },
       ] : [],
       start: async () => {
         if (!t) return;
@@ -2561,7 +2561,7 @@ class Component extends DCLogic {
           this.out = out;
           this.setState({ phase: 'done', pct: 100 });
         } catch (e) {
-          const msg = e.message === 'mono' ? 'เสียงนี้เป็นโมโน (ซ้ายขวาเหมือนกัน เช่น อัดจากมือถือ) วิธีนี้แยกได้เฉพาะเพลงสเตอริโอ ลองใช้ไฟล์เพลง MP3 ต้นฉบับแทน' : 'แยกเสียงไม่สำเร็จ: ' + (e.message || e);
+          const msg = e.message === 'long' ? 'เพลงยาวเกิน 11 นาที เครื่องมือถือแยกไม่ไหว ตัดให้สั้นลงก่อนแล้วค่อยแยก' : e.message === 'mono' ? 'เสียงนี้เป็นโมโน (ซ้ายขวาเหมือนกัน เช่น อัดจากมือถือ) วิธีนี้แยกได้เฉพาะเพลงสเตอริโอ ลองใช้ไฟล์เพลง MP3 ต้นฉบับแทน' : 'แยกเสียงไม่สำเร็จ: ' + (e.message || e);
           this.setState({ phase: 'idle', error: msg });
         }
       },
@@ -6969,7 +6969,7 @@ void main(){
     if (!mode) return;
     const c2 = find(), before = c2.vol == null ? 100 : c2.vol;
     const had = new Set((c2.xa || []).map((q) => q.k));
-    await KF.tools.extract(cId, mode === 'denoise' ? 'all' : 'speech', { link: true, fade: true, denoise: mode === 'denoise', strength: mode === 'speech' ? 0.75 : 0.6 }, onProgress);
+    await KF.tools.extract(cId, mode === 'denoise' ? 'all' : 'speech', { link: true, fade: true, denoise: mode === 'denoise', strength: mode === 'speech' ? 0.75 : 0.7 }, onProgress);
     KF.edit((p) => {
       const x = p.clips.find((k) => k.id === cId);
       if (!x) return;
@@ -7987,8 +7987,7 @@ void main() {
   };
 
   // ------------------------------------------------------------------ vocal / music split (stereo centre extraction)
-  const SPLIT_SRC = `
-const N = 2048, HOP = 512;
+  const SPLIT_SRC = `const N = 4096, HOP = 1024, K = N / 2 + 1;
 const cosT = new Float32Array(N / 2), sinT = new Float32Array(N / 2);
 for (let i = 0; i < N / 2; i++) { cosT[i] = Math.cos(2 * Math.PI * i / N); sinT[i] = -Math.sin(2 * Math.PI * i / N); }
 const rev = new Uint32Array(N);
@@ -8011,38 +8010,274 @@ function fft(re, im, inv) {
 const win = new Float32Array(N);
 for (let i = 0; i < N; i++) win[i] = 0.5 - 0.5 * Math.cos(2 * Math.PI * i / N);
 const sm = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+const prog = (a, b) => (p) => postMessage({ type: 'progress', p: a + (b - a) * p });
+
+// median of n values held in w[0..n-1] (insertion sort, n is small)
+function med(w, n) {
+  for (let i = 1; i < n; i++) { const v = w[i]; let j = i - 1; while (j >= 0 && w[j] > v) { w[j + 1] = w[j]; j--; } w[j + 1] = v; }
+  return w[n >> 1];
+}
+
 onmessage = (e) => {
   const { L, R, sr, strength } = e.data;
+  const s = Math.min(1, Math.max(0, strength == null ? 0.6 : strength));
   const len = L.length;
-  // is there any stereo information?
   let side = 0, mid = 0;
-  for (let i = 0; i < len; i += 7) { const m = L[i] + R[i], s = L[i] - R[i]; mid += m * m; side += s * s; }
+  for (let i = 0; i < len; i += 7) { const m = L[i] + R[i], d = L[i] - R[i]; mid += m * m; side += d * d; }
   if (side < mid * 0.0008) { postMessage({ type: 'mono' }); return; }
+
+  const T = Math.ceil(len / HOP) + 1;
+  const KA = Math.min(K, Math.round(12000 * N / sr) + 1);          // bins analysed (up to ~12 kHz)
+  const kLo = Math.round(110 * N / sr), kLo2 = Math.round(200 * N / sr);
+  const re = new Float32Array(N), im = new Float32Array(N);
+  const mag = new Float32Array(T * KA);
+  const psiQ = new Uint8Array(T * KA);
+
+  // ------------------------------------------------------------ pass 1: spectra -> mid magnitude + stereo coherence
+  {
+    const cr = [new Float32Array(KA), new Float32Array(KA), new Float32Array(KA)];
+    const pw = [new Float32Array(KA), new Float32Array(KA), new Float32Array(KA)];
+    const pr = prog(0, 0.2);
+    const row = (t) => {                // coherence of frame t from t-1, t, t+1 and neighbouring bins (rings: slot = frame % 3)
+      const a = cr[(t + 2) % 3], b = cr[t % 3], c = cr[(t + 1) % 3], pa = pw[(t + 2) % 3], pb = pw[t % 3], pc = pw[(t + 1) % 3];
+      for (let k = 0; k < KA; k++) {
+        const k0 = k ? k - 1 : 0, k1 = k < KA - 1 ? k + 1 : k;
+        const x = 2 * b[k] + b[k0] + b[k1] + 0.5 * (a[k] + c[k]);
+        const p = 2 * pb[k] + pb[k0] + pb[k1] + 0.5 * (pa[k] + pc[k]);
+        const v = p > 1e-14 ? 2 * x / p : 0;
+        psiQ[t * KA + k] = v <= 0 ? 0 : v >= 1 ? 255 : Math.round(v * 255);
+      }
+    };
+    for (let f = 0; f <= T; f++) {
+      const c = cr[f % 3], p = pw[f % 3];
+      if (f < T) {
+        const o = f * HOP - N / 2;
+        for (let i = 0; i < N; i++) { const k = o + i, w = win[i]; re[i] = k >= 0 && k < len ? L[k] * w : 0; im[i] = k >= 0 && k < len ? R[k] * w : 0; }
+        fft(re, im, false);
+        for (let k = 0; k < KA; k++) {
+          const k2 = (N - k) % N;
+          const lr = (re[k] + re[k2]) / 2, li = (im[k] - im[k2]) / 2, rr = (im[k] + im[k2]) / 2, ri = (re[k2] - re[k]) / 2;
+          c[k] = lr * rr + li * ri; p[k] = lr * lr + li * li + rr * rr + ri * ri;
+          const mr = (lr + rr) / 2, mi = (li + ri) / 2;
+          mag[f * KA + k] = Math.sqrt(mr * mr + mi * mi);
+        }
+      } else { c.fill(0); p.fill(0); }
+      if (f >= 1) row(f - 1);
+      if (f % 300 === 0) pr(f / T);
+    }
+  }
+
+  // ------------------------------------------------------------ cue 1: harmonic / percussive (drums, clicks, plucks leave the voice)
+  const HQ = new Uint8Array(T * KA);
+  {
+    const LT = 9, LF = 13, hT = LT >> 1, hF = LF >> 1, w = new Float32Array(32);
+    const beta = 1.0 + 0.6 * s;
+    const pr = prog(0.2, 0.38);
+    for (let t = 0; t < T; t++) {
+      for (let k = 0; k < KA; k++) {
+        let n = 0;
+        for (let j = -hT; j <= hT; j++) { const tt = t + j; if (tt >= 0 && tt < T) w[n++] = mag[tt * KA + k]; }
+        const H = med(w, n);
+        n = 0;
+        for (let j = -hF; j <= hF; j++) { const kk = k + j; if (kk >= 0 && kk < KA) w[n++] = mag[t * KA + kk]; }
+        const Pc = med(w, n) * beta;
+        const h2 = H * H, p2 = Pc * Pc, r = h2 / (h2 + p2 + 1e-18);
+        HQ[t * KA + k] = Math.round(r * 255);
+      }
+      if (t % 200 === 0) pr(t / T);
+    }
+  }
+
+  // ------------------------------------------------------------ cue 2: repetition (backing tracks loop, the singer does not)
+  const RQ = new Uint8Array(T * KA).fill(255);
+  if (T * KA < 140e6 && T > 600) {
+    const pr = prog(0.38, 0.62);
+    const NB = 40, RC = 4, NK = 8;
+    const b0 = Math.round(120 * N / sr), edges = new Int32Array(NB + 1);
+    for (let b = 0; b <= NB; b++) edges[b] = Math.round(b0 * Math.pow(KA / b0, b / NB));
+    for (let b = 1; b <= NB; b++) if (edges[b] <= edges[b - 1]) edges[b] = edges[b - 1] + 1;
+    const feat = new Float32Array(T * NB), mean = new Float32Array(NB);
+    for (let t = 0; t < T; t++) for (let b = 0; b < NB; b++) {
+      let a = 0, c = 0; for (let k = edges[b]; k < Math.min(KA, edges[b + 1]); k++) { a += mag[t * KA + k]; c++; }
+      const v = Math.log(1 + 40 * a / Math.max(1, c)); feat[t * NB + b] = v; mean[b] += v / T;
+    }
+    for (let t = 0; t < T; t++) {
+      let nn = 0; for (let b = 0; b < NB; b++) { const v = feat[t * NB + b] - mean[b]; feat[t * NB + b] = v; nn += v * v; }
+      nn = 1 / Math.sqrt(nn + 1e-9); for (let b = 0; b < NB; b++) feat[t * NB + b] *= nn;
+    }
+    const Tc = Math.ceil(T / RC), cf = new Float32Array(Tc * NB);
+    for (let i = 0; i < Tc; i++) {
+      let nn = 0;
+      for (let b = 0; b < NB; b++) { let a = 0; for (let r = 0; r < RC; r++) { const t = i * RC + r; if (t < T) a += feat[t * NB + b]; } cf[i * NB + b] = a; nn += a * a; }
+      nn = 1 / Math.sqrt(nn + 1e-9); for (let b = 0; b < NB; b++) cf[i * NB + b] *= nn;
+    }
+    const minLag = Math.max(2, Math.round(1.5 * sr / HOP / RC));
+    const nbr = new Int32Array(Tc * NK).fill(-1), sim = new Float32Array(NK), idx = new Int32Array(NK);
+    for (let i = 0; i < Tc; i++) {
+      sim.fill(-2); idx.fill(-1);
+      for (let j = 0; j < Tc; j++) {
+        if (Math.abs(i - j) < minLag) continue;
+        let d = 0; for (let b = 0; b < NB; b++) d += cf[i * NB + b] * cf[j * NB + b];
+        if (d <= sim[NK - 1]) continue;
+        let p = NK - 1; while (p > 0 && sim[p - 1] < d) { sim[p] = sim[p - 1]; idx[p] = idx[p - 1]; p--; }
+        sim[p] = d; idx[p] = j;
+      }
+      for (let n = 0; n < NK; n++) nbr[i * NK + n] = idx[n];
+      if (i % 100 === 0) pr(0.5 * i / Tc);
+    }
+    const SIMT = 0.35, un = new Int32Array(NK), w = new Float32Array(NK + 1);
+    for (let t = 0; t < T; t++) {
+      const i = Math.min(Tc - 1, t / RC | 0), sub = t - i * RC;
+      let cnt = 0;
+      for (let n = 0; n < NK; n++) {
+        const j = nbr[i * NK + n]; if (j < 0) continue;
+        let best = -2, bu = -1;
+        for (let d = -3; d <= 3; d++) {
+          const u = j * RC + sub + d; if (u < 0 || u >= T || Math.abs(u - t) < minLag * RC * 0.75) continue;
+          let dd = 0; for (let b = 0; b < NB; b++) dd += feat[t * NB + b] * feat[u * NB + b];
+          if (dd > best) { best = dd; bu = u; }
+        }
+        if (bu >= 0 && best > SIMT) un[cnt++] = bu;
+      }
+      if (cnt >= 3) {
+        for (let k = 0; k < KA; k++) {
+          for (let n = 0; n < cnt; n++) w[n] = mag[un[n] * KA + k];
+          const rep = Math.min(med(w, cnt), mag[t * KA + k]);
+          const ratio = rep / (mag[t * KA + k] + 1e-12);
+          RQ[t * KA + k] = Math.round((1 - ratio * ratio) * 255);
+        }
+      }
+      if (t % 300 === 0) pr(0.5 + 0.5 * t / T);
+    }
+  }
+
+
+  // ------------------------------------------------------------ cue 3: the sung melody (pitch track -> harmonic comb)
+  const FQ = new Uint8Array(T * KA);        // comb: how close each bin sits to a harmonic of the tracked pitch
+  const CONF = new Float32Array(T);         // how sure we are that someone is singing in this frame
+  {
+    const pr = prog(0.62, 0.74);
+    const binHz = sr / N;
+    const NC = 160, f0s = new Float32Array(NC);
+    for (let i = 0; i < NC; i++) f0s[i] = 100 * Math.pow(2, i / 48);
+    let gm = 0; for (let i = 0; i < mag.length; i += 17) gm += mag[i]; gm = gm / Math.ceil(mag.length / 17) + 1e-9;
+    const lg = new Float32Array(KA), wh = new Float32Array(KA), mx = new Float32Array(KA);
+    const sal = new Float32Array(T * NC);
+    const HMAX = 12, wts = []; for (let h = 1; h <= 30; h++) wts.push(1 / Math.pow(h, 0.4));
+    const BOX = 16, kTop = Math.min(KA - 2, Math.round(5000 / binHz));
+    for (let t = 0; t < T; t++) {
+      for (let k = 0; k < KA; k++) { const i = t * KA + k; const q = (0.15 + 0.85 * psiQ[i] / 255) * (0.3 + 0.7 * RQ[i] / 255) * (0.4 + 0.6 * HQ[i] / 255); lg[k] = Math.log(1 + 20 * mag[i] * q / gm); }
+      let run = 0, cnt = 0;
+      for (let k = 0; k < KA; k++) {            // running mean over +-BOX bins
+        if (k + BOX < KA) { run += lg[k + BOX]; cnt++; }
+        if (k - BOX - 1 >= 0) { run -= lg[k - BOX - 1]; cnt--; }
+        if (k === 0) { for (let j = 0; j < BOX; j++) { run += lg[j]; cnt++; } }
+        wh[k] = Math.max(0, lg[k] - run / Math.max(1, cnt));
+      }
+      let mAvg = 0;
+      for (let k = 0; k < KA; k++) { mx[k] = Math.max(wh[k], k ? wh[k - 1] : 0, k < KA - 1 ? wh[k + 1] : 0); mAvg += mx[k]; }
+      mAvg /= KA;
+      for (let i = 0; i < NC; i++) {
+        const f0 = f0s[i] / binHz; let a = 0, wsum = 0;
+        for (let h = 1; h <= HMAX; h++) {
+          const pos = h * f0; if (pos >= kTop) break;
+          const k0 = pos | 0, fr = pos - k0;
+          a += wts[h - 1] * (mx[k0] * (1 - fr) + mx[k0 + 1] * fr - mAvg); wsum += wts[h - 1];
+        }
+        sal[t * NC + i] = a / 8;
+      }
+      if (t % 300 === 0) pr(0.5 * t / T);
+    }
+    // Viterbi: smooth pitch track
+    const back = new Int16Array(T * NC), cost = new Float32Array(NC), nc = new Float32Array(NC);
+    const JMP = 8, lam = 0.012;
+    for (let i = 0; i < NC; i++) cost[i] = sal[i];
+    for (let t = 1; t < T; t++) {
+      for (let i = 0; i < NC; i++) {
+        let best = -1e9, bj = i;
+        for (let d = -JMP; d <= JMP; d++) { const j = i + d; if (j < 0 || j >= NC) continue; const v = cost[j] - lam * Math.abs(d); if (v > best) { best = v; bj = j; } }
+        nc[i] = best + sal[t * NC + i]; back[t * NC + i] = bj;
+      }
+      cost.set(nc);
+      if (t % 300 === 0) pr(0.5 + 0.3 * t / T);
+    }
+    let bi = 0; for (let i = 1; i < NC; i++) if (cost[i] > cost[bi]) bi = i;
+    const path = new Int16Array(T); path[T - 1] = bi;
+    for (let t = T - 1; t > 0; t--) { bi = back[t * NC + bi]; path[t - 1] = bi; }
+    // voicing confidence from how much the tracked pitch stands out of the frame's salience
+    const sp = new Float32Array(T), srt = new Float32Array(T);
+    for (let t = 0; t < T; t++) {
+      let m = 0; for (let i = 0; i < NC; i++) m += sal[t * NC + i]; m /= NC;
+      sp[t] = sal[t * NC + path[t]] / (m + 1e-6);
+    }
+    srt.set(sp); srt.sort();
+    const q = (p) => srt[Math.min(T - 1, Math.floor(p * T))];
+    const lo = q(0.35), hi = Math.max(lo + 0.3, q(0.85));
+    for (let t = 0; t < T; t++) CONF[t] = sm(lo, hi, sp[t]);
+    for (let t = 0; t < T; t++) {
+      if (CONF[t] < 0.03) continue;
+      const f0 = f0s[path[t]];
+      for (let k = 1; k < KA; k++) {
+        const f = k * binHz, h = Math.max(1, Math.round(f / f0));
+        const d = Math.abs(f - h * f0), tol = 2 * binHz + 0.015 * f;
+        FQ[t * KA + k] = Math.round(255 * Math.exp(-(d / tol) * (d / tol)));
+      }
+    }
+  }
+
+  // ------------------------------------------------------------ fuse the cues into one soft mask (evidence adds up in the log-odds domain)
+  const MQ = new Uint8Array(T * KA);
+  {
+    const D = e.data.dbg || {};
+    const wC = D.wC != null ? D.wC : 0.3, wH = D.wH != null ? D.wH : 0.25, wR = D.wR != null ? D.wR : 0.4, wF = D.wF != null ? D.wF : 2.4;
+    const gain = D.gain != null ? D.gain : 0.7 + 2.0 * s, shift = D.shift != null ? D.shift : 0;
+    const bnd = [Math.round(200 * N / sr), Math.round(1500 * N / sr), Math.round(5000 * N / sr)];
+    const bias = D.bias || [-6.4, -0.5, -1.1, -1.45];
+    const lgt = (x) => { x = x < 0.04 ? 0.04 : x > 0.96 ? 0.96 : x; return Math.log(x / (1 - x)); };
+    const lgTab = new Float32Array(256); for (let i = 0; i < 256; i++) lgTab[i] = lgt(i / 255);
+    const rowOf = (t, out) => {
+      const cf = CONF[t];
+      for (let k = 0; k < KA; k++) {
+        const i = t * KA + k;
+        const b = k < bnd[0] ? 0 : k < bnd[1] ? 1 : k < bnd[2] ? 2 : 3;
+        let z = bias[b] + shift + wC * lgTab[psiQ[i]] + wH * lgTab[HQ[i]] + wR * lgTab[RQ[i]] + wF * cf * (2 * FQ[i] / 255 - 1);
+        let p = 1 / (1 + Math.exp(-gain * z));
+        if (k < kLo) p = 0; else if (k < kLo2) p *= (k - kLo) / (kLo2 - kLo);
+        out[k] = p;
+      }
+    };
+    const rows = [new Float32Array(KA), new Float32Array(KA), new Float32Array(KA)];
+    rowOf(0, rows[0]); if (T > 1) rowOf(1, rows[1]);
+    for (let t = 0; t < T; t++) {
+      if (t + 1 < T && t >= 1) rowOf(t + 1, rows[(t + 1) % 3]);
+      const a = rows[(t + 2) % 3], b = rows[t % 3], c = rows[(t + 1) % 3];
+      const tt = t ? a : b, tn = t + 1 < T ? c : b;
+      for (let k = 0; k < KA; k++) {
+        const k0 = k ? k - 1 : 0, k1 = k < KA - 1 ? k + 1 : k;
+        const v = (2 * b[k] + b[k0] * 0.5 + b[k1] * 0.5 + 0.5 * (tt[k] + tn[k])) / 4;
+        MQ[t * KA + k] = Math.round(Math.min(1, Math.max(0, v)) * 255);
+      }
+    }
+  }
+
+  // ------------------------------------------------------------ pass 2: apply the mask
   const vo = new Float32Array(len + N), il = new Float32Array(len + N), ir = new Float32Array(len + N);
-  const re = new Float32Array(N), im = new Float32Array(N), vr = new Float32Array(N), vi = new Float32Array(N);
-  const prev = new Float32Array(N / 2 + 1);
-  const lo = 0.6 + 0.35 * (1 - strength), hi = 0.985;
-  const frames = Math.ceil(len / HOP) + 1;
-  for (let f = 0; f < frames; f++) {
+  const vr = new Float32Array(N), vi = new Float32Array(N);
+  const pr = prog(0.74, 1);
+  for (let f = 0; f < T; f++) {
     const o = f * HOP - N / 2;
-    for (let i = 0; i < N; i++) { const k = o + i; const w = win[i]; re[i] = k >= 0 && k < len ? L[k] * w : 0; im[i] = k >= 0 && k < len ? R[k] * w : 0; }
+    for (let i = 0; i < N; i++) { const k = o + i, w = win[i]; re[i] = k >= 0 && k < len ? L[k] * w : 0; im[i] = k >= 0 && k < len ? R[k] * w : 0; }
     fft(re, im, false);
     for (let k = 0; k <= N / 2; k++) {
       const k2 = (N - k) % N;
-      const lr = (re[k] + re[k2]) / 2, li = (im[k] - im[k2]) / 2;      // left spectrum
-      const rr = (im[k] + im[k2]) / 2, ri = (re[k2] - re[k]) / 2;      // right spectrum
-      const pl = lr * lr + li * li, pr = rr * rr + ri * ri;
-      const psi = 2 * (lr * rr + li * ri) / (pl + pr + 1e-12);
-      const fq = k * sr / N;
-      let v = sm(lo, hi, psi);
-      if (fq < 110) v = 0; else if (fq < 200) v *= (fq - 110) / 90;
-      if (fq > 9000) v *= 0.5;
-      v = 0.65 * v + 0.35 * prev[k]; prev[k] = v;
-      const mr = (lr + rr) / 2 * v, mi = (li + ri) / 2 * v;
-      // vocal (mono) spectrum
+      const lr = (re[k] + re[k2]) / 2, li = (im[k] - im[k2]) / 2, rr = (im[k] + im[k2]) / 2, ri = (re[k2] - re[k]) / 2;
+      let m;
+      if (k < KA) m = MQ[f * KA + k] / 255;
+      else { const pl = lr * lr + li * li, pq = rr * rr + ri * ri; m = 0.5 * sm(0.7, 0.98, Math.max(0, 2 * (lr * rr + li * ri) / (pl + pq + 1e-12))); }
+      const mr = (lr + rr) / 2 * m, mi = (li + ri) / 2 * m;
       vr[k] = mr; vi[k] = mi; if (k && k < N / 2) { vr[k2] = mr; vi[k2] = -mi; }
-      // instrumental: left and right minus vocal, packed as one complex signal (L + iR)
-      const al = lr - mr, bl = li - mi, ar = rr - mr, br = ri - mi;
+      const q = 1 - m;
+      const al = lr * q, bl = li * q, ar = rr * q, br = ri * q;
       re[k] = al - br; im[k] = bl + ar;
       if (k && k < N / 2) { re[k2] = al + br; im[k2] = -bl + ar; }
     }
@@ -8052,7 +8287,7 @@ onmessage = (e) => {
       const w = win[i] / 1.5;
       il[k] += re[i] * w; ir[k] += im[i] * w; vo[k] += vr[i] * w;
     }
-    if (f % 200 === 0) postMessage({ type: 'progress', p: f / frames });
+    if (f % 200 === 0) pr(f / T);
   }
   const V = vo.slice(0, len), IL = il.slice(0, len), IR = ir.slice(0, len);
   postMessage({ type: 'done', V, IL, IR }, [V.buffer, IL.buffer, IR.buffer]);
@@ -8084,6 +8319,7 @@ onmessage = (e) => {
   T.split = async (target, strength, onProgress) => {
     const a = await KF.decodeAudio(target.media, 44100, 2);
     if (a.srcChannels < 2) throw new Error('mono');
+    if (a.data[0].length > a.sr * 660) throw new Error('long');
     const w = new Worker(URL.createObjectURL(new Blob([SPLIT_SRC], { type: 'text/javascript' })));
     const r = await new Promise((res, rej) => {
       w.onmessage = (e) => {
@@ -8149,100 +8385,249 @@ onmessage = (e) => {
   // speech / background separation: a speech-enhancement mask (noise floor tracking + Wiener gain with
   // decision-directed smoothing, weighted to the voice band). Speech = mask × sound, background = the rest,
   // so the two tracks add back up to the original.
-  const SPEECH_SRC = `
-const N = 1024, HOP = 256;
-const cosT = new Float32Array(N / 2), sinT = new Float32Array(N / 2);
-for (let i = 0; i < N / 2; i++) { cosT[i] = Math.cos(2 * Math.PI * i / N); sinT[i] = -Math.sin(2 * Math.PI * i / N); }
-const rev = new Uint32Array(N);
-for (let i = 0, b = Math.log2(N); i < N; i++) { let x = i, r = 0; for (let k = 0; k < b; k++) { r = (r << 1) | (x & 1); x >>= 1; } rev[i] = r; }
-function fft(re, im, inv) {
-  for (let i = 0; i < N; i++) { const j = rev[i]; if (j > i) { let t = re[i]; re[i] = re[j]; re[j] = t; t = im[i]; im[i] = im[j]; im[j] = t; } }
-  for (let size = 2; size <= N; size <<= 1) {
-    const half = size >> 1, step = N / size;
-    for (let i = 0; i < N; i += size) for (let j = 0, k = 0; j < half; j++, k += step) {
-      const wr = cosT[k], wi = inv ? -sinT[k] : sinT[k], a = i + j, b = a + half;
-      const tr = re[b] * wr - im[b] * wi, ti = re[b] * wi + im[b] * wr;
-      re[b] = re[a] - tr; im[b] = im[a] - ti; re[a] += tr; im[a] += ti;
+  const SPEECH_SRC = `const N = 2048, HOP = 512, K = N / 2 + 1;
+function mkFFT(n) {
+  const c = new Float32Array(n / 2), s = new Float32Array(n / 2), rv = new Uint32Array(n);
+  for (let i = 0; i < n / 2; i++) { c[i] = Math.cos(2 * Math.PI * i / n); s[i] = -Math.sin(2 * Math.PI * i / n); }
+  for (let i = 0, b = Math.log2(n); i < n; i++) { let x = i, r = 0; for (let k = 0; k < b; k++) { r = (r << 1) | (x & 1); x >>= 1; } rv[i] = r; }
+  return (re, im, inv) => {
+    for (let i = 0; i < n; i++) { const j = rv[i]; if (j > i) { let t = re[i]; re[i] = re[j]; re[j] = t; t = im[i]; im[i] = im[j]; im[j] = t; } }
+    for (let size = 2; size <= n; size <<= 1) {
+      const half = size >> 1, step = n / size;
+      for (let i = 0; i < n; i += size) for (let j = 0, k = 0; j < half; j++, k += step) {
+        const wr = c[k], wi = inv ? -s[k] : s[k], a = i + j, b = a + half;
+        const tr = re[b] * wr - im[b] * wi, ti = re[b] * wi + im[b] * wr;
+        re[b] = re[a] - tr; im[b] = im[a] - ti; re[a] += tr; im[a] += ti;
+      }
     }
-  }
-  if (inv) for (let i = 0; i < N; i++) { re[i] /= N; im[i] /= N; }
+    if (inv) for (let i = 0; i < n; i++) { re[i] /= n; im[i] /= n; }
+  };
 }
+const fft = mkFFT(N);
 const win = new Float32Array(N);
 for (let i = 0; i < N; i++) win[i] = 0.5 - 0.5 * Math.cos(2 * Math.PI * i / N);
+const prog = (a, b) => (p) => postMessage({ type: 'progress', p: a + (b - a) * p });
+const sm = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+
+// k-th smallest of a[0..n-1] (destroys order)
+function qsel(a, n, k) {
+  let lo = 0, hi = n - 1;
+  while (lo < hi) {
+    const p = a[(lo + hi) >> 1]; let i = lo, j = hi;
+    while (i <= j) { while (a[i] < p) i++; while (a[j] > p) j--; if (i <= j) { const t = a[i]; a[i] = a[j]; a[j] = t; i++; j--; } }
+    if (k <= j) hi = j; else if (k >= i) lo = i; else break;
+  }
+  return a[k];
+}
+
+// ---------------------------------------------------------------- steady tones (mains hum, motors, buzzers): find and notch them out
+function findHum(L, R, sr) {
+  const M = 8192, f = mkFFT(M), len = L.length;
+  const hop = M, nfr = Math.floor((len - M) / hop);
+  if (nfr < 6) return [];
+  const kmax = Math.min(M / 2 - 20, Math.round(1500 * M / sr)), kmin = Math.round(30 * M / sr);
+  const step = Math.max(1, Math.floor(nfr / 120));            // look at up to ~120 frames
+  const cols = []; const re = new Float32Array(M), im = new Float32Array(M), w = new Float32Array(M);
+  for (let i = 0; i < M; i++) w[i] = 0.5 - 0.5 * Math.cos(2 * Math.PI * i / M);
+  for (let fr = 0; fr < nfr; fr += step) {
+    const o = fr * hop;
+    for (let i = 0; i < M; i++) { re[i] = (L[o + i] + R[o + i]) * 0.5 * w[i]; im[i] = 0; }
+    f(re, im, false);
+    const m = new Float32Array(kmax + 1); for (let k = 0; k <= kmax; k++) m[k] = Math.sqrt(re[k] * re[k] + im[k] * im[k]);
+    cols.push(m);
+  }
+  const nc = cols.length, tmp = new Float32Array(nc);
+  const med = new Float32Array(kmax + 1), q25 = new Float32Array(kmax + 1);
+  for (let k = 0; k <= kmax; k++) { for (let c = 0; c < nc; c++) tmp[c] = cols[c][k]; med[k] = qsel(tmp, nc, nc >> 1); q25[k] = qsel(tmp, nc, nc >> 2); }
+  const base = (arr, k) => {                                   // typical level around bin k (excluding k +- 3)
+    const v = []; for (let j = -24; j <= 24; j++) { if (Math.abs(j) <= 3) continue; const kk = k + j; if (kk >= 1 && kk <= kmax) v.push(arr[kk]); }
+    v.sort((a, b) => a - b); return v[v.length >> 1] + 1e-9;
+  };
+  const found = [];
+  for (let k = kmin; k <= kmax; k++) {
+    if (med[k] < med[k - 1] || med[k] < med[k + 1]) continue;
+    if (med[k] > 3.2 * base(med, k) && q25[k] > 1.8 * base(q25, k)) {
+      const a = med[k - 1], b = med[k], c = med[k + 1], d = a - 2 * b + c;
+      const off = d ? 0.5 * (a - c) / d : 0;
+      found.push({ f: (k + Math.max(-0.5, Math.min(0.5, off))) * sr / M, s: med[k] / base(med, k) });
+    }
+  }
+  found.sort((a, b) => b.s - a.s);
+  return found.slice(0, 14);
+}
+function notch(x, f0, sr, q) {
+  const w0 = 2 * Math.PI * f0 / sr, al = Math.sin(w0) / (2 * q), cs = Math.cos(w0);
+  const b0 = 1 / (1 + al), b1 = -2 * cs / (1 + al), a1 = -2 * cs / (1 + al), a2 = (1 - al) / (1 + al);
+  let x1 = 0, x2 = 0, y1 = 0, y2 = 0;
+  for (let i = 0; i < x.length; i++) {
+    const v = x[i], y = b0 * v + b1 * x1 + b0 * x2 - a1 * y1 - a2 * y2;
+    x2 = x1; x1 = v; y2 = y1; y1 = y; x[i] = y;
+  }
+}
+
 onmessage = (e) => {
-  const { L, R, sr, mode, strength, fade } = e.data;
-  const len = L.length, K = N / 2 + 1;
-  const sL = new Float32Array(len), sR = new Float32Array(len), bL = new Float32Array(len), bR = new Float32Array(len);
+  const { L: L0, R: R0, sr, mode, strength, fade, dbg } = e.data;
+  const D = dbg || {};
+  const s = Math.min(1, Math.max(0, strength == null ? 0.6 : strength));
+  const len = L0.length;
+  const L = Float32Array.from(L0), R = Float32Array.from(R0);
+  // ---- 1. tonal hum
+  if (D.hum !== 0) {
+    const tones = findHum(L, R, sr);
+    tones.forEach((t) => { const q = Math.max(12, Math.min(40, t.f / 2.5)); notch(L, t.f, sr, q); notch(R, t.f, sr, q); });
+  }
+  let ll = 0, rr0 = 0, lr0 = 0;
+  for (let i = 0; i < len; i += 5) { ll += L[i] * L[i]; rr0 += R[i] * R[i]; lr0 += L[i] * R[i]; }
+  const stereo = (lr0 / Math.sqrt(ll * rr0 + 1e-20)) < 0.995 && ll > 0 && rr0 > 0;   // the two channels really differ
+  const wantBg = mode !== 'denoise';                   // the background track is only needed when splitting
+  const sL = new Float32Array(len), sR = new Float32Array(len), bL = new Float32Array(wantBg ? len : 1), bR = new Float32Array(wantBg ? len : 1);
+  const CTX = 6 * 512 * 14;                           // context (samples) either side of a chunk: ~ 2.5 s, multiple of HOP
+  const CH = 512 * 5200;                              // ~ 60 s per chunk
+  const nChunks = Math.ceil(len / CH);
+  const kb = (hz) => Math.round(hz * N / sr);
+  const k70 = kb(D.hp0 != null ? D.hp0 : 60), k150 = kb(D.hp1 != null ? D.hp1 : 110), k8k = kb(8000);
+  const kVoice0 = kb(300), kVoice1 = kb(3400), kLF = kb(700), kMid0 = kb(500);
+  const over = D.over != null ? D.over : 1.2 + 1.6 * s;
+  const floorDb = mode === 'denoise' ? (D.floorDb != null ? D.floorDb : 14 + 16 * s) : 0;
+  const gfloor = mode === 'denoise' ? Math.pow(10, -floorDb / 20) : (mode === 'speech' ? 0.03 + 0.1 * (1 - s) : 0.015 + 0.06 * (1 - s));
   const re = new Float32Array(N), im = new Float32Array(N), r2 = new Float32Array(N), i2 = new Float32Array(N);
-  const S = new Float32Array(K), Smin = new Float32Array(K).fill(1e9), Stmp = new Float32Array(K).fill(1e9);
-  const Gp = new Float32Array(K).fill(1), Pp = new Float32Array(K).fill(1), G = new Float32Array(K);
-  const D = Math.round(1.2 * sr / HOP);                 // noise-floor window ≈ 1.2 s
-  const over = 1.1 + 1.6 * strength;                     // how hard to push the background down
-  const gmin = mode === 'speech' ? 0.04 + 0.12 * (1 - strength) : mode === 'denoise' ? 0.22 : 0;
-  const frames = Math.ceil(len / HOP) + 1;
-  const bin = (f) => Math.round(f * N / sr);
-  const v0 = bin(300), v1 = bin(3400);
-  let vad = 0;
-  // warm-up pass over the first seconds so the noise floor is known from the start
-  const warm = Math.min(frames, D * 2);
-  for (let pass = 0; pass < 2; pass++) {
-    const fEnd = pass === 0 ? warm : frames;
-    for (let f = 0; f < fEnd; f++) {
-      const o = f * HOP - N / 2;
+
+  for (let ci = 0; ci < nChunks; ci++) {
+    const a0 = ci * CH, a1 = Math.min(len, a0 + CH);
+    const s0 = Math.max(0, a0 - CTX), s1 = Math.min(len, a1 + CTX);
+    const T = Math.ceil((s1 - s0) / HOP) + 1;
+    const pr = prog(ci / nChunks, (ci + 1) / nChunks);
+    const P = new Float32Array(T * K), S = new Float32Array(T * K);
+    const CR = new Float32Array(T * kLF), CI = new Float32Array(T * kLF);
+    // ---- 2. spectra -> power
+    for (let f = 0; f < T; f++) {
+      const o = s0 + f * HOP - N / 2;
       for (let i = 0; i < N; i++) { const k = o + i, w = win[i]; re[i] = k >= 0 && k < len ? L[k] * w : 0; im[i] = k >= 0 && k < len ? R[k] * w : 0; }
       fft(re, im, false);
-      // power of the mono mix per bin
-      let sp = 0, np = 0;
       for (let k = 0; k < K; k++) {
         const k2 = (N - k) % N;
         const lr = (re[k] + re[k2]) / 2, li = (im[k] - im[k2]) / 2, rr = (im[k] + im[k2]) / 2, ri = (re[k2] - re[k]) / 2;
-        const mr = (lr + rr) / 2, mi = (li + ri) / 2;
-        const P = mr * mr + mi * mi + 1e-12;
-        S[k] = S[k] ? 0.8 * S[k] + 0.2 * P : P;
-        if (S[k] < Smin[k]) Smin[k] = S[k];
-        if (S[k] < Stmp[k]) Stmp[k] = S[k];
-        const noise = Smin[k] * 1.8 * over;
-        const post = P / noise;
-        const prio = 0.97 * Gp[k] * Gp[k] * Pp[k] + 0.03 * Math.max(post - 1, 0);
-        let g = prio / (1 + prio);
-        const fq = k * sr / N;
-        if (fq < 70) g = 0; else if (fq < 150) g *= (fq - 70) / 80;
-        if (fq > 8000) g *= 0.75;
-        G[k] = g; Pp[k] = post;
-        if (k >= v0 && k <= v1) { sp += P; np += noise; }
+        P[f * K + k] = (lr * lr + li * li + rr * rr + ri * ri) / 2 + 1e-12;
+        if (k < kLF) { CR[f * kLF + k] = lr * rr + li * ri; CI[f * kLF + k] = li * rr - lr * ri; }
       }
-      if (f % D === 0) { for (let k = 0; k < K; k++) { Smin[k] = Math.min(Stmp[k], S[k]); Stmp[k] = S[k]; } }
-      // is someone talking in this frame? (voice-band energy over the noise floor)
-      const talk = sp > np * 2.2 ? 1 : 0;
-      vad = talk ? Math.min(1, vad + 0.35) : Math.max(0, vad - 0.04);
-      if (pass === 0) { for (let k = 0; k < K; k++) Gp[k] = G[k]; continue; }
+    }
+    pr(0.15);
+    // smoothed power for the noise estimate: box over 7 frames x 5 bins (many degrees of freedom -> stable percentiles)
+    {
+      const tmp = new Float32Array(T * K);
+      for (let f = 0; f < T; f++) {
+        for (let k = 0; k < K; k++) {
+          let a = 0, c = 0; for (let j = -2; j <= 2; j++) { const kk = k + j; if (kk >= 0 && kk < K) { a += P[f * K + kk]; c++; } }
+          tmp[f * K + k] = a / c;
+        }
+      }
+      const run = new Float32Array(K);
+      let c0 = 0;
+      for (let f = -3; f <= 3; f++) if (f >= 0 && f < T) { for (let k = 0; k < K; k++) run[k] += tmp[f * K + k]; c0++; }
+      for (let f = 0; f < T; f++) {
+        for (let k = 0; k < K; k++) S[f * K + k] = run[k] / c0;
+        const add = f + 4, rem = f - 3;
+        if (add < T) { for (let k = 0; k < K; k++) run[k] += tmp[add * K + k]; c0++; }
+        if (rem >= 0) { for (let k = 0; k < K; k++) run[k] -= tmp[rem * K + k]; c0--; }
+      }
+    }
+    // ---- 3. noise level per bin: low percentile of the smoothed power over a window around each moment
+    const AN = 6, nA = Math.ceil(T / AN) + 1;
+    const NA = new Float32Array(nA * K);
+    const W = Math.round((D.win != null ? D.win : 1.3) * sr / HOP), WL = Math.round(0.55 * sr / HOP);
+    const qv = D.q != null ? D.q : 0.2, qLF = D.qLF != null ? D.qLF : 0.35;
+    const cq = D.cq != null ? D.cq : 1.3, cqLF = D.cqLF != null ? D.cqLF : 1.05;
+    const scratch = new Float32Array(2 * W + 4);
+    for (let ai = 0; ai < nA; ai++) {
+      const tc = Math.min(T - 1, ai * AN);
       for (let k = 0; k < K; k++) {
-        // smooth across neighbouring bins (fewer "musical" artefacts), quieter outside speech
-        const g = (G[Math.max(0, k - 1)] + 2 * G[k] + G[Math.min(K - 1, k + 1)]) / 4;
-        let m = g * (0.25 + 0.75 * vad);
-        if (gmin) m = gmin + (1 - gmin) * m;
+        const w = k < kLF ? WL : W;
+        const ta = Math.max(0, tc - w), tb = Math.min(T - 1, tc + w);
+        let n = 0; for (let t = ta; t <= tb; t += 2) scratch[n++] = S[t * K + k];
+        const q = k < kLF ? qLF : qv;
+        NA[ai * K + k] = qsel(scratch, n, Math.min(n - 1, Math.floor(q * n))) * (k < kLF ? cqLF : cq);
+      }
+    }
+    // ---- 4. gains (decision-directed Wiener); the low band gets extra help against wind
+    const GQ = new Uint8Array(T * K);
+    const Gp = new Float32Array(K).fill(1), Gt = new Float32Array(K), gam = new Float32Array(K).fill(1), G = new Float32Array(K), Nz = new Float32Array(K), Pf = new Float32Array(K);
+    const alpha = D.alpha != null ? D.alpha : 1.3, kapW = D.kapW != null ? D.kapW : 1.0, kapC = D.kapC != null ? D.kapC : 1.5;
+    for (let f = 0; f < T; f++) {
+      const ai = f / AN, a = Math.floor(ai), fr = ai - a, a2 = Math.min(nA - 1, a + 1);
+      for (let k = 0; k < K; k++) {
+        const k0 = k ? k - 1 : k, k1 = k < K - 1 ? k + 1 : k;
+        Pf[k] = (2 * P[f * K + k] + P[f * K + k0] + P[f * K + k1]) * 0.25;
+        Nz[k] = NA[a * K + k] * (1 - fr) + NA[a2 * K + k] * fr;
+      }
+      // wind: the 20-65 Hz band holds no voice, so its level now tells how hard the gust is; extend it upwards with a falling slope
+      if (!D.nowind) {
+        let w = 0, wb = 0; for (let k = 1; k <= 3; k++) { w += Pf[k]; wb += Nz[k]; }
+        w /= 3; wb /= 3;
+        if (w > 2 * wb) for (let k = 4; k < kLF; k++) { const nw = kapW * w * Math.pow(k / 2, -alpha); if (nw > Nz[k]) Nz[k] = Math.min(nw, 0.95 * Pf[k]); }
+      }
+      // wind / traffic buffeting hits the two microphones differently, the voice reaches both alike
+      if (stereo && !D.nocoh) {
+        for (let k = 4; k < kLF; k++) {
+          let cr = 0, ci = 0, pp = 0, cnt = 0;
+          for (let t = Math.max(0, f - 3); t <= Math.min(T - 1, f + 3); t++) for (let j = Math.max(0, k - 1); j <= Math.min(kLF - 1, k + 1); j++) { cr += CR[t * kLF + j]; ci += CI[t * kLF + j]; pp += P[t * K + j]; cnt++; }
+          const nc = Math.max(0, pp - Math.sqrt(cr * cr + ci * ci)) / cnt * kapC;
+          if (nc > Nz[k]) Nz[k] = Math.min(nc, 0.95 * Pf[k]);
+        }
+      }
+      for (let k = 0; k < K; k++) {
+        const nz = Nz[k] * over;
+        const gm = Pf[k] / nz;
+        const xi = 0.95 * Gp[k] * Gp[k] * gam[k] + 0.05 * Math.max(gm - 1, 0);
+        let g = xi / (1 + xi);
+        if (k < k70) g = 0; else if (k < k150) g *= (k - k70) / (k150 - k70);
+        if (k > k8k) g *= 0.8;
+        G[k] = g; gam[k] = gm;
+      }
+      for (let k = 0; k < K; k++) {
         Gp[k] = G[k];
+        const k0 = k ? k - 1 : k, k1 = k < K - 1 ? k + 1 : k;
+        let g = 0.25 * G[k0] + 0.5 * G[k] + 0.25 * G[k1];
+        g = Math.max(g, Gt[k] * 0.55);                    // quick attack, short release: fewer "birdies"
+        Gt[k] = g;
+        const m = g < gfloor ? gfloor : g;
+        GQ[f * K + k] = D.pass ? 255 : Math.round(Math.min(1, m) * 255);
+      }
+    }
+    pr(0.6);
+    // ---- 5. apply
+    const firstF = Math.round((a0 - s0) / HOP), lastF = Math.ceil((a1 - s0) / HOP);
+    for (let f = Math.max(0, firstF - 1); f <= Math.min(T - 1, lastF + 1); f++) {
+      const o = s0 + f * HOP - N / 2;
+      for (let i = 0; i < N; i++) { const k = o + i, w = win[i]; re[i] = k >= 0 && k < len ? L[k] * w : 0; im[i] = k >= 0 && k < len ? R[k] * w : 0; }
+      fft(re, im, false);
+      for (let k = 0; k < K; k++) {
         const k2 = (N - k) % N;
         const lr = (re[k] + re[k2]) / 2, li = (im[k] - im[k2]) / 2, rr = (im[k] + im[k2]) / 2, ri = (re[k2] - re[k]) / 2;
-        // speech: L*m + i R*m ; background: L*(1-m) + i R*(1-m), packed as one complex signal again
+        const m = GQ[f * K + k] / 255;
         const al = lr * m, bl = li * m, ar = rr * m, br = ri * m;
         r2[k] = al - br; i2[k] = bl + ar; if (k && k < N / 2) { r2[k2] = al + br; i2[k2] = -bl + ar; }
         const q = 1 - m;
         const cl = lr * q, dl = li * q, cr = rr * q, dr = ri * q;
         re[k] = cl - dr; im[k] = dl + cr; if (k && k < N / 2) { re[k2] = cl + dr; im[k2] = -dl + cr; }
       }
-      fft(r2, i2, true); fft(re, im, true);
+      fft(r2, i2, true); if (wantBg) fft(re, im, true);
       for (let i = 0; i < N; i++) {
-        const k = o + i; if (k < 0 || k >= len) continue;
+        const k = o + i; if (k < a0 || k >= a1) continue;
         const w = win[i] / 1.5;
-        sL[k] += r2[i] * w; sR[k] += i2[i] * w; bL[k] += re[i] * w; bR[k] += im[i] * w;
+        sL[k] += r2[i] * w; sR[k] += i2[i] * w;
+        if (wantBg) { bL[k] += re[i] * w; bR[k] += im[i] * w; }
       }
-      if (f % 300 === 0) postMessage({ type: 'progress', p: f / frames });
     }
+    pr(1);
+  }
+  if (mode === 'denoise') {                            // cleaned speech sounds ~3 dB quieter: give back up to +2 dB, never clipping
+    let pk = 1e-6; for (let i = 0; i < len; i++) { const a = Math.abs(sL[i]), b = Math.abs(sR[i]); if (a > pk) pk = a; if (b > pk) pk = b; }
+    const g = Math.max(1, Math.min(1.26, 0.97 / pk));
+    if (g > 1) for (let i = 0; i < len; i++) { sL[i] *= g; sR[i] *= g; }
   }
   if (fade > 0) {
     const n = Math.min(len >> 1, Math.round(fade * sr));
-    for (let i = 0; i < n; i++) { const g = i / n; for (const a of [sL, sR, bL, bR]) { a[i] *= g; a[len - 1 - i] *= g; } }
+    for (let i = 0; i < n; i++) { const g = i / n; for (const a of wantBg ? [sL, sR, bL, bR] : [sL, sR]) { a[i] *= g; a[len - 1 - i] *= g; } }
   }
   postMessage({ type: 'done', sL, sR, bL, bR }, [sL.buffer, sR.buffer, bL.buffer, bR.buffer]);
 };`;
