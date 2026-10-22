@@ -12329,7 +12329,7 @@ self.onmessage = async (e) => {
     const wide = tablet && W > H && W >= 900;
     let z, h, sw = 390;
     if (phone) { z = W / 390; h = Math.max(H / z, 640); }
-    else if (wide) { z = Math.min(1.15, Math.max(1, H / 700)); sw = W / z; h = H / z; }
+    else if (wide) { z = H < 600 ? 1 : Math.min(1.2, Math.max(1.1, H / 680)); sw = W / z; h = H / z; }
     else if (tablet) { z = Math.max(1, Math.min(W / 390, 1.7, H / 640)); h = H / z; }
     else { z = Math.min(1, H / 844); h = 844; }
     const wChanged = (KF.stageW || 390) !== sw;
