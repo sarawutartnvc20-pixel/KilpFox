@@ -3934,7 +3934,7 @@ class Component extends DCLogic {
     let el = els[key];
     if (el) return el;
     el = document.createElement(tag);
-    el.__main = key.indexOf('v:') === 0;
+    el.__main = IOS_DEV;   // on iPhone / iPad no element is re-routed through Web Audio unless a partial volume needs it
     el.preload = 'auto'; el.playsInline = true; el.setAttribute('playsinline', '');
     el.src = m.url;
     if (tag === 'video') {
@@ -4150,7 +4150,7 @@ class Component extends DCLogic {
     if (!total) { KF.toast('เพิ่มคลิปก่อน แล้วค่อยกดเล่น'); return; }
     ensureAudio(); unlockAll();
     if (PL.t >= total - 0.05) PL.t = 0;
-    { let st = 0; P.clips.forEach((c) => { const v = els['v:' + c.src]; if (v) setVidSound(v, vidGainOf(c, st)); st += clipDur(c); }); }
+    { let st = 0; P.clips.forEach((c) => { const v = els['v:' + c.src]; if (v) setVidSound(v, vidGainOf(c, st)); st += clipDur(c); }); P.audios.forEach((a) => { const e = els['a:' + a.id]; if (e && !viaVideo(a)) setVidSound(e, KF.track('audio').mute ? 0 : (a.vol ?? 100) / 100); }); }
     PL.playing = true; PL.last = performance.now(); PL.clipId = null;
     if (KF.pvStick && KF.pvStick < 1 && KF.pvScale !== KF.pvStick) { KF.pvScale = KF.pvStick; KF.resizePreview(); }   // this phone needed a lighter preview last time
     changed();
@@ -4194,8 +4194,8 @@ class Component extends DCLogic {
     P.audios.forEach((a) => { if (a.clip === c.id && !MX.nodes.has('a:' + a.id) && viaVideo(a)) g += audioGain(a.id, t); });
     return g;
   }
-  function setVidSound(v, g) {
-    if (v.__gain) { if (v.muted && IOS_DEV && v.__main) v.muted = false; v.__gain.gain.value = g; return; }   // a muted element is silent in the graph too
+  function setVidSound(v, g, g2) {
+    if (v.__gain) { if (v.muted && IOS_DEV && v.__main) v.muted = false; v.__gain.gain.value = g2 == null ? g : g2; return; }   // a muted element is silent in the graph too
     if (!(IOS_DEV && v.__main)) return;
     if (g > 0.02 && g < 0.98 && AC.ctx) { v.__force = true; connect(v); if (v.__gain) { v.__gain.gain.value = g; return; } }
     const m = g <= 0.02;
@@ -4220,7 +4220,7 @@ class Component extends DCLogic {
       const m = KF.media[o.ref];
       if (!m || m.kind !== 'video') return;
       const el = KF.overlayEl(o);
-      if (el.__gain) el.__gain.gain.value = KF.track('overlay').mute ? 0 : (o.vol ?? 100) / 100;
+      setVidSound(el, KF.track('overlay').mute ? 0 : (o.vol ?? 100) / 100);
       el.loop = !!o.loop;
       const inRange = t >= o.start && t < o.start + o.dur;
       const want = o.loop ? (o.from || 0) + ((t - o.start) % Math.max(0.1, m.dur - (o.from || 0))) : Math.min(m.dur - 0.05, (o.from || 0) + (t - o.start));
@@ -4242,17 +4242,35 @@ class Component extends DCLogic {
       const el = audioEl(a);
       const rate = a.rate || 1;
       const local = t - a.start;
-      let g = KF.track('audio').mute ? 0 : (a.vol ?? 100) / 100;
+      const g0 = KF.track('audio').mute ? 0 : (a.vol ?? 100) / 100;
+      let g = g0;
       if (a.fade > 0) g *= clamp(Math.min(local / a.fade, (a.len - local) / a.fade), 0, 1);
-      if (el.__gain) el.__gain.gain.value = g;
-      if (Math.abs(el.playbackRate - rate) > 1e-3) el.playbackRate = rate;
+      setVidSound(el, a.fade > 0.05 ? g : g0, g);   // a 30 ms click-guard fade alone does not route the element through Web Audio
       const inRange = t >= a.start && t < a.start + a.len;
       const want = (a.from || 0) + local * rate;
       const frozen = !!(PL.wd && PL.wd.n > 0);   // the picture (the clock) is not moving: keep quiet instead of seeking back and forth
+      const tn = performance.now();
       if (playing && inRange && !frozen) {
-        if (el.paused) { try { el.currentTime = want; } catch (_) {} el.__sk = performance.now(); el.play().catch(() => {}); }
-        else if (Math.abs(el.currentTime - want) > 0.3 && performance.now() - (el.__sk || 0) > 1200) { el.__sk = performance.now(); try { el.currentTime = want; } catch (_) {} }
-      } else if (!el.paused) el.pause();
+        if (el.paused) {
+          try { el.currentTime = want + (IOS_DEV ? 0.1 : 0); } catch (_) {}   // a phone needs ~0.1 s to start the sound
+          el.__sk = tn; el.playbackRate = rate; el.play().catch(() => {});
+        } else {
+          const diff = el.currentTime - want, ad = Math.abs(diff);
+          if (ad > 0.8) {
+            if (tn - (el.__sk || 0) > 1500) { el.__sk = tn; try { el.currentTime = want; } catch (_) {} el.playbackRate = rate; }
+          } else {
+            // behind or ahead: play a little faster / slower until it matches (no seek, so no click and no stutter)
+            const adj = el.__adj ? ad > 0.02 : ad > 0.06;
+            el.__adj = adj;
+            const r = adj ? rate * (1 - clamp(diff * 0.8, -0.07, 0.07)) : rate;
+            if (Math.abs(el.playbackRate - r) > 0.004) el.playbackRate = r;
+          }
+          el.__ad = diff;
+        }
+      } else {
+        if (!el.paused) el.pause();
+        if (Math.abs(el.playbackRate - rate) > 1e-3) el.playbackRate = rate;
+      }
     });
   }
 
@@ -4350,6 +4368,7 @@ setVidSound(v, vidGainOf(c, PL.t));
       + 'v.t ' + v.currentTime.toFixed(2) + ' PL.t ' + PL.t.toFixed(2) + ' diff ' + (v.currentTime - PL.t).toFixed(2) + '\n'
       + 'pictures/s ' + fps + (q ? ' · dropped ' + q.droppedVideoFrames + '/' + q.totalVideoFrames : '') + ' · stuck ' + (v.__stuck || 0) : 'no video') + '\n'
       + 'sound ' + (v ? (v.__gain ? 'via WebAudio' : 'native') + (v.muted ? ' muted' : '') : '-') + (AC.ctx ? ' · ctx ' + AC.ctx.sampleRate + ' ' + AC.ctx.state : '') + '\n'
+      + (() => { const ae = Object.keys(els).filter((k) => k[0] === 'a' && !els[k].paused).map((k) => els[k]); return ae.length ? 'audio el ' + ae.length + ' diff ' + (ae[0].__ad || 0).toFixed(2) + ' rate ' + ae[0].playbackRate.toFixed(2) + (ae[0].__gain ? ' WebAudio' : ' native') + '\n' : ''; })()
       + 'preview scale ' + KF.pvScale + ' · ' + (navigator.userAgent.match(/OS [\d_]+/) || [''])[0];
   }
   document.addEventListener('click', (e) => {
