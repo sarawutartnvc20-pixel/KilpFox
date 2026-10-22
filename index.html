@@ -1116,7 +1116,7 @@ class Component extends DCLogic {
     const hasLines = lines.length > 0;
     const A = KF.asr, M = A.MODELS;
     const P0 = KF.project(), subClip = KF.ui.subClip ? P0.clips.find((c) => c.id === KF.ui.subClip) : null;
-    const models = ['thai', 'small', 'turbo'].filter((k) => M[k]).map((k) => ({ name: M[k].name, label: M[k].label, note: M[k].note, size: A.sizeLabel(k),
+    const models = ['typhoon', 'thai', 'small', 'turbo'].filter((k) => M[k]).map((k) => ({ name: M[k].name, label: M[k].label, note: M[k].note, size: A.sizeLabel(k),
       border: A.key === k ? accent : '#2A2F39', dot: A.key === k ? accent : 'transparent', pick: () => A.choose(k) }));
     const dlMB = (A.dl.loaded / 1048576), totMB = (A.dl.total / 1048576);
     const langs = [['thai', 'ไทย'], ['english', 'อังกฤษ'], ['auto', 'อัตโนมัติ']].map(([id, label]) => ({ label, ...seg(A.lang === id), pick: () => { A.lang = id; KF.changed(); } }));
@@ -1167,8 +1167,8 @@ class Component extends DCLogic {
     });
     if (O.cut || O.subs === false) ai.runLabel = ai.cta;
     // first tap on "ทำซับอัตโนมัติ": download popup (ask → downloading → ready)
-    const PM = this.state.allModels ? ['base', 'thai', 'turbo', 'small'] : ['base', 'thai', 'turbo'].concat(['base', 'thai', 'turbo'].includes(A.key) ? [] : [A.key]);
-    const DESC = { base: 'ไฟล์เล็ก โหลดไว ถอดเร็ว แต่ภาษาไทยผิดบ่อยกว่า', thai: 'จูนด้วยเสียงไทยโดยเฉพาะ แม่นกว่ามาก (แนะนำสำหรับ iPhone)', small: 'Whisper small ปกติ หลายภาษา',
+    const PM = this.state.allModels ? ['typhoon', 'base', 'thai', 'turbo', 'small'] : ['typhoon', 'base', 'thai', 'turbo'].concat(['typhoon', 'base', 'thai', 'turbo'].includes(A.key) ? [] : [A.key]);
+    const DESC = { typhoon: 'ถอดภาษาไทยแม่นที่สุดในรุ่นที่มี เวลารายคำตรง เร็ว และไฟล์เล็กกว่า Whisper (แนะนำ ใช้กับเสียงไทยเท่านั้น)', base: 'ไฟล์เล็ก โหลดไว ถอดเร็ว แต่ภาษาไทยผิดบ่อยกว่า', thai: 'จูนด้วยเสียงไทยโดยเฉพาะ แม่นกว่ามาก (แนะนำสำหรับ iPhone)', small: 'Whisper small ปกติ หลายภาษา',
       turbo: A.IOS ? 'รุ่นเดียวกับในคอม แม่นสุด หลายภาษา · ทดลองบน iPhone: ใช้หน่วยความจำมาก ถอดช้ากว่า ถ้าหน้าเว็บปิดเองให้กลับไปใช้ แม่นภาษาไทย' : 'รุ่นเดียวกับในคอม แม่นสุด หลายภาษา ไฟล์ใหญ่' };
     const popOn = !!this.state.pop && ['need', 'downloading', 'ready', 'error'].includes(A.status);
     const bare = A.sizeLabel(A.key).replace(/^~/, '');
@@ -10874,7 +10874,15 @@ onmessage = function (e) {
   const LIB_CDN = window.KF_LIB_CDN !== false;
   const SUFFIX = { fp32: '', fp16: '_fp16', q8: '_quantized', int8: '_int8', q4: '_q4', q4f16: '_q4f16' };
 
+  const TY_FILES = [["enc.000", 20000000], ["enc.001", 20000000], ["enc.002", 20000000], ["enc.003", 20000000], ["enc.004", 20000000], ["enc.005", 14017419], ["dec.000", 20000000], ["dec.001", 6584368], ["vocab.json", 36196]];
   const MODELS = {
+    // Typhoon ASR Real-time (SCB 10X, CC BY 4.0 + OpenTyphoon terms): Thai-only FastConformer-Transducer, 115M parameters, 8-bit.
+    // It gives the time of every token itself, so lines are timed from the words, not from cuts at pauses.
+    typhoon: {
+      id: 'typhoon', label: 'typhoon-asr', name: 'ไทยแม่นที่สุด (Typhoon)', engine: 'rnnt',
+      note: 'โมเดลถอดเสียงภาษาไทยโดยเฉพาะจาก SCB 10X (Typhoon ASR) ฝึกด้วยเสียงไทยกว่า 10,000 ชั่วโมง ถอดไทยแม่นกว่า Whisper รุ่นเล็ก ให้เวลารายคำตรงกว่า และเร็วมาก ใช้กับคลิปภาษาไทยเท่านั้น (ใบอนุญาต CC BY 4.0)',
+      gpu: {}, cpu: {}, approxMB: { gpu: 134, cpu: 134 }, cpuOnly: true, thaiOnly: true,
+    },
     // Whisper small fine-tuned on Thai speech (Thonburian Whisper, Mahidol Univ., WER ~11-13 on Common Voice 13 Thai),
     // converted to 8-bit ONNX. Same size as plain small but far better Thai. It was tuned without timestamp tokens,
     // so the app cuts the audio at pauses itself and times every line from those cuts (noTs).
@@ -10956,13 +10964,152 @@ onmessage = function (e) {
     const dtype = Object.assign({}, (IOS && m.ios && m.ios[side]) || m[side], (A.fix[key] || {})[side] || {});
     return { key, model: m.id, device: useGpu ? 'webgpu' : 'wasm', dtype };
   };
-  const files = (p) => SMALL_FILES.concat(Object.entries(p.dtype).map(([mod, dt]) => `onnx/${mod}${SUFFIX[dt] ?? ''}.onnx`));
-  const url = (p, f) => `${HF}${p.model}/resolve/main/${f}`;
+  const tyUrl = (f) => { try { return new URL('lib/typhoon/' + f, document.baseURI).href; } catch (_) { return 'lib/typhoon/' + f; } };
+  const tyMap = () => ({ 'onnx/encoder.onnx': TY_FILES.filter((x) => x[0].indexOf('enc.') === 0).map((x) => tyUrl(x[0])), 'onnx/decoder.onnx': TY_FILES.filter((x) => x[0].indexOf('dec.') === 0).map((x) => tyUrl(x[0])), vocab: [tyUrl('vocab.json')] });
+  const files = (p) => MODELS[p.key].engine === 'rnnt' ? TY_FILES.map((x) => x[0]) : SMALL_FILES.concat(Object.entries(p.dtype).map(([mod, dt]) => `onnx/${mod}${SUFFIX[dt] ?? ''}.onnx`));
+  const url = (p, f) => MODELS[p.key].engine === 'rnnt' ? tyUrl(f) : `${HF}${p.model}/resolve/main/${f}`;
 
   // ------------------------------------------------------------------ worker
   const WORKER_SRC = `
 const VERS = ${JSON.stringify(LIB_VERSIONS)}, LOCAL = ${JSON.stringify(LIB_LOCAL)}, CDN = ${JSON.stringify(LIB_CDN)};
-let T = null, pipe = null, key = null, ver = null, vad = null;
+let T = null, pipe = null, key = null, ver = null, vad = null, TYMAP = null, ty = null;
+/* Typhoon ASR Realtime (NeMo FastConformer-Transducer) helpers: log-mel front end, RNN-T greedy search, words.
+   Pure JS (no DOM), so it runs in the worker and in node tests. The neural parts (encoder, decoder+joint) are run by onnxruntime. */
+var TY = (function () {
+  'use strict';
+  var SR = 16000, NFFT = 512, WIN = 400, HOP = 160, NM = 80, PRE = 0.97, FRAME_S = 1280 / 16000, PAD_TO = 16;
+  var FB = null, WINDOW = null, COS = null, SIN = null, REV = null;
+  function melHz(m) { var fsp = 200 / 3, minLogMel = 15, logstep = Math.log(6.4) / 27; return m >= minLogMel ? 1000 * Math.exp(logstep * (m - minLogMel)) : fsp * m; }
+  function hzMel(f) { var fsp = 200 / 3, minLogMel = 15, logstep = Math.log(6.4) / 27; return f >= 1000 ? minLogMel + Math.log(f / 1000) / logstep : f / fsp; }
+  function init() {
+    if (FB) return;
+    var nb = NFFT / 2 + 1, i, k;
+    var fftf = new Float64Array(nb); for (i = 0; i < nb; i++) fftf[i] = (SR / 2) * i / (nb - 1);
+    var m0 = hzMel(0), m1 = hzMel(SR / 2), hz = new Float64Array(NM + 2);
+    for (i = 0; i < NM + 2; i++) hz[i] = melHz(m0 + (m1 - m0) * i / (NM + 1));
+    FB = new Float32Array(NM * nb);
+    for (i = 0; i < NM; i++) {
+      var fd0 = hz[i + 1] - hz[i], fd1 = hz[i + 2] - hz[i + 1], en = 2 / (hz[i + 2] - hz[i]);
+      for (k = 0; k < nb; k++) {
+        var lower = -(hz[i] - fftf[k]) / fd0, upper = (hz[i + 2] - fftf[k]) / fd1;
+        var w = Math.max(0, Math.min(lower, upper));
+        FB[i * nb + k] = w * en;
+      }
+    }
+    WINDOW = new Float64Array(NFFT);
+    var st = (NFFT - WIN) / 2;
+    for (i = 0; i < WIN; i++) WINDOW[st + i] = 0.5 * (1 - Math.cos(2 * Math.PI * i / (WIN - 1)));
+    COS = new Float64Array(NFFT / 2); SIN = new Float64Array(NFFT / 2);
+    for (i = 0; i < NFFT / 2; i++) { COS[i] = Math.cos(2 * Math.PI * i / NFFT); SIN[i] = -Math.sin(2 * Math.PI * i / NFFT); }
+    REV = new Uint16Array(NFFT);
+    var bits = Math.log2(NFFT);
+    for (i = 0; i < NFFT; i++) { var r = 0; for (var b = 0; b < bits; b++) if (i & (1 << b)) r |= 1 << (bits - 1 - b); REV[i] = r; }
+  }
+  var RE = null, IM = null;
+  function fft512(x) {            // x: Float64Array(512) real input -> RE, IM
+    var n = NFFT, i, j, len, half, step, k, ur, ui, vr, vi;
+    if (!RE) { RE = new Float64Array(n); IM = new Float64Array(n); }
+    for (i = 0; i < n; i++) { RE[REV[i]] = x[i]; IM[REV[i]] = 0; }
+    for (len = 2; len <= n; len <<= 1) {
+      half = len >> 1; step = n / len;
+      for (i = 0; i < n; i += len) {
+        for (j = 0, k = 0; j < half; j++, k += step) {
+          var a = i + j, b = a + half;
+          vr = RE[b] * COS[k] - IM[b] * SIN[k]; vi = RE[b] * SIN[k] + IM[b] * COS[k];
+          ur = RE[a]; ui = IM[a];
+          RE[a] = ur + vr; IM[a] = ui + vi; RE[b] = ur - vr; IM[b] = ui - vi;
+        }
+      }
+    }
+  }
+  /** audio: Float32Array 16 kHz mono -> { data: Float32Array(NM * Tp) laid out [mel][time], T: real frames, Tp: padded frames } */
+  function logmel(audio) {
+    init();
+    var N = audio.length, i, t, k, m;
+    var pre = new Float64Array(N);
+    if (N) { pre[0] = audio[0]; for (i = 1; i < N; i++) pre[i] = audio[i] - PRE * audio[i - 1]; }
+    var P = NFFT / 2, src = pre;
+    if (N < P + 1) { src = new Float64Array(P + 1); src.set(pre); N = P + 1; }
+    var L = N + 2 * P, pad = new Float64Array(L);
+    for (i = 0; i < N; i++) pad[P + i] = src[i];
+    for (i = 1; i <= P; i++) { pad[P - i] = src[i]; pad[P + N - 1 + i] = src[N - 1 - i]; }   // reflect (edge sample not repeated)
+    var T = 1 + Math.floor((L - NFFT) / HOP), nb = NFFT / 2 + 1;
+    var mel = new Float64Array(NM * T), buf = new Float64Array(NFFT), pw = new Float64Array(nb);
+    for (t = 0; t < T; t++) {
+      var o = t * HOP;
+      for (i = 0; i < NFFT; i++) buf[i] = pad[o + i] * WINDOW[i];
+      fft512(buf);
+      for (k = 0; k < nb; k++) pw[k] = RE[k] * RE[k] + IM[k] * IM[k];
+      for (m = 0; m < NM; m++) { var s = 0, fo = m * nb; for (k = 0; k < nb; k++) s += FB[fo + k] * pw[k]; mel[m * T + t] = Math.log(s + Math.pow(2, -24)); }
+    }
+    var Tp = T % PAD_TO ? T + PAD_TO - (T % PAD_TO) : T;
+    var out = new Float32Array(NM * Tp);
+    for (m = 0; m < NM; m++) {
+      var mean = 0, v = 0;
+      for (t = 0; t < T; t++) mean += mel[m * T + t];
+      mean /= T;
+      for (t = 0; t < T; t++) { var d = mel[m * T + t] - mean; v += d * d; }
+      var sd = Math.sqrt(v / T);
+      for (t = 0; t < T; t++) out[m * Tp + t] = (mel[m * T + t] - mean) / (sd + 1e-5);
+    }
+    return { data: out, T: T, Tp: Tp };
+  }
+  /**
+   * RNN-T greedy search.
+   * enc: Float32Array [C][stride] (encoder output of one clip, Te valid frames), joint(frame Float32Array(C), token, h, c) -> Promise<{ best, h, c }>
+   * returns { tokens: [id], frames: [t] }
+   */
+  async function greedy(enc, C, stride, Te, joint, blank, hdim, maxSym) {
+    maxSym = maxSym || 10;
+    var h = new Float32Array(hdim), c = new Float32Array(hdim), last = blank, tokens = [], frames = [];
+    var frame = new Float32Array(C), t, k;
+    for (t = 0; t < Te; t++) {
+      for (k = 0; k < C; k++) frame[k] = enc[k * stride + t];
+      for (var n = 0; n < maxSym; n++) {
+        var r = await joint(frame, last, h, c);
+        if (r.best === blank) break;
+        tokens.push(r.best); frames.push(t); last = r.best; h = r.h; c = r.c;
+      }
+    }
+    return { tokens: tokens, frames: frames };
+  }
+  var SP = String.fromCharCode(0x2581);
+  var SPECIAL = { '<unk>': 1, '<s>': 1, '</s>': 1, '<pad>': 1, '<bos>': 1, '<eos>': 1 };
+  /** tokens -> characters with the encoder frame of the token they belong to */
+  function chars(vocab, tokens, frames) {
+    var out = [];
+    for (var i = 0; i < tokens.length; i++) {
+      var id = tokens[i];
+      if (id < 0 || id >= vocab.length) continue;
+      var s = vocab[id];
+      if (SPECIAL[s]) continue;
+      s = s.replace(/▁/g, ' ');
+      for (var ch of Array.from(s)) out.push({ ch: ch, t: frames[i] });
+    }
+    return out;
+  }
+  /** tokens + frames -> [{ text, timestamp: [s, e] }] in seconds.
+      The transducer emits a token when its sound has been heard, so the frame is the END of the token: a token starts where the
+      one before it ended, or (after a pause) a short, typical token length before its own end. */
+  function pieces(vocab, tokens, frames) {
+    var out = [], prevEnd = -10;
+    for (var i = 0; i < tokens.length; i++) {
+      var id = tokens[i];
+      if (id < 0 || id >= vocab.length) continue;
+      var s = vocab[id];
+      if (SPECIAL[s]) continue;
+      var e = frames[i] * FRAME_S + FRAME_S;
+      if (s.split(SP).join('').trim() === '') { out.push({ text: ' ', timestamp: [e, e] }); continue; }   // a bare space token carries no sound
+      var st = (e - prevEnd <= 0.5 && prevEnd >= 0) ? prevEnd : Math.max(0, e - 0.3);
+      out.push({ text: s.split(SP).join(' '), timestamp: [Math.min(st, e), e] });
+      prevEnd = e;
+    }
+    return out;
+  }
+  return { init: init, pieces: pieces, logmel: logmel, greedy: greedy, chars: chars, FRAME_S: FRAME_S, SR: SR, NM: NM, _fb: function () { init(); return FB; } };
+})();
+
+
 async function lib() {
   if (T) return T;
   let err;
@@ -10988,6 +11135,15 @@ const customCache = {
   async match(key) {
     key = String(key && key.url ? key.url : key);
     if (!/^https?:/.test(key)) return undefined;
+    if (TYMAP && key.indexOf('https://ty.local/') === 0) {
+      const name = key.indexOf('onnx/encoder') >= 0 ? 'onnx/encoder.onnx' : key.indexOf('onnx/decoder') >= 0 ? 'onnx/decoder.onnx' : null;
+      const urls = name && TYMAP[name];
+      if (!urls) return undefined;
+      const bl = [];
+      for (const u of urls) { const r = await customCache.match(u); if (!r) return undefined; bl.push(await r.blob()); }
+      const all = new Blob(bl);
+      return new Response(all, { headers: { 'Content-Length': String(all.size), 'Content-Type': 'application/octet-stream' } });
+    }
     try {
       const db = await DB();
       const meta = await get(db, key + '#meta');
@@ -11013,6 +11169,46 @@ self.onmessage = async (e) => {
       let gpu = false, f16 = false;
       try { if (self.navigator.gpu) { const a = await navigator.gpu.requestAdapter(); if (a) { gpu = true; f16 = a.features.has('shader-f16'); } } } catch (_) {}
       self.postMessage({ type: 'probe', gpu, f16 });
+    } else if (m.type === 'tyload') {
+      // Typhoon ASR: two onnx files kept in the page's own store as pieces, handed to the runtime through the custom cache under a made-up address
+      const L = await lib();
+      L.env.allowLocalModels = false; L.env.useBrowserCache = false; L.env.useCustomCache = true; L.env.customCache = customCache;
+      if (!ty) {
+        TYMAP = m.map;
+        const rh = L.env.remoteHost;
+        L.env.remoteHost = 'https://ty.local/';
+        try {
+          const mk = (name) => L.AutoModel.from_pretrained('typhoon', { config: { model_type: 'custom' }, model_file_name: name, dtype: 'fp32', device: 'wasm' });
+          const enc = await mk('encoder');
+          const dec = await mk('decoder');
+          const vr = await customCache.match(m.map.vocab[0]);
+          if (!vr) throw new Error('vocab missing');
+          ty = { enc, dec, vocab: JSON.parse(await vr.text()), L };
+        } finally { L.env.remoteHost = rh; }
+      }
+      self.postMessage({ type: 'loaded', ver });
+    } else if (m.type === 'tyrun') {
+      const L = ty.L, C = 512;
+      const f = TY.logmel(m.audio);
+      const eo = await ty.enc({ audio_signal: new L.Tensor('float32', f.data, [1, TY.NM, f.Tp]), length: new L.Tensor('int64', [f.Tp], [1]) });
+      const od = eo.outputs, stride = od.dims[2], Te = Math.min(stride, Number(eo.encoded_lengths.data[0]));
+      const enc = od.data, blank = ty.vocab.length;
+      const joint = async (frame, last, h, c) => {
+        const o = await ty.dec({
+          encoder_outputs: new L.Tensor('float32', frame, [1, od.dims[1], 1]),
+          targets: new L.Tensor('int32', Int32Array.of(last), [1, 1]),
+          target_length: new L.Tensor('int32', Int32Array.of(1), [1]),
+          input_states_1: new L.Tensor('float32', h, [1, 1, 640]),
+          input_states_2: new L.Tensor('float32', c, [1, 1, 640]),
+        });
+        const lg = o.outputs.data;
+        let best = 0, bv = -Infinity;
+        for (let i = 0; i < lg.length; i++) if (lg[i] > bv) { bv = lg[i]; best = i; }
+        return { best, h: Float32Array.from(o.output_states_1.data), c: Float32Array.from(o.output_states_2.data) };
+      };
+      const r = await TY.greedy(enc, od.dims[1], stride, Te, joint, blank, 640, 10);
+      const chunks = TY.pieces(ty.vocab, r.tokens, r.frames);
+      self.postMessage({ type: 'result', id: m.id, chunks, text: chunks.map((x) => x.text).join('').trim() });
     } else if (m.type === 'load') {
       const L = await lib();
       L.env.allowLocalModels = false;
@@ -11151,7 +11347,7 @@ self.onmessage = async (e) => {
       A.crash = A.crash || 'missing';
     } else {
       const ios = IOS;
-      A.key = !ios && A.gpu && A.f16 && !noGpu() ? 'turbo' : 'thai';
+      A.key = 'typhoon';
     }
     // can this page reach Hugging Face at all? (pages shown inside Claude cannot)
     const probe = window.KF_ASR_MOCK ? 1 : await Promise.race([headSize(url(plan('thai'), 'config.json')), new Promise((r) => setTimeout(() => r(null), 8000))]);
@@ -11160,6 +11356,7 @@ self.onmessage = async (e) => {
     // real sizes for the choice cards
     for (const k of Object.keys(MODELS)) {
       if (window.KF_ASR_MOCK) { A.sizes[k] = estMB(k); continue; }
+      if (MODELS[k].engine === 'rnnt') { A.sizes[k] = Math.round(TY_FILES.reduce((x, f) => x + f[1], 0) / 1048576); KF.changed(); continue; }
       let p = plan(k), sum = 0, ok = true;
       for (const [mod, dt] of Object.entries(p.dtype)) {
         let n = await headSize(url(p, `onnx/${mod}${SUFFIX[dt] ?? ''}.onnx`));
@@ -11462,7 +11659,7 @@ self.onmessage = async (e) => {
   // ------------------------------------------------------------------ transcribe one clip
   // returns segments in source seconds: [{ s, e, text, words: [{w, s, e, sp}] | null }]
   async function asrClip(audio, offS, speech, p, label, progress) {
-    const noTs = !!MODELS[p.key].noTs, SR = 16000;
+    const noTs = !!MODELS[p.key].noTs, SR = 16000, rnnt = MODELS[p.key].engine === 'rnnt', MAXW = rnnt ? 24 : 28;
     const lang = A.lang === 'auto' ? (noTs ? 'thai' : null) : A.lang;
     // what to run: windows of speech (silence and music between them are muted so Whisper cannot invent words there)
     let jobs = [];
@@ -11472,15 +11669,15 @@ self.onmessage = async (e) => {
       } else {
         let cur = null;
         speech.forEach((r) => {
-          if (cur && r[1] - cur.s <= 28) { cur.e = r[1]; cur.rs.push(r); }
+          if (cur && r[1] - cur.s <= MAXW) { cur.e = r[1]; cur.rs.push(r); }
           else { if (cur) jobs.push(cur); cur = { s: r[0], e: r[1], rs: [r] }; }
-          if (cur.e - cur.s > 28) { const big = cur; cur = null; blocks(audio, 28, Math.floor(big.s * SR), Math.ceil(big.e * SR)).forEach(([a, b]) => jobs.push({ a, b, mask: null })); }
+          if (cur.e - cur.s > MAXW) { const big = cur; cur = null; blocks(audio, MAXW, Math.floor(big.s * SR), Math.ceil(big.e * SR)).forEach(([a, b]) => jobs.push({ a, b, mask: null })); }
         });
         if (cur) jobs.push(cur);
         jobs = jobs.map((j) => (j.a != null ? j : { a: Math.max(0, Math.floor((j.s - 0.1) * SR)), b: Math.min(audio.length, Math.ceil((j.e + 0.2) * SR)), mask: j.rs }));
       }
     } else {
-      jobs = blocks(audio, noTs ? 9 : 28).map(([a, b]) => ({ a, b, mask: null }));
+      jobs = blocks(audio, noTs ? 9 : MAXW).map(([a, b]) => ({ a, b, mask: null }));
     }
     const segs = [];
     const total = jobs.reduce((x, j) => x + (j.b - j.a), 0) || 1;
@@ -11500,8 +11697,8 @@ self.onmessage = async (e) => {
         let g = 0;
         for (let k = 0; k < buf.length; k++) { g += ((keep[k] ? 1 : 0) - g) / F * 4; if (g < 0) g = 0; if (g > 1) g = 1; buf[k] *= keep[k] ? Math.max(g, 0.02) : g; }
       }
-      const word = !noTs && A.opts.align && !A.noWord[p.key];
-      const run = async (rep, w) => { const id = ++seq; const a2 = buf.slice(); return ask({ type: 'run', id, audio: a2, noTs, lang, word: w, rep }, id, [a2.buffer]); };
+      const word = rnnt || (!noTs && A.opts.align && !A.noWord[p.key]);
+      const run = async (rep, w) => { const id = ++seq; const a2 = buf.slice(); return ask({ type: rnnt ? 'tyrun' : 'run', id, audio: a2, noTs, lang, word: w, rep }, id, [a2.buffer]); };
       let r;
       try { r = await run(false, word); }
       catch (e) {
@@ -11510,7 +11707,7 @@ self.onmessage = async (e) => {
       }
       const usedWord = word && !A.noWord[p.key];
       // "no error that carries on": a window that went round in circles is tried again with repeats blocked
-      if (A.opts.guard && looping(r.text)) { log('ช่วง ' + (job.a / SR + offS).toFixed(1) + ' วิ วนซ้ำ ลองใหม่แบบกันซ้ำ'); try { r = await run(true, usedWord); } catch (_) {} }
+      if (!rnnt && A.opts.guard && looping(r.text)) { log('ช่วง ' + (job.a / SR + offS).toFixed(1) + ' วิ วนซ้ำ ลองใหม่แบบกันซ้ำ'); try { r = await run(true, usedWord); } catch (_) {} }
       const t0 = offS + job.a / SR;
       if (noTs) {
         // no times from this model: the line runs from where the voice starts to where it stops inside the cut
@@ -11525,6 +11722,13 @@ self.onmessage = async (e) => {
         const toks = (r.chunks || []).filter((c) => c && c.timestamp);
         if (!toks.length) continue;
         let words = dropJunkWords(wordsFromTokens(toks).map((w) => ({ ...w, s: t0 + w.s, e: t0 + w.e })));
+        if (rnnt && speech && speech.length) {
+          // the transducer times a word by when it was heard: pull the first word of a speech region back to where the voice starts
+          speech.forEach(([rs0]) => {
+            const rs = rs0 + offS, i = words.findIndex((w) => w.e > rs);
+            if (i >= 0 && words[i].s > rs && words[i].s - rs <= 0.9 && (i === 0 || words[i - 1].e <= rs + 0.02)) words[i].s = rs;
+          });
+        }
         if (A.opts.guard) {
           // drop a word that repeats more than twice in a row (a loop the model fell into)
           words = words.filter((w, i) => !(i >= 2 && norm(w.w) && norm(w.w) === norm(words[i - 1].w) && norm(w.w) === norm(words[i - 2].w)));
@@ -11749,7 +11953,7 @@ self.onmessage = async (e) => {
       if (useAsr) {
         stage('load:' + p.device);
         set({ run: { pct: 0, label: 'กำลังโหลดโมเดล ' + MODELS[p.key].label + '…' } });
-        await ask({ type: 'load', model: MODELS[p.key].id, key: p.key, device: p.device, dtype: p.dtype }, 'loaded');
+        await ask(MODELS[p.key].engine === 'rnnt' ? { type: 'tyload', map: tyMap() } : { type: 'load', model: MODELS[p.key].id, key: p.key, device: p.device, dtype: p.dtype }, 'loaded');
       }
       stage('run:' + p.device);
       const song = o.type === 'song';
