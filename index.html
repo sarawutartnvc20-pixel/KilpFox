@@ -3934,6 +3934,7 @@ class Component extends DCLogic {
     let el = els[key];
     if (el) return el;
     el = document.createElement(tag);
+    el.__main = key.indexOf('v:') === 0;
     el.preload = 'auto'; el.playsInline = true; el.setAttribute('playsinline', '');
     el.src = m.url;
     if (tag === 'video') {
@@ -3960,6 +3961,7 @@ class Component extends DCLogic {
   const AC = { ctx: null, master: null };
   function connect(el) {
     if (el.__gain || !AC.ctx) return;
+    if (IOS_DEV && el.__main && !el.__force) return;   // keep the video's own sound on iPhone (Web Audio routing drifts out of step with the picture)
     try {
       const src = AC.ctx.createMediaElementSource(el);
       const g = AC.ctx.createGain();
@@ -3984,9 +3986,11 @@ class Component extends DCLogic {
       if (el.__unlocked) return;
       el.__unlocked = true;
       if (el.__gain) el.__gain.gain.value = 0;
+      const quiet = !el.__gain && IOS_DEV && el.__main && el !== els['v:' + ((clipAt(PL.t) || { c: {} }).c.src)];
+      if (quiet) el.muted = true;
       const was = el.currentTime;
       const p = el.play();
-      if (p && p.then) p.then(() => { if (el !== PL.el) { el.pause(); try { el.currentTime = was; } catch (_) {} } }).catch(() => { el.__unlocked = false; });
+      if (p && p.then) p.then(() => { if (el !== PL.el) { el.pause(); try { el.currentTime = was; } catch (_) {} } if (quiet) el.muted = false; }).catch(() => { el.__unlocked = false; if (quiet) el.muted = false; });
     });
   }
 
@@ -4146,6 +4150,7 @@ class Component extends DCLogic {
     if (!total) { KF.toast('เพิ่มคลิปก่อน แล้วค่อยกดเล่น'); return; }
     ensureAudio(); unlockAll();
     if (PL.t >= total - 0.05) PL.t = 0;
+    { let st = 0; P.clips.forEach((c) => { const v = els['v:' + c.src]; if (v) setVidSound(v, vidGainOf(c, st)); st += clipDur(c); }); }
     PL.playing = true; PL.last = performance.now(); PL.clipId = null;
     if (KF.pvStick && KF.pvStick < 1 && KF.pvScale !== KF.pvStick) { KF.pvScale = KF.pvStick; KF.resizePreview(); }   // this phone needed a lighter preview last time
     changed();
@@ -4183,6 +4188,18 @@ class Component extends DCLogic {
       st += d;
     }
     return false;
+  }
+  function vidGainOf(c, t) {
+    let g = KF.track('video').mute || MX.nodes.has('c:' + c.id) ? 0 : (c.vol ?? 100) / 100;
+    P.audios.forEach((a) => { if (a.clip === c.id && !MX.nodes.has('a:' + a.id) && viaVideo(a)) g += audioGain(a.id, t); });
+    return g;
+  }
+  function setVidSound(v, g) {
+    if (v.__gain) { if (v.muted && IOS_DEV && v.__main) v.muted = false; v.__gain.gain.value = g; return; }   // a muted element is silent in the graph too
+    if (!(IOS_DEV && v.__main)) return;
+    if (g > 0.02 && g < 0.98 && AC.ctx) { v.__force = true; connect(v); if (v.__gain) { v.__gain.gain.value = g; return; } }
+    const m = g <= 0.02;
+    if (v.muted !== m) v.muted = m;
   }
   function seekEls() {
     syncOverlays(PL.t, false);
@@ -4270,11 +4287,7 @@ class Component extends DCLogic {
         } else if (v.paused && !v.seeking) {
           v.play().catch(() => {});
         }
-if (v.__gain) {
-          let g = KF.track('video').mute || MX.nodes.has('c:' + c.id) ? 0 : (c.vol ?? 100) / 100;
-          P.audios.forEach((a) => { if (a.clip === c.id && !MX.nodes.has('a:' + a.id) && viaVideo(a)) g += audioGain(a.id, PL.t); });
-          v.__gain.gain.value = g;
-        }
+setVidSound(v, vidGainOf(c, PL.t));
         if (!clock && (v.currentTime >= c.out - 0.02 || v.ended)) PL.t = at.start + d + 1e-4;
         // get the next clip ready while this one finishes
         const next = P.clips[at.i + 1];
@@ -4336,6 +4349,7 @@ if (v.__gain) {
       + (v ? 'video ' + v.videoWidth + 'x' + v.videoHeight + ' ready ' + v.readyState + ' paused ' + v.paused + ' rate ' + v.playbackRate.toFixed(2) + '\n'
       + 'v.t ' + v.currentTime.toFixed(2) + ' PL.t ' + PL.t.toFixed(2) + ' diff ' + (v.currentTime - PL.t).toFixed(2) + '\n'
       + 'pictures/s ' + fps + (q ? ' · dropped ' + q.droppedVideoFrames + '/' + q.totalVideoFrames : '') + ' · stuck ' + (v.__stuck || 0) : 'no video') + '\n'
+      + 'sound ' + (v ? (v.__gain ? 'via WebAudio' : 'native') + (v.muted ? ' muted' : '') : '-') + (AC.ctx ? ' · ctx ' + AC.ctx.sampleRate + ' ' + AC.ctx.state : '') + '\n'
       + 'preview scale ' + KF.pvScale + ' · ' + (navigator.userAgent.match(/OS [\d_]+/) || [''])[0];
   }
   document.addEventListener('click', (e) => {
