@@ -11295,6 +11295,8 @@ self.onmessage = async (e) => {
 
   // ------------------------------------------------------------------ setup check
   async function headSize(u) {
+    const known = TY_FILES.find((x) => u.endsWith('/lib/typhoon/' + x[0]));
+    if (known) return known[1];
     try {
       const r = await fetch(u, { method: 'HEAD' });
       if (!r.ok) return -1;
@@ -11436,6 +11438,15 @@ self.onmessage = async (e) => {
         }
       };
       await Promise.all(Array.from({ length: PARALLEL }, worker1));
+      if (bad && u.indexOf('/lib/typhoon/') > 0) {
+        // the host answered a range request with the whole file: take the whole piece (20 MB at most) and cut it into chunks here
+        try {
+          const rr = await fetch(u, { signal: abortDl && abortDl.signal });
+          const blob = rr.ok ? await rr.blob() : null;
+          if (blob && blob.size === total) { for (let i = 0; i < n; i++) await tx(db, 'readwrite', (st) => st.put(blob.slice(i * CH, Math.min(total, (i + 1) * CH)), key(i))); bad = false; }
+          else log('ชิ้นไฟล์ไม่ครบ ' + u.split('/').pop() + ' ได้ ' + (blob ? blob.size : 'ไม่ได้') + ' ต้องการ ' + total);
+        } catch (e) { log('โหลดทั้งชิ้นไม่ได้ ' + u.split('/').pop() + ': ' + ((e && e.message) || e)); }
+      }
       if (bad) { log('เซิร์ฟเวอร์ไม่รองรับการโหลดเป็นช่วง ' + u.split('/').pop()); return false; }
       const keys = new Set(await tx(db, 'readonly', (st) => st.getAllKeys()));
       for (let i = 0; i < n; i++) if (!keys.has(key(i))) throw new Error('ชิ้นส่วนไฟล์หาย ' + u.split('/').pop() + ' #' + i);
