@@ -9856,7 +9856,7 @@ self.onmessage = async (e) => {
     const H = app.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
     const phone = W <= 520;
     // iPad / tablets (touch screens wider than a phone): same app, scaled up to fill the screen
-    const tablet = !phone && ((navigator.maxTouchPoints || 0) > 1 || (window.matchMedia && matchMedia('(pointer: coarse)').matches));
+    const tablet = !phone && ((navigator.maxTouchPoints || 0) > 1 || /iPad|Tablet|Android/.test(navigator.userAgent) || (/Mac/.test(navigator.platform) && 'ontouchend' in document) || (window.matchMedia && matchMedia('(pointer: coarse)').matches));
     // landscape iPad: the editing screen uses the whole width (video on top, wide timeline under it)
     const wide = tablet && W > H && W >= 900 && curName === 'Editor';
     let z, h, sw = 390;
