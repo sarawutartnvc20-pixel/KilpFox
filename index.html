@@ -2505,7 +2505,7 @@ class Component extends DCLogic {
 
   return Component;
 })() };
-KF_SCREENS["VocalSplit"] = { tpl: "<div style=\"width: 390px; height: 844px; box-sizing: border-box; background: #0F1115; color: #EEF1F6; font-family: 'IBM Plex Sans Thai', sans-serif; display: flex; flex-direction: column; overflow: hidden\">\n  <header style=\"display: flex; align-items: center; gap: 6px; padding: 12px 12px 6px\">\n    <a href=\"Editor.dc.html\" aria-label=\"กลับ\" style=\"width: 44px; height: 44px; color: #C3CAD6; display: flex; align-items: center; justify-content: center\">\n      <svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M15 6l-6 6 6 6\"><\/path><\/svg>\n    <\/a>\n    <h1 style=\"margin: 0; font-size: 18px; font-weight: 700; flex: 1\">แยกเสียงร้อง + ดนตรี<\/h1>\n  <\/header>\n\n  <div class=\"noscroll col\" style=\"flex: 1; min-height: 0; overflow-y: auto; padding: 4px 20px 16px; display: flex; flex-direction: column; gap: 14px\">\n    <div style=\"background: #171A20; border-radius: 16px; padding: 14px; display: flex; align-items: center; gap: 12px\">\n      <span style=\"width: 44px; height: 44px; border-radius: 12px; background: #1F2A2A; color: {{accent}}; display: flex; align-items: center; justify-content: center; font-size: 22px\">{{srcIcon}}<\/span>\n      <div style=\"flex: 1; min-width: 0\">\n        <div style=\"font-size: 12px; color: #8E97A6\">แยกเสียงจาก<\/div>\n        <div style=\"font-size: 14.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis\">{{srcName}}<\/div>\n      <\/div>\n    <\/div>\n    <div style=\"font-size: 12.5px; color: #A9B1BE; line-height: 1.6\">แยกเสียงร้องที่อยู่ตรงกลางออกจากดนตรีในเพลงสเตอริโอ ทำในเครื่อง ไม่ต้องโหลดอะไรเพิ่ม เหมาะกับเพลง MP3 หรือคลิปเพลงที่ได้มาจากต้นฉบับ แบบเร็วใช้ได้กับเพลงสเตอริโอเท่านั้น ส่วนแบบ AI แยกได้แม้เป็นเสียงโมโน เลือกเพลงในแทร็กเสียงก่อนเข้าหน้านี้เพื่อแยกเพลงนั้น<\/div>\n\n    <div style=\"display: flex; flex-direction: column; gap: 8px\">\n      <div style=\"display: flex; align-items: center; gap: 10px\">\n        <span style=\"width: 96px; font-size: 13px; font-weight: 600\">คุณภาพ<\/span>\n        <div style=\"flex: 1; display: flex; gap: 3px; padding: 3px; border-radius: 12px; background: #171A20\">\n          <button onClick=\"{{pickFast}}\" style=\"flex: 1; height: 36px; border: 0; border-radius: 9px; background: {{qFastBg}}; color: {{qFastFg}}; font-size: 12.5px; font-weight: 600\">เร็ว<\/button>\n          <button onClick=\"{{pickAi}}\" style=\"flex: 1; height: 36px; border: 0; border-radius: 9px; background: {{qAiBg}}; color: {{qAiFg}}; font-size: 12.5px; font-weight: 600\">คุณภาพสูง (AI)<\/button>\n        <\/div>\n      <\/div>\n      <div style=\"font-size: 11.5px; color: #8E97A6; line-height: 1.55\">{{qNote}}<\/div>\n      <sc-if value=\"{{qBtn}}\" hint-placeholder-val=\"{{ false }}\"><button onClick=\"{{qDownload}}\" style=\"align-self: flex-start; height: 36px; padding: 0 14px; border-radius: 10px; border: 1px solid #2A2F39; background: transparent; color: #EEF1F6; font-size: 12.5px\">{{qBtnText}}<\/button><\/sc-if>\n    <\/div>\n\n    <sc-if value=\"{{showK}}\" hint-placeholder-val=\"{{ true }}\">\n    <div style=\"display: flex; flex-direction: column; gap: 4px\">\n      <div style=\"display: flex; justify-content: space-between; font-size: 13px\"><label for=\"vs-k\" style=\"font-weight: 600\">ความแรงการแยก<\/label><span style=\"color: #A9B1BE\">{{k}}<\/span><\/div>\n      <input id=\"vs-k\" type=\"range\" min=\"0\" max=\"100\" value=\"{{k}}\" onInput=\"{{setK}}\" style=\"width: 100%; accent-color: {{accent}}\">\n      <div style=\"display: flex; justify-content: space-between; font-size: 11px; color: #8E97A6\"><span>นุ่มนวล เก็บเสียงเดิมไว้มาก<\/span><span>แยกเข้ม สะอาดกว่า (เสียงอาจบางลง)<\/span><\/div>\n    <\/div>\n    <\/sc-if>\n\n    <sc-if value=\"{{isIdle}}\" hint-placeholder-val=\"{{ true }}\">\n      <button onClick=\"{{start}}\" style=\"height: 50px; border: 0; border-radius: 14px; background: {{accent}}; color: #06201D; font-size: 15px; font-weight: 700\">เริ่มแยกเสียง<\/button>\n    <\/sc-if>\n    <sc-if value=\"{{isBusy}}\" hint-placeholder-val=\"{{ false }}\">\n      <div style=\"display: flex; flex-direction: column; gap: 8px\">\n        <div style=\"display: flex; justify-content: space-between; font-size: 13px; color: #C3CAD6\"><span>{{busyLabel}}<\/span><span>{{pct}}%<\/span><\/div>\n        <div style=\"height: 8px; border-radius: 4px; background: #22262E; overflow: hidden\"><div style=\"height: 100%; width: {{pct}}%; background: {{accent}}\"><\/div><\/div>\n      <\/div>\n    <\/sc-if>\n    <sc-if value=\"{{hasError}}\" hint-placeholder-val=\"{{ false }}\">\n      <div style=\"font-size: 13px; color: #FFB4B4; line-height: 1.6; background: #2A1A1E; border-radius: 12px; padding: 10px 12px\">{{error}}<\/div>\n    <\/sc-if>\n    <sc-if value=\"{{isDone}}\" hint-placeholder-val=\"{{ false }}\">\n      <div style=\"display: flex; flex-direction: column; gap: 10px\">\n        <sc-for list=\"{{tracks}}\" as=\"t\" hint-placeholder-count=\"2\">\n          <div style=\"background: #171A20; border-radius: 14px; padding: 10px 12px; display: flex; align-items: center; gap: 12px\">\n            <button onClick=\"{{t.play}}\" aria-label=\"{{t.aria}}\" style=\"width: 42px; height: 42px; border-radius: 50%; border: 0; background: #EEF1F6; color: #0F1115; display: flex; align-items: center; justify-content: center\">\n              <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"{{t.icon}}\"><\/path><\/svg>\n            <\/button>\n            <div style=\"flex: 1\"><div style=\"font-size: 14px; font-weight: 700\">{{t.label}}<\/div><div style=\"font-size: 11.5px; color: #8E97A6\">{{t.note}}<\/div><\/div>\n          <\/div>\n        <\/sc-for>\n        <div style=\"font-size: 13px; font-weight: 600; margin-top: 4px\">ใส่ลงโปรเจกต์<\/div>\n        <button onClick=\"{{useBoth}}\" style=\"height: 48px; border: 0; border-radius: 14px; background: {{accent}}; color: #06201D; font-size: 14.5px; font-weight: 700\">ใส่ทั้งสองแทร็ก (ปรับเสียงแยกกันได้)<\/button>\n        <div style=\"display: grid; grid-template-columns: 1fr 1fr; gap: 10px\">\n          <button onClick=\"{{useMusic}}\" style=\"height: 46px; border-radius: 14px; border: 1px solid #2A2F39; background: transparent; color: #EEF1F6; font-size: 13.5px\">เอาแค่ดนตรี (คาราโอเกะ)<\/button>\n          <button onClick=\"{{useVocal}}\" style=\"height: 46px; border-radius: 14px; border: 1px solid #2A2F39; background: transparent; color: #EEF1F6; font-size: 13.5px\">เอาแค่เสียงร้อง<\/button>\n        <\/div>\n      <\/div>\n    <\/sc-if>\n  <\/div>\n<\/div>\n<\/x-dc>", props: {"accent": {"editor": "color", "default": "#2FD3C4"}, "$preview": {"width": 390, "height": 844}}, title: "KlipFox · แยกเสียงร้อง",
+KF_SCREENS["VocalSplit"] = { tpl: "<div style=\"width: 390px; height: 844px; box-sizing: border-box; background: #0F1115; color: #EEF1F6; font-family: 'IBM Plex Sans Thai', sans-serif; display: flex; flex-direction: column; overflow: hidden\">\n  <header style=\"display: flex; align-items: center; gap: 6px; padding: 12px 12px 6px\">\n    <a href=\"Editor.dc.html\" aria-label=\"กลับ\" style=\"width: 44px; height: 44px; color: #C3CAD6; display: flex; align-items: center; justify-content: center\">\n      <svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M15 6l-6 6 6 6\"><\/path><\/svg>\n    <\/a>\n    <h1 style=\"margin: 0; font-size: 18px; font-weight: 700; flex: 1\">แยกเสียงร้อง + ดนตรี<\/h1>\n  <\/header>\n\n  <div class=\"noscroll col\" style=\"flex: 1; min-height: 0; overflow-y: auto; padding: 4px 20px 16px; display: flex; flex-direction: column; gap: 14px\">\n    <div style=\"background: #171A20; border-radius: 16px; padding: 14px; display: flex; align-items: center; gap: 12px\">\n      <span style=\"width: 44px; height: 44px; border-radius: 12px; background: #1F2A2A; color: {{accent}}; display: flex; align-items: center; justify-content: center; font-size: 22px\">{{srcIcon}}<\/span>\n      <div style=\"flex: 1; min-width: 0\">\n        <div style=\"font-size: 12px; color: #8E97A6\">แยกเสียงจาก<\/div>\n        <div style=\"font-size: 14.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis\">{{srcName}}<\/div>\n      <\/div>\n    <\/div>\n    <div style=\"font-size: 12.5px; color: #A9B1BE; line-height: 1.6\">แยกเสียงร้องที่อยู่ตรงกลางออกจากดนตรีในเพลงสเตอริโอ ทำในเครื่อง ไม่ต้องโหลดอะไรเพิ่ม เหมาะกับเพลง MP3 หรือคลิปเพลงที่ได้มาจากต้นฉบับ แบบเร็วใช้ได้กับเพลงสเตอริโอเท่านั้น ส่วนแบบ AI แยกได้แม้เป็นเสียงโมโน เลือกเพลงในแทร็กเสียงก่อนเข้าหน้านี้เพื่อแยกเพลงนั้น<\/div>\n\n    <div style=\"display: flex; flex-direction: column; gap: 8px\">\n      <div style=\"display: flex; align-items: center; gap: 10px\">\n        <span style=\"width: 96px; font-size: 13px; font-weight: 600\">คุณภาพ<\/span>\n        <div style=\"flex: 1; display: flex; gap: 3px; padding: 3px; border-radius: 12px; background: #171A20\">\n          <button onClick=\"{{pickFast}}\" style=\"flex: 1; height: 36px; border: 0; border-radius: 9px; background: {{qFastBg}}; color: {{qFastFg}}; font-size: 12.5px; font-weight: 600\">เร็ว<\/button>\n          <button onClick=\"{{pickAi}}\" style=\"flex: 1; height: 36px; border: 0; border-radius: 9px; background: {{qAiBg}}; color: {{qAiFg}}; font-size: 12.5px; font-weight: 600\">AI<\/button>\n          <button onClick=\"{{pickMax}}\" style=\"flex: 1; height: 36px; border: 0; border-radius: 9px; background: {{qMaxBg}}; color: {{qMaxFg}}; font-size: 12.5px; font-weight: 600\">สูงสุด (ช้า)<\/button>\n        <\/div>\n      <\/div>\n      <div style=\"font-size: 11.5px; color: #8E97A6; line-height: 1.55\">{{qNote}}<\/div>\n      <sc-if value=\"{{qBtn}}\" hint-placeholder-val=\"{{ false }}\"><button onClick=\"{{qDownload}}\" style=\"align-self: flex-start; height: 36px; padding: 0 14px; border-radius: 10px; border: 1px solid #2A2F39; background: transparent; color: #EEF1F6; font-size: 12.5px\">{{qBtnText}}<\/button><\/sc-if>\n    <\/div>\n\n    <sc-if value=\"{{showK}}\" hint-placeholder-val=\"{{ true }}\">\n    <div style=\"display: flex; flex-direction: column; gap: 4px\">\n      <div style=\"display: flex; justify-content: space-between; font-size: 13px\"><label for=\"vs-k\" style=\"font-weight: 600\">ความแรงการแยก<\/label><span style=\"color: #A9B1BE\">{{k}}<\/span><\/div>\n      <input id=\"vs-k\" type=\"range\" min=\"0\" max=\"100\" value=\"{{k}}\" onInput=\"{{setK}}\" style=\"width: 100%; accent-color: {{accent}}\">\n      <div style=\"display: flex; justify-content: space-between; font-size: 11px; color: #8E97A6\"><span>นุ่มนวล เก็บเสียงเดิมไว้มาก<\/span><span>แยกเข้ม สะอาดกว่า (เสียงอาจบางลง)<\/span><\/div>\n    <\/div>\n    <\/sc-if>\n\n    <sc-if value=\"{{isIdle}}\" hint-placeholder-val=\"{{ true }}\">\n      <button onClick=\"{{start}}\" style=\"height: 50px; border: 0; border-radius: 14px; background: {{accent}}; color: #06201D; font-size: 15px; font-weight: 700\">เริ่มแยกเสียง<\/button>\n    <\/sc-if>\n    <sc-if value=\"{{isBusy}}\" hint-placeholder-val=\"{{ false }}\">\n      <div style=\"display: flex; flex-direction: column; gap: 8px\">\n        <div style=\"display: flex; justify-content: space-between; font-size: 13px; color: #C3CAD6\"><span>{{busyLabel}}<\/span><span>{{pct}}%<\/span><\/div>\n        <div style=\"height: 8px; border-radius: 4px; background: #22262E; overflow: hidden\"><div style=\"height: 100%; width: {{pct}}%; background: {{accent}}\"><\/div><\/div>\n      <\/div>\n    <\/sc-if>\n    <sc-if value=\"{{hasError}}\" hint-placeholder-val=\"{{ false }}\">\n      <div style=\"font-size: 13px; color: #FFB4B4; line-height: 1.6; background: #2A1A1E; border-radius: 12px; padding: 10px 12px\">{{error}}<\/div>\n    <\/sc-if>\n    <sc-if value=\"{{isDone}}\" hint-placeholder-val=\"{{ false }}\">\n      <div style=\"display: flex; flex-direction: column; gap: 10px\">\n        <sc-for list=\"{{tracks}}\" as=\"t\" hint-placeholder-count=\"2\">\n          <div style=\"background: #171A20; border-radius: 14px; padding: 10px 12px; display: flex; align-items: center; gap: 12px\">\n            <button onClick=\"{{t.play}}\" aria-label=\"{{t.aria}}\" style=\"width: 42px; height: 42px; border-radius: 50%; border: 0; background: #EEF1F6; color: #0F1115; display: flex; align-items: center; justify-content: center\">\n              <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"{{t.icon}}\"><\/path><\/svg>\n            <\/button>\n            <div style=\"flex: 1\"><div style=\"font-size: 14px; font-weight: 700\">{{t.label}}<\/div><div style=\"font-size: 11.5px; color: #8E97A6\">{{t.note}}<\/div><\/div>\n          <\/div>\n        <\/sc-for>\n        <div style=\"font-size: 13px; font-weight: 600; margin-top: 4px\">ใส่ลงโปรเจกต์<\/div>\n        <button onClick=\"{{useBoth}}\" style=\"height: 48px; border: 0; border-radius: 14px; background: {{accent}}; color: #06201D; font-size: 14.5px; font-weight: 700\">ใส่ทั้งสองแทร็ก (ปรับเสียงแยกกันได้)<\/button>\n        <div style=\"display: grid; grid-template-columns: 1fr 1fr; gap: 10px\">\n          <button onClick=\"{{useMusic}}\" style=\"height: 46px; border-radius: 14px; border: 1px solid #2A2F39; background: transparent; color: #EEF1F6; font-size: 13.5px\">เอาแค่ดนตรี (คาราโอเกะ)<\/button>\n          <button onClick=\"{{useVocal}}\" style=\"height: 46px; border-radius: 14px; border: 1px solid #2A2F39; background: transparent; color: #EEF1F6; font-size: 13.5px\">เอาแค่เสียงร้อง<\/button>\n        <\/div>\n      <\/div>\n    <\/sc-if>\n  <\/div>\n<\/div>\n<\/x-dc>", props: {"accent": {"editor": "color", "default": "#2FD3C4"}, "$preview": {"width": 390, "height": 844}}, title: "KlipFox · แยกเสียงร้อง",
   Component: (function () {
 
 class Component extends DCLogic {
@@ -2542,20 +2542,27 @@ class Component extends DCLogic {
       KF.go('Editor');
     };
     const play = 'M7 4l13 8-13 8z', stop = 'M6 4h4v16H6zM14 4h4v16h-4z';
-    const q = KF.vsq.get(), um = KF.umx, ust = um.status;
+    const q = KF.vsq.get(), um = KF.umx, ust = um.status, md = KF.mdx, mst = md.status;
+    const maxNote = mst === 'unsupported' ? 'เครื่องนี้ยังไม่รองรับโหมดสูงสุด (ต้องใช้ iOS 16.4 ขึ้นไป หรือ Chrome รุ่นใหม่) จะใช้แบบเร็วแทน'
+      : mst === 'ready' ? 'สูงสุด (UVR MDX-Net) พร้อมใช้งาน ตัดเสียงร้องได้ขาดที่สุด แต่ช้า (ราว 2–5 เท่าของความยาวคลิป ขึ้นกับเครื่อง) เหมาะกับช่วงสั้น ไม่เกิน 2 นาที ระหว่างทำงานเครื่องอาจร้อน ควรเปิดจอค้างไว้ ถ้าไม่สำเร็จจะใช้โหมด AI แทนอัตโนมัติ'
+      : mst === 'downloading' ? 'กำลังโหลดโมเดล ' + md.pct + '%'
+      : mst === 'error' ? 'โหลดโมเดลไม่สำเร็จ: ' + md.error
+      : 'สูงสุด (UVR MDX-Net) ตัดเสียงร้องได้ขาดกว่าโหมด AI แต่ช้ากว่า เหมาะกับช่วงสั้น ไม่เกิน 2 นาที ต้องโหลดโมเดลครั้งเดียวประมาณ ' + md.MB + ' MB แล้วเก็บไว้ในเครื่อง';
     return {
-      accent, showK: q !== 'ai',
-      qFastBg: q === 'ai' ? 'transparent' : accent, qFastFg: q === 'ai' ? '#C3CAD6' : '#06201D',
+      accent, showK: q !== 'max',
+      qFastBg: q === 'fast' ? accent : 'transparent', qFastFg: q === 'fast' ? '#06201D' : '#C3CAD6',
       qAiBg: q === 'ai' ? accent : 'transparent', qAiFg: q === 'ai' ? '#06201D' : '#C3CAD6',
-      pickFast: () => KF.vsq.set('fast'), pickAi: () => KF.vsq.set('ai'),
-      qNote: q !== 'ai' ? 'แบบเร็ว: ใช้สูตรคำนวณในเครื่อง ไม่ต้องโหลดอะไรเพิ่ม แยกได้เฉพาะเพลงสเตอริโอ'
+      qMaxBg: q === 'max' ? accent : 'transparent', qMaxFg: q === 'max' ? '#06201D' : '#C3CAD6',
+      pickFast: () => KF.vsq.set('fast'), pickAi: () => KF.vsq.set('ai'), pickMax: () => KF.vsq.set('max'),
+      qNote: q === 'max' ? maxNote : q !== 'ai' ? 'แบบเร็ว: ใช้สูตรคำนวณในเครื่อง ไม่ต้องโหลดอะไรเพิ่ม แยกได้เฉพาะเพลงสเตอริโอ'
         : ust === 'unsupported' ? 'เครื่องนี้ยังไม่รองรับโหมด AI (ต้องใช้ iOS 16.4 ขึ้นไป หรือ Chrome รุ่นใหม่) จะใช้แบบเร็วแทน'
-        : ust === 'ready' ? 'AI (Open-Unmix L, CC BY-NC-SA 4.0 ใช้ไม่เชิงพาณิชย์) พร้อมใช้งาน แยกเสียงร้องได้แม่นกว่า รองรับเสียงโมโนด้วย ใช้เวลานานกว่า (ราว 0.3–1 เท่าของความยาวเพลง) และรองรับช่วงที่ใช้ไม่เกิน 5 นาที'
+        : ust === 'ready' ? 'AI (Open-Unmix L, CC BY-NC-SA 4.0 ใช้ไม่เชิงพาณิชย์) พร้อมใช้งาน แยกเสียงร้องได้แม่นกว่า รองรับเสียงโมโนด้วย ใช้เวลานานกว่า (ราว 0.3–1 เท่าของความยาวเพลง) รองรับช่วงที่ใช้ไม่เกิน 5 นาที ถ้ายังมีเสียงร้องหลุด ให้เลื่อน "ความแรงการแยก" ขึ้น จะตัดขาดกว่าแต่เสียงตรงกลาง (เช่น เบส) อาจบางลง'
         : ust === 'downloading' ? 'กำลังโหลดโมเดล AI ' + um.pct + '%'
         : ust === 'error' ? 'โหลดโมเดลไม่สำเร็จ: ' + um.error
         : 'AI (Open-Unmix L, CC BY-NC-SA 4.0 ใช้ไม่เชิงพาณิชย์) แยกเสียงร้องได้แม่นกว่าแบบเร็ว ต้องโหลดโมเดลครั้งเดียวประมาณ ' + um.MB + ' MB แล้วเก็บไว้ในเครื่อง',
-      qBtn: q === 'ai' && (ust === 'need' || ust === 'error'), qBtnText: ust === 'error' ? 'ลองโหลดใหม่' : 'โหลดโมเดล AI',
-      qDownload: () => { um.download().catch(() => {}); },
+      qBtn: q === 'max' ? (mst === 'need' || mst === 'error') : q === 'ai' && (ust === 'need' || ust === 'error'),
+      qBtnText: (q === 'max' ? mst : ust) === 'error' ? 'ลองโหลดใหม่' : q === 'max' ? 'โหลดโมเดลสูงสุด' : 'โหลดโมเดล AI',
+      qDownload: () => { (q === 'max' ? md : um).download().catch(() => {}); },
       k: s.k, setK: (e) => this.setState({ k: Number(e.target.value) }),
       srcIcon: t ? (t.kind === 'audio' ? '♪' : '🎬') : '?', srcName: t ? t.name : 'ยังไม่มีคลิปหรือเพลงในโปรเจกต์',
       isIdle: s.phase === 'idle' && !!t, isBusy: s.phase === 'busy', isDone: s.phase === 'done', hasError: !!s.error,
@@ -2567,18 +2574,18 @@ class Component extends DCLogic {
       start: async () => {
         if (!t) return;
         if (t.kind === 'clip' && (t.item.speed || 1) !== 1) { this.setState({ error: 'คลิปนี้ปรับความเร็วไว้ ตั้งความเร็วกลับเป็น 1x ก่อนแล้วค่อยแยกเสียง' }); return; }
-        this.setState({ phase: 'busy', pct: 2, error: '', ai: q === 'ai', label: '' });
+        this.setState({ phase: 'busy', pct: 2, error: '', ai: q !== 'fast', label: '' });
         try {
           const out = await KF.tools.split(t, s.k / 100, (p, label) => {
-            const pct = Math.max(q === 'ai' ? 1 : 5, Math.round(p * 100));
+            const pct = Math.max(q !== 'fast' ? 1 : 5, Math.round(p * 100));
             if (label === '') this.setState({ ai: false, pct });
             else if (pct !== this.state.pct || (label && label !== this.state.label)) this.setState({ pct, label: label || this.state.label });
-          }, { ai: q === 'ai' });
+          }, { ai: q === 'ai', max: q === 'max' });
           out.urls = { vocal: URL.createObjectURL(out.vocal), music: URL.createObjectURL(out.music) };
           this.out = out;
           this.setState({ phase: 'done', pct: 100 });
         } catch (e) {
-          const msg = e.message === 'long-ai' ? 'โหมด AI รองรับช่วงที่ใช้ไม่เกิน 5 นาที ตัดให้สั้นลงก่อน หรือเลือกแบบเร็ว' : e.message === 'long' ? 'เพลงยาวเกิน 11 นาที เครื่องมือถือแยกไม่ไหว ตัดให้สั้นลงก่อนแล้วค่อยแยก' : e.message === 'mono' ? 'เสียงนี้เป็นโมโน (ซ้ายขวาเหมือนกัน เช่น อัดจากมือถือ) วิธีนี้แยกได้เฉพาะเพลงสเตอริโอ ลองใช้ไฟล์เพลง MP3 ต้นฉบับแทน' : 'แยกเสียงไม่สำเร็จ: ' + (e.message || e);
+          const msg = e.message === 'long-max' ? 'โหมดสูงสุดรองรับช่วงที่ใช้ไม่เกิน 2 นาที ตัดให้สั้นลงก่อน หรือเลือกโหมดอื่น' : e.message === 'long-ai' ? 'โหมด AI รองรับช่วงที่ใช้ไม่เกิน 5 นาที ตัดให้สั้นลงก่อน หรือเลือกแบบเร็ว' : e.message === 'long' ? 'เพลงยาวเกิน 11 นาที เครื่องมือถือแยกไม่ไหว ตัดให้สั้นลงก่อนแล้วค่อยแยก' : e.message === 'mono' ? 'เสียงนี้เป็นโมโน (ซ้ายขวาเหมือนกัน เช่น อัดจากมือถือ) วิธีนี้แยกได้เฉพาะเพลงสเตอริโอ ลองใช้ไฟล์เพลง MP3 ต้นฉบับแทน' : 'แยกเสียงไม่สำเร็จ: ' + (e.message || e);
           this.setState({ phase: 'idle', error: msg });
         }
       },
@@ -8621,7 +8628,38 @@ onmessage = (e) => {
     opts.progress && opts.progress(1);
     return { L: outL, R: outR, F: F, nGroups: nGroups, core: core, ctx: ctx };
   }
-  return { init: init, load: load, separate: separate, hasWasm: function () { return !!K; } };
+  function refine(L, R, vL, vR, dL, dR, s) {
+    fftInit(); winInit();
+    var N = L.length, F = 1 + Math.floor(N / HOP), f, k, i;
+    var mk = function () { return [new Float64Array(NB), new Float64Array(NB), new Float64Array(NB), new Float64Array(NB)]; };
+    var A = mk(), V = mk(), D = mk(), yl = new Float64Array(NFFT), yr = new Float64Array(NFFT);
+    var oL = new Float32Array(N), oR = new Float32Array(N);
+    for (f = 0; f < F; f++) {
+      stftFrame(L, R, f, A[0], A[1], A[2], A[3]); stftFrame(vL, vR, f, V[0], V[1], V[2], V[3]); stftFrame(dL, dR, f, D[0], D[1], D[2], D[3]);
+      for (var c = 0; c < 2; c++) {
+        var re = A[2 * c], im = A[2 * c + 1], vr = V[2 * c], vi = V[2 * c + 1], dr = D[2 * c], di = D[2 * c + 1];
+        for (k = 0; k < NB; k++) {
+          var mx = Math.sqrt(re[k] * re[k] + im[k] * im[k]), g = 1;
+          if (mx > 1e-9) {
+            var ma = 1 - Math.sqrt(vr[k] * vr[k] + vi[k] * vi[k]) / mx, md = Math.sqrt(dr[k] * dr[k] + di[k] * di[k]) / mx;
+            if (ma < 0) ma = 0; else if (ma > 1) ma = 1; if (md > 1) md = 1;
+            g = ma * (1 - s + s * md);
+          }
+          re[k] *= g; im[k] *= g;
+        }
+      }
+      istftFrame(A[0], A[1], A[2], A[3], yl, yr);
+      var o1 = f * HOP - NFFT / 2;
+      for (i = Math.max(0, -o1); i < NFFT && o1 + i < N; i++) { oL[o1 + i] += yl[i]; oR[o1 + i] += yr[i]; }
+    }
+    for (i = 0; i < N; i++) {
+      var fa = Math.max(0, Math.floor((i - NFFT / 2) / HOP) + 1), fb = Math.min(F - 1, Math.floor((i + NFFT / 2) / HOP)), ws = 1e-8;
+      for (f = fa; f <= fb; f++) { var wv = WIN[i - (f * HOP - NFFT / 2)]; ws += wv * wv; }
+      oL[i] /= ws; oR[i] /= ws;
+    }
+    return { L: oL, R: oR };
+  }
+  return { init: init, load: load, separate: separate, refine: refine, hasWasm: function () { return !!K; } };
 })();
 if (typeof module !== 'undefined') module.exports = UMX;
 var KERN_B64 = 'AGFzbQEAAAABEwJgBX9/f39/AGAHf39/f39/fwACCAEBZQFtAgABAwMCAAEHEQIGbWF0dmVjAAAEZ2VtbQABCr4HAqIDAgh/BXtBACEFIARBAnQhDAJAA0AgBSADTg0BIAUgDGwgAGohByAHIAxqIQggCCAMaiEJIAkgDGohCiABIQv9DAAAAAAAAAAAAAAAAAAAAAAhDf0MAAAAAAAAAAAAAAAAAAAAACEO/QwAAAAAAAAAAAAAAAAAAAAAIQ/9DAAAAAAAAAAAAAAAAAAAAAAhECAEQQJ1IQYCQANAIAZFDQEgC/0AAgAhESANIAf9AAIAIBH95gH95AEhDSAOIAj9AAIAIBH95gH95AEhDiAPIAn9AAIAIBH95gH95AEhDyAQIAr9AAIAIBH95gH95AEhECAHQRBqIQcgCEEQaiEIIAlBEGohCSAKQRBqIQogC0EQaiELIAZBAWshBgwACwsgBUECdCACaiEHIAcgDf0fACAN/R8BkiAN/R8CIA39HwOSkjgCACAHIA79HwAgDv0fAZIgDv0fAiAO/R8DkpI4AgQgByAP/R8AIA/9HwGSIA/9HwIgD/0fA5KSOAIIIAcgEP0fACAQ/R8BkiAQ/R8CIBD9HwOSkjgCDCAFQQRqIQUMAAsLC5cEAgt/C3sgBkECdCEPIAVBAnQhEEEAIQcCQANAIAcgBE4NAUEAIQgCQANAIAggBk4NASADIAdBAGpBAnRqKgIA/RMhEiASIRMgAyAHQQFqQQJ0aioCAP0TIRQgFCEVIAMgB0ECakECdGoqAgD9EyEWIBYhFyADIAdBA2pBAnRqKgIA/RMhGCAYIRkgByAFbEECdCAAaiEKIAogEGohCyALIBBqIQwgDCAQaiENIAhBAnQgAWohDiAFIQkCQANAIAlFDQEgDv0AAgAhGiAO/QACECEbIAoqAgD9EyEcIBIgHCAa/eYB/eQBIRIgEyAcIBv95gH95AEhEyAKQQRqIQogCyoCAP0TIRwgFCAcIBr95gH95AEhFCAVIBwgG/3mAf3kASEVIAtBBGohCyAMKgIA/RMhHCAWIBwgGv3mAf3kASEWIBcgHCAb/eYB/eQBIRcgDEEEaiEMIA0qAgD9EyEcIBggHCAa/eYB/eQBIRggGSAcIBv95gH95AEhGSANQQRqIQ0gDiAPaiEOIAlBAWshCQwACwsgByAGbCAIakECdCACaiERIBEgEv0LAgAgESAT/QsCECARIA9qIREgESAU/QsCACARIBX9CwIQIBEgD2ohESARIBb9CwIAIBEgF/0LAhAgESAPaiERIBEgGP0LAgAgESAZ/QsCECARIA9qIREgCEEIaiEIDAALCyAHQQRqIQcMAAsLCw==';
@@ -8640,9 +8678,15 @@ onmessage = function (e) {
       postMessage({ type: 'status', label: 'run', p: 0 });
       var last = 0;
       var r = UMX.separate(d.L, d.R, { progress: function (p) { var t = Date.now(); if (t - last > 250) { last = t; postMessage({ type: 'progress', p: p }); } } });
-      var L = d.L, R = d.R, n = L.length, i;
-      for (i = 0; i < n; i++) { L[i] -= r.L[i]; R[i] -= r.R[i]; }       // music = mix - vocals
-      postMessage({ type: 'done', vL: r.L, vR: r.R, mL: L, mR: R, info: { F: r.F, groups: r.nGroups, core: r.core, ctx: r.ctx } }, [r.L.buffer, r.R.buffer, L.buffer, R.buffer]);
+      var L = d.L, R = d.R, n = L.length, i, mL, mR;
+      if (d.dL && d.s > 0) {
+        postMessage({ type: 'status', label: 'refine', p: 1 });
+        var q = UMX.refine(L, R, r.L, r.R, d.dL, d.dR, d.s); mL = q.L; mR = q.R;      // music with the extra cut
+      } else {
+        for (i = 0; i < n; i++) { L[i] -= r.L[i]; R[i] -= r.R[i]; }                    // music = mix - vocals
+        mL = L; mR = R;
+      }
+      postMessage({ type: 'done', vL: r.L, vR: r.R, mL: mL, mR: mR, info: { F: r.F, groups: r.nGroups, core: r.core, ctx: r.ctx } }, [r.L.buffer, r.R.buffer, mL.buffer, mR.buffer]);
     } catch (err) {
       postMessage({ type: 'error', msg: String((err && err.message) || err) });
     }
@@ -8655,7 +8699,7 @@ onmessage = function (e) {
   const umxUrl = () => { try { return new URL(UMX_REL, document.baseURI).href; } catch (_) { return UMX_REL; } };
   const UM = KF.umx = { status: 'checking', pct: 0, error: '', mem: null, busy: null, MB: 13 };
   KF.vsq = {
-    get() { try { return localStorage.getItem('kf.vsq') === 'ai' ? 'ai' : 'fast'; } catch (_) { return 'fast'; } },
+    get() { try { const v = localStorage.getItem('kf.vsq'); return v === 'ai' || v === 'max' ? v : 'fast'; } catch (_) { return 'fast'; } },
     set(v) { try { localStorage.setItem('kf.vsq', v); } catch (_) {} KF.changed(); },
   };
   UM.supported = () => {
@@ -8727,7 +8771,7 @@ onmessage = function (e) {
   UM.check();
 
   /** AI version of T.split: the singing voice and the music, from the part of the sound that is actually used */
-  async function splitAI(target, onProgress) {
+  async function splitAI(target, strength, onProgress) {
     const say = (p, label) => onProgress && onProgress(p, label);
     say(0.01, 'กำลังเตรียมโมเดล AI…');
     await UM.ensure((p) => say(0.01 + 0.04 * p, 'กำลังโหลดโมเดล AI…'));
@@ -8741,6 +8785,22 @@ onmessage = function (e) {
     if (s1 - s0 < a.sr * 0.5) throw new Error('คลิปสั้นเกินไป');
     const dual = a.srcChannels >= 2 && !!a.data[1];
     const L = a.data[0].slice(s0, s1), R = dual ? a.data[1].slice(s0, s1) : L.slice();
+    // extra cut: a second, independent estimate of the music (the stereo-centre method of the fast mode) is multiplied in
+    let dL = null, dR = null, u0 = 0.08;
+    const cut = dual ? Math.max(0, Math.min(1, strength == null ? 0 : strength)) : 0;
+    if (cut > 0.02) {
+      say(0.06, 'กำลังตัดเสียงตรงกลางเพิ่ม…');
+      const c1 = L.slice(), c2 = R.slice();
+      const w0 = new Worker(URL.createObjectURL(new Blob([SPLIT_SRC], { type: 'text/javascript' })));
+      try {
+        const r0 = await new Promise((res, rej) => {
+          w0.onmessage = (e) => { const d = e.data; if (d.type === 'progress') say(0.06 + 0.12 * d.p, 'กำลังตัดเสียงตรงกลางเพิ่ม…'); else if (d.type === 'mono') res(null); else if (d.type === 'done') res(d); };
+          w0.onerror = (e) => rej(new Error((e && e.message) || 'split failed'));
+          w0.postMessage({ L: c1, R: c2, sr: a.sr, strength }, [c1.buffer, c2.buffer]);
+        });
+        if (r0 && r0.IL && r0.IL.length === L.length) { dL = r0.IL; dR = r0.IR; u0 = 0.2; }
+      } catch (e) { console.warn('centre cut failed', e); } finally { w0.terminate(); }
+    }
     const model = await UM.load();
     const w = new Worker(URL.createObjectURL(new Blob([UMX_SRC], { type: 'text/javascript' })));
     let out;
@@ -8748,13 +8808,13 @@ onmessage = function (e) {
       out = await new Promise((res, rej) => {
         w.onmessage = (e) => {
           const d = e.data;
-          if (d.type === 'status') say(d.label === 'unpack' ? 0.06 : 0.08, d.label === 'unpack' ? 'กำลังแตกไฟล์โมเดล…' : 'AI กำลังแยกเสียงร้อง…');
-          else if (d.type === 'progress') say(0.08 + 0.88 * d.p, 'AI กำลังแยกเสียงร้อง…');
+          if (d.type === 'status') say(d.label === 'unpack' ? u0 - 0.02 : d.label === 'refine' ? 0.96 : u0, d.label === 'unpack' ? 'กำลังแตกไฟล์โมเดล…' : d.label === 'refine' ? 'กำลังตัดเสียงร้องให้ขาด…' : 'AI กำลังแยกเสียงร้อง…');
+          else if (d.type === 'progress') say(u0 + (0.96 - u0) * d.p, 'AI กำลังแยกเสียงร้อง…');
           else if (d.type === 'done') res(d);
           else if (d.type === 'error') rej(new Error(d.msg));
         };
         w.onerror = (e) => rej(new Error((e && e.message) || 'AI ไม่ทำงาน'));
-        w.postMessage({ type: 'run', gz: model, L, R }, [model, L.buffer, R.buffer]);
+        w.postMessage({ type: 'run', gz: model, L, R, dL, dR, s: dL ? cut : 0 }, [model, L.buffer, R.buffer].concat(dL ? [dL.buffer, dR.buffer] : []));
       });
     } finally { w.terminate(); }
     say(0.97, 'กำลังสร้างไฟล์เสียง…');
@@ -8768,9 +8828,461 @@ onmessage = function (e) {
     };
   }
   /*UMX-END*/
+  /*MDX-BEGIN*/
+  const MDX_SRC = `var MDX = (function () {
+  var NFFT = 6144, HOP = 1024, DIMF = 2048, H2K = NFFT / 2, COMP = 1.035;
+  var K = null, f = null, prog = null, wbase = 0, wtab = null, poolBase = 0, top = 0, freeL = [], zeros = 0, peak = 0;
+  function init(kernBytes, pages) {
+    if (typeof WebAssembly === 'undefined' || !WebAssembly.validate(kernBytes)) throw new Error('no wasm simd');
+    var mem = new WebAssembly.Memory({ initial: pages || 64 });
+    var inst = new WebAssembly.Instance(new WebAssembly.Module(kernBytes), { e: { m: mem } });
+    K = { mem: mem, ex: inst.exports };
+    f = new Float32Array(mem.buffer);
+    return true;
+  }
+  function ensure(floats) {
+    var need = Math.ceil((floats * 4) / 65536) + 1, have = K.mem.buffer.byteLength / 65536;
+    if (need > have) { K.mem.grow(need - have); f = new Float32Array(K.mem.buffer); }
+  }
+  function gemm(w, x, o, b, O, C, P) { K.ex.gemm(w * 4, x * 4, o * 4, b * 4, O, C, P); }
+  function alloc(n) {
+    n = (n + 3) & ~3;
+    var best = -1, i;
+    for (i = 0; i < freeL.length; i++) if (freeL[i].n >= n && (best < 0 || freeL[i].n < freeL[best].n)) best = i;
+    if (best >= 0) {
+      var b = freeL[best], a = b.a;
+      if (b.n === n) freeL.splice(best, 1); else { b.a += n; b.n -= n; }
+      return a;
+    }
+    var p = top; top += n;
+    if (top > peak) peak = top;
+    ensure(top + 8);
+    return p;
+  }
+  function release(a, n) {
+    n = (n + 3) & ~3;
+    if (a + n === top) { top = a; for (;;) { var l = freeL[freeL.length - 1]; if (l && l.a + l.n === top) { top = l.a; freeL.pop(); } else break; } return; }
+    var i = 0; while (i < freeL.length && freeL[i].a < a) i++;
+    freeL.splice(i, 0, { a: a, n: n });
+    if (i + 1 < freeL.length && freeL[i].a + freeL[i].n === freeL[i + 1].a) { freeL[i].n += freeL[i + 1].n; freeL.splice(i + 1, 1); }
+    if (i > 0 && freeL[i - 1].a + freeL[i - 1].n === freeL[i].a) { freeL[i - 1].n += freeL[i].n; freeL.splice(i, 1); }
+  }
+  function poolReset() { top = poolBase; freeL = []; peak = top; }
+  var H2F = null;
+  function half() {
+    if (H2F) return H2F;
+    H2F = new Float32Array(65536);
+    for (var i = 0; i < 65536; i++) {
+      var s = (i & 0x8000) ? -1 : 1, e = (i >> 10) & 31, m = i & 1023;
+      H2F[i] = e === 0 ? s * m * Math.pow(2, -24) : e === 31 ? (m ? NaN : s * Infinity) : s * (1 + m / 1024) * Math.pow(2, e - 15);
+    }
+    return H2F;
+  }
+  function load(buf) {
+    var dv = new DataView(buf.buffer, buf.byteOffset, buf.byteLength);
+    if (String.fromCharCode(buf[0], buf[1], buf[2], buf[3]) !== 'MDX1') throw new Error('bad model file');
+    var hl = dv.getUint32(4, true), hdr = '';
+    for (var i = 0; i < hl; i++) hdr += String.fromCharCode(buf[8 + i]);
+    var h = JSON.parse(hdr), p0 = 8 + hl, total = 0, k, n;
+    for (k in h.w) { n = 1; h.w[k].d.forEach(function (x) { n *= x; }); h.w[k].n = n; total = Math.max(total, h.w[k].o + n); }
+    wbase = 16; ensure(wbase + total + 65536);
+    var tbl = h.fp === 16 ? half() : null;
+    if (h.fp === 16) {
+      var u16 = new Uint16Array(buf.buffer.slice(buf.byteOffset + p0, buf.byteOffset + p0 + total * 2));
+      for (i = 0; i < total; i++) f[wbase + i] = tbl[u16[i]];
+    } else f.set(new Float32Array(buf.buffer.slice(buf.byteOffset + p0, buf.byteOffset + p0 + total * 4)), wbase);
+    zeros = wbase + total; f.fill(0, zeros, zeros + 65536);
+    poolBase = zeros + 65536; wtab = h.w;
+    var alias = {}, res = function (nm) { return alias[nm] !== undefined ? alias[nm] : nm; }, ops = [];
+    h.ops.forEach(function (op) {
+      if (op.t === 'add' || op.t === 'mul') { op.a = res(op.a); op.b = res(op.b); } else op.i = res(op.i);
+      if (op.t === 'id') { alias[op.o] = op.i; return; }
+      ops.push(op);
+    });
+    var last = {};
+    ops.forEach(function (op, j) { [op.i, op.a, op.b].forEach(function (nm, q) { if (nm !== undefined && !((op.t === 'conv' || op.t === 'convt') && q === 2)) last[nm] = j; }); });
+    prog = { ops: ops, last: last, out: res('output') };
+    return true;
+  }
+  var W = function (nm) { return wbase + wtab[nm].o; };
+  function relu(a, n) { for (var i = a, e = a + n; i < e; i++) if (f[i] < 0) f[i] = 0; }
+  function opConv(op, x) {
+    var C = x.c, H = x.h, Wd = x.w, O = op.O, k = op.k, s = op.s, w = W(op.w), b = W(op.b), P = H * Wd, out, i;
+    if (k === 1) {
+      out = { a: alloc(O * P), c: O, h: H, w: Wd };
+      gemm(w, x.a, out.a, b, O, C, P);
+      if (op.relu) relu(out.a, O * P);
+      return out;
+    }
+    var H2 = s === 1 ? H : H >> 1, W2 = s === 1 ? Wd : Wd >> 1, kk = k * k, CK = C * kk;
+    var nr = Math.max(1, Math.min(H2, Math.floor((1 << 21) / (CK * W2)))), npMax = nr * W2;
+    out = { a: alloc(O * H2 * W2), c: O, h: H2, w: W2 };
+    var col = alloc(CK * npMax), ot = alloc(O * npMax), c, ki, kj, r;
+    var ff = f, xa = x.a;
+    for (var h0 = 0; h0 < H2; h0 += nr) {
+      var n = Math.min(nr, H2 - h0), np = n * W2;
+      if (k === 3) {
+        for (c = 0; c < C; c++) for (ki = 0; ki < 3; ki++) for (kj = 0; kj < 3; kj++) {
+          var dr = col + ((c * 3 + ki) * 3 + kj) * np;
+          for (r = 0; r < n; r++) {
+            var ih = h0 + r + ki - 1, dst = dr + r * Wd;
+            if (ih < 0 || ih >= H) { ff.fill(0, dst, dst + Wd); continue; }
+            var src = xa + c * P + ih * Wd;
+            if (kj === 1) ff.copyWithin(dst, src, src + Wd);
+            else if (kj === 0) { ff[dst] = 0; ff.copyWithin(dst + 1, src, src + Wd - 1); }
+            else { ff.copyWithin(dst, src + 1, src + Wd); ff[dst + Wd - 1] = 0; }
+          }
+        }
+      } else {                                   // 2x2 stride 2
+        for (c = 0; c < C; c++) for (ki = 0; ki < 2; ki++) for (kj = 0; kj < 2; kj++) {
+          var dr2 = col + ((c * 2 + ki) * 2 + kj) * np;
+          for (r = 0; r < n; r++) {
+            var s0 = xa + c * P + (2 * (h0 + r) + ki) * Wd + kj, d0 = dr2 + r * W2;
+            for (i = 0; i < W2; i++) ff[d0 + i] = ff[s0 + 2 * i];
+          }
+        }
+      }
+      gemm(w, col, ot, b, O, CK, np);
+      for (var o = 0; o < O; o++) {
+        var so = ot + o * np, dd = out.a + o * H2 * W2 + h0 * W2;
+        if (op.relu) for (i = 0; i < np; i++) { var v = ff[so + i]; ff[dd + i] = v > 0 ? v : 0; }
+        else ff.copyWithin(dd, so, so + np);
+      }
+    }
+    release(ot, O * npMax); release(col, CK * npMax);
+    return out;
+  }
+  function opConvT(op, x) {
+    var Ci = x.c, H = x.h, Wd = x.w, Co = op.Co, w = W(op.w), b = W(op.b), P = H * Wd, OH = 2 * H, OW = 2 * Wd;
+    var nr = Math.max(1, Math.min(H, Math.floor((1 << 20) / ((Ci + 4 * Co) * Wd)))), npMax = nr * Wd;
+    var out = { a: alloc(Co * OH * OW), c: Co, h: OH, w: OW }, xt = alloc(Ci * npMax), ot = alloc(4 * Co * npMax), ff = f, i, c, q;
+    for (var h0 = 0; h0 < H; h0 += nr) {
+      var n = Math.min(nr, H - h0), np = n * Wd;
+      for (c = 0; c < Ci; c++) ff.copyWithin(xt + c * np, x.a + c * P + h0 * Wd, x.a + c * P + h0 * Wd + np);
+      gemm(w, xt, ot, b, 4 * Co, Ci, np);
+      for (q = 0; q < Co; q++) for (var ki = 0; ki < 2; ki++) for (var kj = 0; kj < 2; kj++) {
+        var row = ot + (q * 4 + ki * 2 + kj) * np;
+        for (var r = 0; r < n; r++) {
+          var d0 = out.a + q * OH * OW + (2 * (h0 + r) + ki) * OW + kj, s0 = row + r * Wd;
+          if (op.relu) for (i = 0; i < Wd; i++) { var v = ff[s0 + i]; ff[d0 + 2 * i] = v > 0 ? v : 0; }
+          else for (i = 0; i < Wd; i++) ff[d0 + 2 * i] = ff[s0 + i];
+        }
+      }
+    }
+    release(ot, 4 * Co * npMax); release(xt, Ci * npMax);
+    return out;
+  }
+  function opMM(op, x) {                         // [C,T,F] x [F,K] -> [C,T,K]
+    var w = W(op.w), Fd = wtab[op.w].d[0], Kd = wtab[op.w].d[1], R = x.c * x.h;
+    var out = { a: alloc(R * Kd), c: x.c, h: x.h, w: Kd };
+    gemm(x.a, w, out.a, zeros, R, Fd, Kd);
+    return out;
+  }
+  function opBN(op, x, inplace) {
+    var out = inplace ? x : { a: alloc(x.c * x.h * x.w), c: x.c, h: x.h, w: x.w }, sc = W(op.sc), sh = W(op.sh), n = x.h * x.w, ff = f;
+    for (var c = 0; c < x.c; c++) {
+      var s = ff[sc + c], t = ff[sh + c], a = x.a + c * n, o = out.a + c * n, e = a + n;
+      if (op.relu) for (; a < e; a++, o++) { var v = ff[a] * s + t; ff[o] = v > 0 ? v : 0; }
+      else for (; a < e; a++, o++) ff[o] = ff[a] * s + t;
+    }
+    return out;
+  }
+  function runNet(inA, T) {
+    var env = { input: { a: inA, c: 4, h: T, w: DIMF } }, ops = prog.ops, last = prog.last, protectedIn = env.input;
+    for (var j = 0; j < ops.length; j++) {
+      var op = ops[j], x = env[op.i !== undefined ? op.i : op.a], out;
+      if (op.t === 'conv') out = opConv(op, x);
+      else if (op.t === 'convt') out = opConvT(op, x);
+      else if (op.t === 'mm') out = opMM(op, x);
+      else if (op.t === 'bn') out = opBN(op, x, last[op.i] === j && x !== protectedIn);
+      else if (op.t === 'relu') { out = x; if (!(last[op.i] === j && x !== protectedIn)) { out = { a: alloc(x.c * x.h * x.w), c: x.c, h: x.h, w: x.w }; f.copyWithin(out.a, x.a, x.a + x.c * x.h * x.w); } relu(out.a, x.c * x.h * x.w); }
+      else if (op.t === 'add' || op.t === 'mul') {
+        var y = env[op.b], n = x.c * x.h * x.w, ff = f, ia = last[op.a] === j && x !== protectedIn, ib = last[op.b] === j && y !== protectedIn, i;
+        if (ia) out = x; else if (ib) out = y; else out = { a: alloc(n), c: x.c, h: x.h, w: x.w };
+        var oa = out.a, xa = x.a, ya = y.a;
+        if (op.t === 'add') for (i = 0; i < n; i++) ff[oa + i] = ff[xa + i] + ff[ya + i];
+        else for (i = 0; i < n; i++) ff[oa + i] = ff[xa + i] * ff[ya + i];
+      } else throw new Error('op ' + op.t);
+      env[op.o] = out;
+      var names = [op.i, op.a, op.b];
+      for (var q = 0; q < names.length; q++) {
+        var nm = names[q];
+        if (nm === undefined || (q === 2 && (op.t === 'conv' || op.t === 'convt')) || last[nm] !== j) continue;
+        var tt = env[nm];
+        if (tt && tt !== protectedIn && tt.a !== out.a) release(tt.a, tt.c * tt.h * tt.w);
+        env[nm] = null;
+      }
+    }
+    return env[prog.out];
+  }
+  var tw2 = null, rev2 = null, tw3 = null, tmpR = null, tmpI = null, WIN = null, zr = null, zi = null;
+  function fftInit() {
+    if (tw2) return;
+    var n = 2048, i;
+    tw2 = new Float64Array(n); rev2 = new Uint16Array(n); tw3 = new Float64Array(2 * NFFT);
+    for (i = 0; i < n / 2; i++) { tw2[2 * i] = Math.cos(-2 * Math.PI * i / n); tw2[2 * i + 1] = Math.sin(-2 * Math.PI * i / n); }
+    for (i = 0; i < n; i++) { var r = 0, x = i; for (var b = 0; b < 11; b++) { r = (r << 1) | (x & 1); x >>= 1; } rev2[i] = r; }
+    for (i = 0; i < NFFT; i++) { tw3[2 * i] = Math.cos(-2 * Math.PI * i / NFFT); tw3[2 * i + 1] = Math.sin(-2 * Math.PI * i / NFFT); }
+    tmpR = [new Float64Array(n), new Float64Array(n), new Float64Array(n)]; tmpI = [new Float64Array(n), new Float64Array(n), new Float64Array(n)];
+    WIN = new Float64Array(NFFT); for (i = 0; i < NFFT; i++) WIN[i] = 0.5 - 0.5 * Math.cos(2 * Math.PI * i / NFFT);
+    zr = new Float64Array(NFFT); zi = new Float64Array(NFFT);
+  }
+  function fft2048(re, im, inv) {
+    var n = 2048, i, j, t;
+    for (i = 0; i < n; i++) { j = rev2[i]; if (j > i) { t = re[i]; re[i] = re[j]; re[j] = t; t = im[i]; im[i] = im[j]; im[j] = t; } }
+    var sg = inv ? -1 : 1;
+    for (var len = 2; len <= n; len <<= 1) {
+      var half = len >> 1, step = n / len;
+      for (i = 0; i < n; i += len) for (j = 0; j < half; j++) {
+        var wr = tw2[2 * j * step], wi = sg * tw2[2 * j * step + 1], a = i + j, b = a + half;
+        var xr = re[b] * wr - im[b] * wi, xi = re[b] * wi + im[b] * wr;
+        re[b] = re[a] - xr; im[b] = im[a] - xi; re[a] += xr; im[a] += xi;
+      }
+    }
+  }
+  function fft6144(re, im, inv) {                 // in place; no scaling
+    var m = 2048, r, k, sg = inv ? -1 : 1, c3 = -0.5, s3 = sg * -0.8660254037844386;
+    for (r = 0; r < 3; r++) { var a = tmpR[r], b = tmpI[r]; for (k = 0; k < m; k++) { a[k] = re[3 * k + r]; b[k] = im[3 * k + r]; } fft2048(a, b, inv); }
+    for (k = 0; k < m; k++) {
+      var t0r = tmpR[0][k], t0i = tmpI[0][k], w1r = tw3[2 * k], w1i = sg * tw3[2 * k + 1], w2r = tw3[4 * k], w2i = sg * tw3[4 * k + 1];
+      var t1r = tmpR[1][k] * w1r - tmpI[1][k] * w1i, t1i = tmpR[1][k] * w1i + tmpI[1][k] * w1r;
+      var t2r = tmpR[2][k] * w2r - tmpI[2][k] * w2i, t2i = tmpR[2][k] * w2i + tmpI[2][k] * w2r;
+      re[k] = t0r + t1r + t2r; im[k] = t0i + t1i + t2i;
+      re[k + m] = t0r + (t1r * c3 - t1i * s3) + (t2r * c3 + t2i * s3); im[k + m] = t0i + (t1r * s3 + t1i * c3) + (t2i * c3 - t2r * s3);
+      re[k + 2 * m] = t0r + (t1r * c3 + t1i * s3) + (t2r * c3 - t2i * s3); im[k + 2 * m] = t0i + (t1i * c3 - t1r * s3) + (t2r * s3 + t2i * c3);
+    }
+  }
+  function stftFrame(L, R, fr, Lr, Li, Rr, Ri) {
+    var N = L.length, base = fr * HOP - NFFT / 2, j, idx, k;
+    for (j = 0; j < NFFT; j++) {
+      idx = base + j;
+      if (idx < 0) idx = -idx; else if (idx >= N) idx = 2 * (N - 1) - idx;
+      if (idx < 0) idx = 0; else if (idx >= N) idx = N - 1;
+      zr[j] = L[idx] * WIN[j]; zi[j] = R[idx] * WIN[j];
+    }
+    fft6144(zr, zi, false);
+    for (k = 0; k < DIMF; k++) {
+      var k2 = (NFFT - k) % NFFT, ar = zr[k], ai = zi[k], br = zr[k2], bi = zi[k2];
+      Lr[k] = 0.5 * (ar + br); Li[k] = 0.5 * (ai - bi); Rr[k] = 0.5 * (ai + bi); Ri[k] = 0.5 * (br - ar);
+    }
+  }
+  function istftFrame(Lr, Li, Rr, Ri, yl, yr) {
+    var k;
+    zr.fill(0); zi.fill(0);
+    for (k = 0; k < DIMF; k++) { zr[k] = Lr[k] - Ri[k]; zi[k] = Li[k] + Rr[k]; }
+    for (k = 1; k < DIMF; k++) { zr[NFFT - k] = Lr[k] + Ri[k]; zi[NFFT - k] = -Li[k] + Rr[k]; }
+    fft6144(zr, zi, true);
+    for (k = 0; k < NFFT; k++) { yl[k] = zr[k] / NFFT * WIN[k]; yr[k] = zi[k] / NFFT * WIN[k]; }
+  }
+  function separate(L, R, opts) {
+    opts = opts || {};
+    fftInit();
+    var N = L.length, F = 1 + Math.floor(N / HOP), T = opts.T || 128, ctx = opts.ctx != null ? opts.ctx : 8, core = T - 2 * ctx;
+    var nSeg = Math.ceil(F / core), s, t, k, c, i;
+    poolReset();
+    var inA = alloc(4 * T * DIMF), ff;
+    var ola = [new Float32Array(N), new Float32Array(N)];
+    var Lr = new Float64Array(DIMF), Li = new Float64Array(DIMF), Rr = new Float64Array(DIMF), Ri = new Float64Array(DIMF);
+    var yl = new Float64Array(NFFT), yr = new Float64Array(NFFT), base0 = top;
+    var segList = opts.segs || null, nDo = segList ? segList.length : nSeg;
+    for (var si = 0; si < nDo; si++) {
+      s = segList ? segList[si] : si;
+      var t0 = s * core - ctx;
+      ff = f;
+      for (t = 0; t < T; t++) {
+        var fr = t0 + t;
+        if (fr < 0 || fr >= F) { for (c = 0; c < 4; c++) ff.fill(0, inA + (c * T + t) * DIMF, inA + (c * T + t + 1) * DIMF); continue; }
+        stftFrame(L, R, fr, Lr, Li, Rr, Ri);
+        var o0 = inA + t * DIMF, st = T * DIMF;
+        for (k = 0; k < DIMF; k++) { ff[o0 + k] = Lr[k]; ff[o0 + st + k] = Li[k]; ff[o0 + 2 * st + k] = Rr[k]; ff[o0 + 3 * st + k] = Ri[k]; }
+      }
+      var out = runNet(inA, T);
+      ff = f;
+      for (t = ctx; t < T - ctx; t++) {
+        var fr2 = t0 + t;
+        if (fr2 < 0 || fr2 >= F) continue;
+        var q0 = out.a + t * DIMF, st2 = T * DIMF;
+        for (k = 0; k < DIMF; k++) { Lr[k] = ff[q0 + k]; Li[k] = ff[q0 + st2 + k]; Rr[k] = ff[q0 + 2 * st2 + k]; Ri[k] = ff[q0 + 3 * st2 + k]; }
+        istftFrame(Lr, Li, Rr, Ri, yl, yr);
+        var o1 = fr2 * HOP - NFFT / 2;
+        for (i = Math.max(0, -o1); i < NFFT && o1 + i < N; i++) { ola[0][o1 + i] += yl[i]; ola[1][o1 + i] += yr[i]; }
+      }
+      release(out.a, out.c * out.h * out.w);
+      opts.progress && opts.progress((si + 1) / nDo);
+    }
+    for (i = 0; i < N; i++) {
+      var fa = Math.max(0, Math.floor((i - NFFT / 2) / HOP) + 1), fb = Math.min(F - 1, Math.floor((i + NFFT / 2) / HOP)), ws = 1e-8;
+      for (var fi = fa; fi <= fb; fi++) { var wv = WIN[i - (fi * HOP - NFFT / 2)]; ws += wv * wv; }
+      ola[0][i] *= COMP / ws; ola[1][i] *= COMP / ws;
+    }
+    return { L: ola[0], R: ola[1], F: F, segs: nSeg, T: T, ctx: ctx, peakFloats: peak };
+  }
+  return { init: init, load: load, separate: separate, runNet: runNet, _alloc: alloc, _f: function () { return f; }, _poolReset: poolReset, _gemm: gemm };
+})();
+if (typeof module !== 'undefined') module.exports = MDX;
+var KERN_B64 = 'AGFzbQEAAAABEwJgBX9/f39/AGAHf39/f39/fwACCAEBZQFtAgABAwMCAAEHEQIGbWF0dmVjAAAEZ2VtbQABCroHAqIDAgh/BXtBACEFIARBAnQhDAJAA0AgBSADTg0BIAUgDGwgAGohByAHIAxqIQggCCAMaiEJIAkgDGohCiABIQv9DAAAAAAAAAAAAAAAAAAAAAAhDf0MAAAAAAAAAAAAAAAAAAAAACEO/QwAAAAAAAAAAAAAAAAAAAAAIQ/9DAAAAAAAAAAAAAAAAAAAAAAhECAEQQJ1IQYCQANAIAZFDQEgC/0AAgAhESANIAf9AAIAIBH95gH95AEhDSAOIAj9AAIAIBH95gH95AEhDiAPIAn9AAIAIBH95gH95AEhDyAQIAr9AAIAIBH95gH95AEhECAHQRBqIQcgCEEQaiEIIAlBEGohCSAKQRBqIQogC0EQaiELIAZBAWshBgwACwsgBUECdCACaiEHIAcgDf0fACAN/R8BkiAN/R8CIA39HwOSkjgCACAHIA79HwAgDv0fAZIgDv0fAiAO/R8DkpI4AgQgByAP/R8AIA/9HwGSIA/9HwIgD/0fA5KSOAIIIAcgEP0fACAQ/R8BkiAQ/R8CIBD9HwOSkjgCDCAFQQRqIQUMAAsLC5MEAgt/C3sgBkECdCEPIAVBAnQhEEEAIQcCQANAIAcgBE4NAUEAIQgCQANAIAggBk4NASADIAdBAGpBAnRqKgIA/RMhEiASIRMgAyAHQQFqQQJ0aioCAP0TIRQgFCEVIAMgB0ECakECdGoqAgD9EyEWIBYhFyADIAdBA2pBAnRqKgIA/RMhGCAYIRkgByAFbEECdCAAaiEKIAogEGohCyALIBBqIQwgDCAQaiENIAhBAnQgAWohDiAFIQkCQANAIAlFDQEgDv0AAgAhGiAO/QACECEbIAr9CQIAIRwgEiAcIBr95gH95AEhEiATIBwgG/3mAf3kASETIApBBGohCiAL/QkCACEcIBQgHCAa/eYB/eQBIRQgFSAcIBv95gH95AEhFSALQQRqIQsgDP0JAgAhHCAWIBwgGv3mAf3kASEWIBcgHCAb/eYB/eQBIRcgDEEEaiEMIA39CQIAIRwgGCAcIBr95gH95AEhGCAZIBwgG/3mAf3kASEZIA1BBGohDSAOIA9qIQ4gCUEBayEJDAALCyAHIAZsIAhqQQJ0IAJqIREgESAS/QsCACARIBP9CwIQIBEgD2ohESARIBT9CwIAIBEgFf0LAhAgESAPaiERIBEgFv0LAgAgESAX/QsCECARIA9qIREgESAY/QsCACARIBn9CwIQIBEgD2ohESAIQQhqIQgMAAsLIAdBBGohBwwACwsL';
+function b64bytes(s) { var b = atob(s), u = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; }
+onmessage = function (e) {
+  var d = e.data;
+  if (d.type !== 'run') return;
+  (async function () {
+    try {
+      postMessage({ type: 'status', label: 'unpack' });
+      if (typeof DecompressionStream === 'undefined') throw new Error('no gunzip');
+      var raw = new Uint8Array(await new Response(new Blob([d.gz]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer());
+      MDX.init(b64bytes(KERN_B64), 64);
+      MDX.load(raw);
+      raw = null;
+      postMessage({ type: 'status', label: 'run' });
+      var last = 0;
+      var r = MDX.separate(d.L, d.R, { T: d.T, ctx: d.ctx, segs: d.segs, progress: function (p) { var t = Date.now(); if (t - last > 300 || p >= 1) { last = t; postMessage({ type: 'progress', p: p }); } } });
+      postMessage({ type: 'done', L: r.L, R: r.R }, [r.L.buffer, r.R.buffer]);
+    } catch (err) {
+      postMessage({ type: 'error', msg: String((err && err.message) || err) });
+    }
+  })();
+};`;
+  // ------------------------------------------------------------------ "maximum" vocal / music separation (MDX-Net, runs in the browser)
+  // Same idea as the Open-Unmix mode: one file (~14 MB) from this site (lib/mdx/), kept in Cache Storage, run by workers with WebAssembly SIMD.
+  const MDX_REL = 'lib/mdx/mdx-1-9703.bin.gz', MDX_SIZE = 13725199, MDX_MAX_SEC = 120, MDX_T = 128, MDX_CTX = 8, MDX_HOP = 1024;
+  const mdxUrl = () => { try { return new URL(MDX_REL, document.baseURI).href; } catch (_) { return MDX_REL; } };
+  const MD = KF.mdx = { status: 'checking', pct: 0, error: '', mem: null, busy: null, MB: 14 };
+  MD.supported = () => {
+    try { return !window.KF_NO_MDX && KF.umx.supported(); } catch (_) { return false; }
+  };
+  MD.check = async () => {
+    if (!MD.supported()) { MD.status = 'unsupported'; KF.changed(); return false; }
+    if (MD.mem) { MD.status = 'ready'; return true; }
+    try {
+      const c = await caches.open(UMX_CACHE);
+      MD.status = (await c.match(mdxUrl())) ? 'ready' : 'need';
+    } catch (_) { MD.status = 'need'; }
+    KF.changed();
+    return MD.status === 'ready';
+  };
+  MD.download = (onProgress) => {
+    if (MD.busy) return MD.busy;
+    MD.status = 'downloading'; MD.pct = 0; MD.error = ''; KF.changed();
+    MD.busy = (async () => {
+      try {
+        const r = await fetch(mdxUrl());
+        if (!r.ok) throw new Error('โหลดโมเดลไม่ได้ (HTTP ' + r.status + ')');
+        const parts = []; let got = 0;
+        if (r.body && r.body.getReader) {
+          const rd = r.body.getReader();
+          for (;;) {
+            const { done, value } = await rd.read();
+            if (done) break;
+            parts.push(value); got += value.length;
+            const p = got / MDX_SIZE;
+            MD.pct = Math.min(99, Math.round(p * 100)); onProgress && onProgress(Math.min(0.99, p)); KF.changed();
+          }
+        } else { const b = new Uint8Array(await r.arrayBuffer()); parts.push(b); got = b.length; }
+        const u8 = new Uint8Array(got); let o = 0;
+        for (const p of parts) { u8.set(p, o); o += p.length; }
+        if (u8.length < 5e6 || u8[0] !== 0x1f || u8[1] !== 0x8b) throw new Error('ไฟล์โมเดลบนเว็บไม่ถูกต้อง (ต้องมีโฟลเดอร์ lib/mdx ในเว็บ)');
+        let cached = false;
+        try {
+          const c = await caches.open(UMX_CACHE);
+          await c.put(mdxUrl(), new Response(u8, { headers: { 'Content-Type': 'application/gzip' } }));
+          cached = true;
+        } catch (_) {}
+        MD.mem = cached ? null : u8;
+        MD.status = 'ready'; MD.pct = 100;
+      } catch (e) {
+        MD.status = 'error'; MD.error = String((e && e.message) || e);
+        throw e;
+      } finally { MD.busy = null; KF.changed(); }
+    })();
+    return MD.busy;
+  };
+  MD.load = async () => {
+    if (MD.mem) return MD.mem.slice().buffer;
+    const c = await caches.open(UMX_CACHE);
+    const r = await c.match(mdxUrl());
+    if (!r) throw new Error('ไม่พบไฟล์โมเดลในเครื่อง');
+    return await r.arrayBuffer();
+  };
+  MD.ensure = async (onProgress) => {
+    if (MD.status !== 'ready') await MD.check();
+    if (MD.status === 'unsupported') throw new Error('unsupported');
+    if (MD.status !== 'ready') await MD.download(onProgress);
+  };
+  MD.check();
+
+  /** maximum-quality version of T.split: the singing voice and the music, from the part of the sound that is actually used */
+  async function splitMax(target, strength, onProgress) {
+    const say = (p, label) => onProgress && onProgress(p, label);
+    say(0.01, 'กำลังเตรียมโมเดลสูงสุด…');
+    await MD.ensure((p) => say(0.01 + 0.04 * p, 'กำลังโหลดโมเดล…'));
+    const it = target.item;
+    const t0 = target.kind === 'clip' ? it.in : (it.from || 0), t1 = target.kind === 'clip' ? it.out : t0 + it.len;
+    if (t1 - t0 > MDX_MAX_SEC) throw new Error('long-max');
+    say(0.05, 'กำลังอ่านเสียง…');
+    const a = await KF.decodeAudio(target.media, 44100, 2);
+    if (a.sr !== 44100) throw new Error('sample rate');
+    const s0 = Math.max(0, Math.floor(t0 * a.sr)), s1 = Math.min(a.data[0].length, Math.ceil(t1 * a.sr));
+    if (s1 - s0 < a.sr * 0.5) throw new Error('คลิปสั้นเกินไป');
+    const dual = a.srcChannels >= 2 && !!a.data[1];
+    const N = s1 - s0;
+    const mixL = a.data[0].slice(s0, s1), mixR = dual ? a.data[1].slice(s0, s1) : mixL;   // kept for the music = mix - voice step
+    // this network separates much worse on quiet audio (a clip at 0.15 RMS lost ~5 dB), so the clip is lifted to a good level first and brought back after
+    let ss = 0, cnt = 0;
+    for (let i = 0; i < N; i += 7) { ss += mixL[i] * mixL[i] + mixR[i] * mixR[i]; cnt += 2; }
+    const rms = Math.sqrt(ss / Math.max(1, cnt)), gain = rms > 1e-5 && rms < 0.4 ? Math.min(30, 0.4 / rms) : 1;
+    const core = MDX_T - 2 * MDX_CTX, nSeg = Math.ceil((1 + Math.floor(N / MDX_HOP)) / core);
+    const nW = Math.max(1, Math.min(nSeg, (navigator.hardwareConcurrency || 2) >= 6 ? 2 : 1));
+    const model = await MD.load();
+    const workers = [], prog = new Array(nW).fill(0);
+    const done = () => workers.forEach((w) => w.terminate());
+    let parts;
+    try {
+      parts = await Promise.all(Array.from({ length: nW }, (_, k) => new Promise((res, rej) => {
+        const segs = []; for (let s = k; s < nSeg; s += nW) segs.push(s);
+        const w = new Worker(URL.createObjectURL(new Blob([MDX_SRC], { type: 'text/javascript' })));
+        workers.push(w);
+        w.onmessage = (e) => {
+          const d = e.data;
+          if (d.type === 'status') { if (d.label === 'unpack') say(0.06, 'กำลังแตกไฟล์โมเดล…'); }
+          else if (d.type === 'progress') {
+            prog[k] = d.p; const p = prog.reduce((x, y) => x + y, 0) / nW;
+            say(0.08 + 0.88 * p, 'โหมดสูงสุดกำลังแยกเสียงร้อง ' + Math.round(p * 100) + '%');
+          } else if (d.type === 'done') res(d);
+          else if (d.type === 'error') rej(new Error(d.msg));
+        };
+        w.onerror = (e) => rej(new Error((e && e.message) || 'โหมดสูงสุดไม่ทำงาน'));
+        const l = mixL.map((x) => x * gain), r = dual ? mixR.map((x) => x * gain) : l.slice();
+        const buf = k === nW - 1 ? model : model.slice(0);
+        w.postMessage({ type: 'run', gz: buf, L: l, R: r, T: MDX_T, ctx: MDX_CTX, segs }, [buf, l.buffer, r.buffer]);
+      })));
+    } finally { done(); }
+    say(0.97, 'กำลังสร้างไฟล์เสียง…');
+    const vL = parts[0].L, vR = parts[0].R;
+    for (let k = 1; k < parts.length; k++) { const pl = parts[k].L, pr = parts[k].R; for (let i = 0; i < N; i++) { vL[i] += pl[i]; vR[i] += pr[i]; } }
+    const mL = new Float32Array(N), mR = new Float32Array(N), ig = 1 / gain;
+    for (let i = 0; i < N; i++) { vL[i] *= ig; vR[i] *= ig; mL[i] = mixL[i] - vL[i]; mR[i] = mixR[i] - vR[i]; }
+    const fade = Math.min(N >> 1, Math.round(0.01 * a.sr));
+    for (const ch of dual ? [vL, vR, mL, mR] : [vL, mL]) for (let i = 0; i < fade; i++) { const g = i / fade; ch[i] *= g; ch[N - 1 - i] *= g; }
+    const base = target.name.replace(/\.[^.]+$/, '').slice(0, 30);
+    return {
+      vocal: wav(dual ? [vL, vR] : [vL], a.sr), music: wav(dual ? [mL, mR] : [mL], a.sr),
+      base, off: s0 / a.sr,
+    };
+  }
+  /*MDX-END*/
   T.split = async (target, strength, onProgress, opts) => {
+    if (opts && opts.max) {
+      try { return await splitMax(target, strength, onProgress); }
+      catch (e) {
+        if (e && e.message === 'long-max') throw e;
+        console.warn('max split failed, using the AI mode', e);
+        KF.toast('โหมดสูงสุดใช้ไม่ได้บนเครื่องนี้ ใช้โหมด AI แทน');
+        onProgress && onProgress(0.02, 'กำลังเตรียมโมเดล AI…');
+        opts = Object.assign({}, opts, { ai: true });
+      }
+    }
     if (opts && opts.ai) {
-      try { return await splitAI(target, onProgress); }
+      try { return await splitAI(target, strength, onProgress); }
       catch (e) {
         if (e && e.message === 'long-ai') throw e;
         console.warn('AI split failed, using the fast mode', e);
