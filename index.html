@@ -11487,6 +11487,7 @@ self.onmessage = async (e) => {
         }
       } catch (e) { if (/Quota/.test(e.message)) throw e; }
       await prefetch(p);
+      if (MODELS[p.key].engine === 'rnnt' && !(await cachedAll(p))) throw new Error('ไฟล์โมเดลบนเว็บไม่ครบ หรือโหลดไม่สำเร็จ ขาด: ' + cachedAll.missing.join(', ') + ' (ตรวจว่าอัปโหลดครบในโฟลเดอร์ lib/typhoon)');
       if (!(await cachedAll(p))) {
         log('หลังโหลด ยังขาด ' + cachedAll.missing.join(', ') + ' ให้ตัวโหลดสำรองโหลดต่อ');
         stage('load'); await ask({ type: 'load', ...p }, 'loaded'); stage(null);
