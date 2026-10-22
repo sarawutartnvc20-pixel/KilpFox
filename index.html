@@ -3910,6 +3910,8 @@ class Component extends DCLogic {
     if (!id) return;
     const m = KF.media[id];
     if (!m || !m.dur || m.dur > MX_ONE || MX.total + m.dur > MX_ALL) { MX.failed[id] = 'long'; return; }
+    // a huge file (4K phone video) is not read into memory just to get its sound: the video element plays it
+    if (m.kind === 'video' && m.blob && m.blob.size > 60e6) { MX.failed[id] = 'big'; return; }
     const ctx = mxCtx();
     if (!ctx) return;
     MX.busy = true;
