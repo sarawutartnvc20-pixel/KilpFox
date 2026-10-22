@@ -2505,11 +2505,11 @@ class Component extends DCLogic {
 
   return Component;
 })() };
-KF_SCREENS["VocalSplit"] = { tpl: "<div style=\"width: 390px; height: 844px; box-sizing: border-box; background: #0F1115; color: #EEF1F6; font-family: 'IBM Plex Sans Thai', sans-serif; display: flex; flex-direction: column; overflow: hidden\">\n  <header style=\"display: flex; align-items: center; gap: 6px; padding: 12px 12px 6px\">\n    <a href=\"Editor.dc.html\" aria-label=\"กลับ\" style=\"width: 44px; height: 44px; color: #C3CAD6; display: flex; align-items: center; justify-content: center\">\n      <svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M15 6l-6 6 6 6\"><\/path><\/svg>\n    <\/a>\n    <h1 style=\"margin: 0; font-size: 18px; font-weight: 700; flex: 1\">แยกเสียงร้อง + ดนตรี<\/h1>\n  <\/header>\n\n  <div class=\"noscroll col\" style=\"flex: 1; min-height: 0; overflow-y: auto; padding: 4px 20px 16px; display: flex; flex-direction: column; gap: 14px\">\n    <div style=\"background: #171A20; border-radius: 16px; padding: 14px; display: flex; align-items: center; gap: 12px\">\n      <span style=\"width: 44px; height: 44px; border-radius: 12px; background: #1F2A2A; color: {{accent}}; display: flex; align-items: center; justify-content: center; font-size: 22px\">{{srcIcon}}<\/span>\n      <div style=\"flex: 1; min-width: 0\">\n        <div style=\"font-size: 12px; color: #8E97A6\">แยกเสียงจาก<\/div>\n        <div style=\"font-size: 14.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis\">{{srcName}}<\/div>\n      <\/div>\n    <\/div>\n    <div style=\"font-size: 12.5px; color: #A9B1BE; line-height: 1.6\">แยกเสียงร้องที่อยู่ตรงกลางออกจากดนตรีในเพลงสเตอริโอ ทำในเครื่อง ไม่ต้องโหลดอะไรเพิ่ม เหมาะกับเพลง MP3 หรือคลิปเพลงที่ได้มาจากต้นฉบับ ถ้าเป็นเสียงที่อัดจากมือถือหรือเสียงโมโนจะแยกไม่ได้ เลือกเพลงในแทร็กเสียงก่อนเข้าหน้านี้เพื่อแยกเพลงนั้น<\/div>\n\n    <div style=\"display: flex; flex-direction: column; gap: 4px\">\n      <div style=\"display: flex; justify-content: space-between; font-size: 13px\"><label for=\"vs-k\" style=\"font-weight: 600\">ความแรงการแยก<\/label><span style=\"color: #A9B1BE\">{{k}}<\/span><\/div>\n      <input id=\"vs-k\" type=\"range\" min=\"0\" max=\"100\" value=\"{{k}}\" onInput=\"{{setK}}\" style=\"width: 100%; accent-color: {{accent}}\">\n      <div style=\"display: flex; justify-content: space-between; font-size: 11px; color: #8E97A6\"><span>นุ่มนวล เก็บเสียงเดิมไว้มาก<\/span><span>แยกเข้ม สะอาดกว่า (เสียงอาจบางลง)<\/span><\/div>\n    <\/div>\n\n    <sc-if value=\"{{isIdle}}\" hint-placeholder-val=\"{{ true }}\">\n      <button onClick=\"{{start}}\" style=\"height: 50px; border: 0; border-radius: 14px; background: {{accent}}; color: #06201D; font-size: 15px; font-weight: 700\">เริ่มแยกเสียง<\/button>\n    <\/sc-if>\n    <sc-if value=\"{{isBusy}}\" hint-placeholder-val=\"{{ false }}\">\n      <div style=\"display: flex; flex-direction: column; gap: 8px\">\n        <div style=\"display: flex; justify-content: space-between; font-size: 13px; color: #C3CAD6\"><span>{{busyLabel}}<\/span><span>{{pct}}%<\/span><\/div>\n        <div style=\"height: 8px; border-radius: 4px; background: #22262E; overflow: hidden\"><div style=\"height: 100%; width: {{pct}}%; background: {{accent}}\"><\/div><\/div>\n      <\/div>\n    <\/sc-if>\n    <sc-if value=\"{{hasError}}\" hint-placeholder-val=\"{{ false }}\">\n      <div style=\"font-size: 13px; color: #FFB4B4; line-height: 1.6; background: #2A1A1E; border-radius: 12px; padding: 10px 12px\">{{error}}<\/div>\n    <\/sc-if>\n    <sc-if value=\"{{isDone}}\" hint-placeholder-val=\"{{ false }}\">\n      <div style=\"display: flex; flex-direction: column; gap: 10px\">\n        <sc-for list=\"{{tracks}}\" as=\"t\" hint-placeholder-count=\"2\">\n          <div style=\"background: #171A20; border-radius: 14px; padding: 10px 12px; display: flex; align-items: center; gap: 12px\">\n            <button onClick=\"{{t.play}}\" aria-label=\"{{t.aria}}\" style=\"width: 42px; height: 42px; border-radius: 50%; border: 0; background: #EEF1F6; color: #0F1115; display: flex; align-items: center; justify-content: center\">\n              <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"{{t.icon}}\"><\/path><\/svg>\n            <\/button>\n            <div style=\"flex: 1\"><div style=\"font-size: 14px; font-weight: 700\">{{t.label}}<\/div><div style=\"font-size: 11.5px; color: #8E97A6\">{{t.note}}<\/div><\/div>\n          <\/div>\n        <\/sc-for>\n        <div style=\"font-size: 13px; font-weight: 600; margin-top: 4px\">ใส่ลงโปรเจกต์<\/div>\n        <button onClick=\"{{useBoth}}\" style=\"height: 48px; border: 0; border-radius: 14px; background: {{accent}}; color: #06201D; font-size: 14.5px; font-weight: 700\">ใส่ทั้งสองแทร็ก (ปรับเสียงแยกกันได้)<\/button>\n        <div style=\"display: grid; grid-template-columns: 1fr 1fr; gap: 10px\">\n          <button onClick=\"{{useMusic}}\" style=\"height: 46px; border-radius: 14px; border: 1px solid #2A2F39; background: transparent; color: #EEF1F6; font-size: 13.5px\">เอาแค่ดนตรี (คาราโอเกะ)<\/button>\n          <button onClick=\"{{useVocal}}\" style=\"height: 46px; border-radius: 14px; border: 1px solid #2A2F39; background: transparent; color: #EEF1F6; font-size: 13.5px\">เอาแค่เสียงร้อง<\/button>\n        <\/div>\n      <\/div>\n    <\/sc-if>\n  <\/div>\n<\/div>\n<\/x-dc>", props: {"accent": {"editor": "color", "default": "#2FD3C4"}, "$preview": {"width": 390, "height": 844}}, title: "KlipFox · แยกเสียงร้อง",
+KF_SCREENS["VocalSplit"] = { tpl: "<div style=\"width: 390px; height: 844px; box-sizing: border-box; background: #0F1115; color: #EEF1F6; font-family: 'IBM Plex Sans Thai', sans-serif; display: flex; flex-direction: column; overflow: hidden\">\n  <header style=\"display: flex; align-items: center; gap: 6px; padding: 12px 12px 6px\">\n    <a href=\"Editor.dc.html\" aria-label=\"กลับ\" style=\"width: 44px; height: 44px; color: #C3CAD6; display: flex; align-items: center; justify-content: center\">\n      <svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M15 6l-6 6 6 6\"><\/path><\/svg>\n    <\/a>\n    <h1 style=\"margin: 0; font-size: 18px; font-weight: 700; flex: 1\">แยกเสียงร้อง + ดนตรี<\/h1>\n  <\/header>\n\n  <div class=\"noscroll col\" style=\"flex: 1; min-height: 0; overflow-y: auto; padding: 4px 20px 16px; display: flex; flex-direction: column; gap: 14px\">\n    <div style=\"background: #171A20; border-radius: 16px; padding: 14px; display: flex; align-items: center; gap: 12px\">\n      <span style=\"width: 44px; height: 44px; border-radius: 12px; background: #1F2A2A; color: {{accent}}; display: flex; align-items: center; justify-content: center; font-size: 22px\">{{srcIcon}}<\/span>\n      <div style=\"flex: 1; min-width: 0\">\n        <div style=\"font-size: 12px; color: #8E97A6\">แยกเสียงจาก<\/div>\n        <div style=\"font-size: 14.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis\">{{srcName}}<\/div>\n      <\/div>\n    <\/div>\n    <div style=\"font-size: 12.5px; color: #A9B1BE; line-height: 1.6\">แยกเสียงร้องที่อยู่ตรงกลางออกจากดนตรีในเพลงสเตอริโอ ทำในเครื่อง ไม่ต้องโหลดอะไรเพิ่ม เหมาะกับเพลง MP3 หรือคลิปเพลงที่ได้มาจากต้นฉบับ แบบเร็วใช้ได้กับเพลงสเตอริโอเท่านั้น ส่วนแบบ AI แยกได้แม้เป็นเสียงโมโน เลือกเพลงในแทร็กเสียงก่อนเข้าหน้านี้เพื่อแยกเพลงนั้น<\/div>\n\n    <div style=\"display: flex; flex-direction: column; gap: 8px\">\n      <div style=\"display: flex; align-items: center; gap: 10px\">\n        <span style=\"width: 96px; font-size: 13px; font-weight: 600\">คุณภาพ<\/span>\n        <div style=\"flex: 1; display: flex; gap: 3px; padding: 3px; border-radius: 12px; background: #171A20\">\n          <button onClick=\"{{pickFast}}\" style=\"flex: 1; height: 36px; border: 0; border-radius: 9px; background: {{qFastBg}}; color: {{qFastFg}}; font-size: 12.5px; font-weight: 600\">เร็ว<\/button>\n          <button onClick=\"{{pickAi}}\" style=\"flex: 1; height: 36px; border: 0; border-radius: 9px; background: {{qAiBg}}; color: {{qAiFg}}; font-size: 12.5px; font-weight: 600\">คุณภาพสูง (AI)<\/button>\n        <\/div>\n      <\/div>\n      <div style=\"font-size: 11.5px; color: #8E97A6; line-height: 1.55\">{{qNote}}<\/div>\n      <sc-if value=\"{{qBtn}}\" hint-placeholder-val=\"{{ false }}\"><button onClick=\"{{qDownload}}\" style=\"align-self: flex-start; height: 36px; padding: 0 14px; border-radius: 10px; border: 1px solid #2A2F39; background: transparent; color: #EEF1F6; font-size: 12.5px\">{{qBtnText}}<\/button><\/sc-if>\n    <\/div>\n\n    <sc-if value=\"{{showK}}\" hint-placeholder-val=\"{{ true }}\">\n    <div style=\"display: flex; flex-direction: column; gap: 4px\">\n      <div style=\"display: flex; justify-content: space-between; font-size: 13px\"><label for=\"vs-k\" style=\"font-weight: 600\">ความแรงการแยก<\/label><span style=\"color: #A9B1BE\">{{k}}<\/span><\/div>\n      <input id=\"vs-k\" type=\"range\" min=\"0\" max=\"100\" value=\"{{k}}\" onInput=\"{{setK}}\" style=\"width: 100%; accent-color: {{accent}}\">\n      <div style=\"display: flex; justify-content: space-between; font-size: 11px; color: #8E97A6\"><span>นุ่มนวล เก็บเสียงเดิมไว้มาก<\/span><span>แยกเข้ม สะอาดกว่า (เสียงอาจบางลง)<\/span><\/div>\n    <\/div>\n    <\/sc-if>\n\n    <sc-if value=\"{{isIdle}}\" hint-placeholder-val=\"{{ true }}\">\n      <button onClick=\"{{start}}\" style=\"height: 50px; border: 0; border-radius: 14px; background: {{accent}}; color: #06201D; font-size: 15px; font-weight: 700\">เริ่มแยกเสียง<\/button>\n    <\/sc-if>\n    <sc-if value=\"{{isBusy}}\" hint-placeholder-val=\"{{ false }}\">\n      <div style=\"display: flex; flex-direction: column; gap: 8px\">\n        <div style=\"display: flex; justify-content: space-between; font-size: 13px; color: #C3CAD6\"><span>{{busyLabel}}<\/span><span>{{pct}}%<\/span><\/div>\n        <div style=\"height: 8px; border-radius: 4px; background: #22262E; overflow: hidden\"><div style=\"height: 100%; width: {{pct}}%; background: {{accent}}\"><\/div><\/div>\n      <\/div>\n    <\/sc-if>\n    <sc-if value=\"{{hasError}}\" hint-placeholder-val=\"{{ false }}\">\n      <div style=\"font-size: 13px; color: #FFB4B4; line-height: 1.6; background: #2A1A1E; border-radius: 12px; padding: 10px 12px\">{{error}}<\/div>\n    <\/sc-if>\n    <sc-if value=\"{{isDone}}\" hint-placeholder-val=\"{{ false }}\">\n      <div style=\"display: flex; flex-direction: column; gap: 10px\">\n        <sc-for list=\"{{tracks}}\" as=\"t\" hint-placeholder-count=\"2\">\n          <div style=\"background: #171A20; border-radius: 14px; padding: 10px 12px; display: flex; align-items: center; gap: 12px\">\n            <button onClick=\"{{t.play}}\" aria-label=\"{{t.aria}}\" style=\"width: 42px; height: 42px; border-radius: 50%; border: 0; background: #EEF1F6; color: #0F1115; display: flex; align-items: center; justify-content: center\">\n              <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"{{t.icon}}\"><\/path><\/svg>\n            <\/button>\n            <div style=\"flex: 1\"><div style=\"font-size: 14px; font-weight: 700\">{{t.label}}<\/div><div style=\"font-size: 11.5px; color: #8E97A6\">{{t.note}}<\/div><\/div>\n          <\/div>\n        <\/sc-for>\n        <div style=\"font-size: 13px; font-weight: 600; margin-top: 4px\">ใส่ลงโปรเจกต์<\/div>\n        <button onClick=\"{{useBoth}}\" style=\"height: 48px; border: 0; border-radius: 14px; background: {{accent}}; color: #06201D; font-size: 14.5px; font-weight: 700\">ใส่ทั้งสองแทร็ก (ปรับเสียงแยกกันได้)<\/button>\n        <div style=\"display: grid; grid-template-columns: 1fr 1fr; gap: 10px\">\n          <button onClick=\"{{useMusic}}\" style=\"height: 46px; border-radius: 14px; border: 1px solid #2A2F39; background: transparent; color: #EEF1F6; font-size: 13.5px\">เอาแค่ดนตรี (คาราโอเกะ)<\/button>\n          <button onClick=\"{{useVocal}}\" style=\"height: 46px; border-radius: 14px; border: 1px solid #2A2F39; background: transparent; color: #EEF1F6; font-size: 13.5px\">เอาแค่เสียงร้อง<\/button>\n        <\/div>\n      <\/div>\n    <\/sc-if>\n  <\/div>\n<\/div>\n<\/x-dc>", props: {"accent": {"editor": "color", "default": "#2FD3C4"}, "$preview": {"width": 390, "height": 844}}, title: "KlipFox · แยกเสียงร้อง",
   Component: (function () {
 
 class Component extends DCLogic {
-  constructor(props) { super(props); this.state = { phase: 'idle', pct: 0, k: 60, error: '', playing: '' }; this.out = null; this.audio = null; }
+  constructor(props) { super(props); this.state = { phase: 'idle', pct: 0, k: 60, error: '', playing: '', label: '', ai: false }; this.out = null; this.audio = null; }
   onShow() {
     KF.pause();
     const t = KF.tools.splitTarget();
@@ -2524,7 +2524,7 @@ class Component extends DCLogic {
     const url = this.out.urls[which];
     const a = new Audio(url);
     const t = this.target;
-    a.currentTime = t.kind === 'clip' ? t.item.in : (t.item.from || 0);
+    a.currentTime = Math.max(0, (t.kind === 'clip' ? t.item.in : (t.item.from || 0)) - (this.out.off || 0));
     a.onended = () => this.stop();
     a.play().catch(() => {});
     this.audio = a;
@@ -2542,11 +2542,24 @@ class Component extends DCLogic {
       KF.go('Editor');
     };
     const play = 'M7 4l13 8-13 8z', stop = 'M6 4h4v16H6zM14 4h4v16h-4z';
+    const q = KF.vsq.get(), um = KF.umx, ust = um.status;
     return {
-      accent, k: s.k, setK: (e) => this.setState({ k: Number(e.target.value) }),
+      accent, showK: q !== 'ai',
+      qFastBg: q === 'ai' ? 'transparent' : accent, qFastFg: q === 'ai' ? '#C3CAD6' : '#06201D',
+      qAiBg: q === 'ai' ? accent : 'transparent', qAiFg: q === 'ai' ? '#06201D' : '#C3CAD6',
+      pickFast: () => KF.vsq.set('fast'), pickAi: () => KF.vsq.set('ai'),
+      qNote: q !== 'ai' ? 'แบบเร็ว: ใช้สูตรคำนวณในเครื่อง ไม่ต้องโหลดอะไรเพิ่ม แยกได้เฉพาะเพลงสเตอริโอ'
+        : ust === 'unsupported' ? 'เครื่องนี้ยังไม่รองรับโหมด AI (ต้องใช้ iOS 16.4 ขึ้นไป หรือ Chrome รุ่นใหม่) จะใช้แบบเร็วแทน'
+        : ust === 'ready' ? 'AI (Open-Unmix L, CC BY-NC-SA 4.0 ใช้ไม่เชิงพาณิชย์) พร้อมใช้งาน แยกเสียงร้องได้แม่นกว่า รองรับเสียงโมโนด้วย ใช้เวลานานกว่า (ราว 0.3–1 เท่าของความยาวเพลง) และรองรับช่วงที่ใช้ไม่เกิน 5 นาที'
+        : ust === 'downloading' ? 'กำลังโหลดโมเดล AI ' + um.pct + '%'
+        : ust === 'error' ? 'โหลดโมเดลไม่สำเร็จ: ' + um.error
+        : 'AI (Open-Unmix L, CC BY-NC-SA 4.0 ใช้ไม่เชิงพาณิชย์) แยกเสียงร้องได้แม่นกว่าแบบเร็ว ต้องโหลดโมเดลครั้งเดียวประมาณ ' + um.MB + ' MB แล้วเก็บไว้ในเครื่อง',
+      qBtn: q === 'ai' && (ust === 'need' || ust === 'error'), qBtnText: ust === 'error' ? 'ลองโหลดใหม่' : 'โหลดโมเดล AI',
+      qDownload: () => { um.download().catch(() => {}); },
+      k: s.k, setK: (e) => this.setState({ k: Number(e.target.value) }),
       srcIcon: t ? (t.kind === 'audio' ? '♪' : '🎬') : '?', srcName: t ? t.name : 'ยังไม่มีคลิปหรือเพลงในโปรเจกต์',
       isIdle: s.phase === 'idle' && !!t, isBusy: s.phase === 'busy', isDone: s.phase === 'done', hasError: !!s.error,
-      error: s.error, pct: s.pct, busyLabel: s.pct < 5 ? 'กำลังอ่านเสียง…' : s.pct < 20 ? 'กำลังวิเคราะห์ซ้าย–ขวา…' : s.pct < 38 ? 'กำลังแยกกลอง / จังหวะออกจากเสียงร้อง…' : s.pct < 62 ? 'กำลังหาส่วนดนตรีที่เล่นซ้ำ…' : s.pct < 74 ? 'กำลังตามโน้ตเสียงร้อง…' : 'กำลังตัดแยกเสียง…',
+      error: s.error, pct: s.pct, busyLabel: s.ai ? (s.label || 'AI กำลังทำงาน…') : s.pct < 5 ? 'กำลังอ่านเสียง…' : s.pct < 20 ? 'กำลังวิเคราะห์ซ้าย–ขวา…' : s.pct < 38 ? 'กำลังแยกกลอง / จังหวะออกจากเสียงร้อง…' : s.pct < 62 ? 'กำลังหาส่วนดนตรีที่เล่นซ้ำ…' : s.pct < 74 ? 'กำลังตามโน้ตเสียงร้อง…' : 'กำลังตัดแยกเสียง…',
       tracks: s.phase === 'done' ? [
         { label: 'เสียงร้อง', note: 'เสียงร้องหลัก (ตัดดนตรีออก)', aria: 'ฟังเสียงร้อง', icon: s.playing === 'vocal' ? stop : play, play: () => this.play('vocal') },
         { label: 'ดนตรี', note: 'เครื่องดนตรี (ตัดเสียงร้องออก)', aria: 'ฟังดนตรี', icon: s.playing === 'music' ? stop : play, play: () => this.play('music') },
@@ -2554,14 +2567,18 @@ class Component extends DCLogic {
       start: async () => {
         if (!t) return;
         if (t.kind === 'clip' && (t.item.speed || 1) !== 1) { this.setState({ error: 'คลิปนี้ปรับความเร็วไว้ ตั้งความเร็วกลับเป็น 1x ก่อนแล้วค่อยแยกเสียง' }); return; }
-        this.setState({ phase: 'busy', pct: 2, error: '' });
+        this.setState({ phase: 'busy', pct: 2, error: '', ai: q === 'ai', label: '' });
         try {
-          const out = await KF.tools.split(t, s.k / 100, (p) => { const pct = Math.max(5, Math.round(p * 100)); if (pct !== this.state.pct) this.setState({ pct }); });
+          const out = await KF.tools.split(t, s.k / 100, (p, label) => {
+            const pct = Math.max(q === 'ai' ? 1 : 5, Math.round(p * 100));
+            if (label === '') this.setState({ ai: false, pct });
+            else if (pct !== this.state.pct || (label && label !== this.state.label)) this.setState({ pct, label: label || this.state.label });
+          }, { ai: q === 'ai' });
           out.urls = { vocal: URL.createObjectURL(out.vocal), music: URL.createObjectURL(out.music) };
           this.out = out;
           this.setState({ phase: 'done', pct: 100 });
         } catch (e) {
-          const msg = e.message === 'long' ? 'เพลงยาวเกิน 11 นาที เครื่องมือถือแยกไม่ไหว ตัดให้สั้นลงก่อนแล้วค่อยแยก' : e.message === 'mono' ? 'เสียงนี้เป็นโมโน (ซ้ายขวาเหมือนกัน เช่น อัดจากมือถือ) วิธีนี้แยกได้เฉพาะเพลงสเตอริโอ ลองใช้ไฟล์เพลง MP3 ต้นฉบับแทน' : 'แยกเสียงไม่สำเร็จ: ' + (e.message || e);
+          const msg = e.message === 'long-ai' ? 'โหมด AI รองรับช่วงที่ใช้ไม่เกิน 5 นาที ตัดให้สั้นลงก่อน หรือเลือกแบบเร็ว' : e.message === 'long' ? 'เพลงยาวเกิน 11 นาที เครื่องมือถือแยกไม่ไหว ตัดให้สั้นลงก่อนแล้วค่อยแยก' : e.message === 'mono' ? 'เสียงนี้เป็นโมโน (ซ้ายขวาเหมือนกัน เช่น อัดจากมือถือ) วิธีนี้แยกได้เฉพาะเพลงสเตอริโอ ลองใช้ไฟล์เพลง MP3 ต้นฉบับแทน' : 'แยกเสียงไม่สำเร็จ: ' + (e.message || e);
           this.setState({ phase: 'idle', error: msg });
         }
       },
@@ -2764,7 +2781,7 @@ class Component extends DCLogic {
 
   return Component;
 })() };
-KF_SCREENS["ExtractAudio"] = { tpl: "<div style=\"width: 390px; height: 844px; box-sizing: border-box; background: #0F1115; color: #EEF1F6; font-family: 'IBM Plex Sans Thai', sans-serif; display: flex; flex-direction: column; overflow: hidden; position: relative\">\n  <div style=\"flex: 1 1 0; min-height: 110px; max-height: 300px; background: #0B0D10; display: flex; align-items: center; justify-content: center; padding: 10px 0 20px\">\n    <canvas data-kf-preview width=\"{{kfCW}}\" height=\"{{kfCH}}\" onClick=\"{{togglePlay}}\" aria-label=\"ภาพตัวอย่าง แตะเพื่อเล่นหรือหยุด\" style=\"max-height: 100%; max-width: 100%; border-radius: 4px; background: #000; display: block\"><\/canvas>\n  <\/div>\n  <section aria-label=\"แยกเสียงออกจากคลิป\" style=\"flex: 0 1 560px; min-height: 420px; background: #171A20; border-radius: 20px 20px 0 0; margin-top: -12px; display: flex; flex-direction: column; overflow: hidden\">\n    <div style=\"display: flex; justify-content: center; padding-top: 8px\"><div style=\"width: 38px; height: 4px; border-radius: 2px; background: #3C4452\"><\/div><\/div>\n    <div style=\"display: flex; align-items: center; gap: 8px; padding: 6px 12px 0 20px\">\n      <h1 style=\"margin: 0; font-size: 17px; font-weight: 700; flex: 1\">แยกเสียงออกจากคลิป <span style=\"font-size: 12px; font-weight: 400; color: #A9B1BE\">{{clipLabel}}<\/span><\/h1>\n      <a href=\"Editor.dc.html\" aria-label=\"ปิด\" style=\"width: 44px; height: 44px; color: #C3CAD6; display: flex; align-items: center; justify-content: center\">\n        <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M6 6l12 12M18 6L6 18\"><\/path><\/svg>\n      <\/a>\n    <\/div>\n    <div class=\"noscroll col\" style=\"flex: 1 1 0; min-height: 0; overflow-y: auto; padding: 8px 20px 10px; display: flex; flex-direction: column; gap: 10px\">\n      <sc-if value=\"{{res.on}}\" hint-placeholder-val=\"{{ false }}\">\n        <div style=\"display: flex; gap: 10px; align-items: center; padding: 10px 12px; border-radius: 12px; background: #12302D; border: 1px solid #1F6E68; font-size: 13px; line-height: 1.45\">\n          <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"{{accent}}\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" style=\"flex-shrink: 0\"><path d=\"M5 12l5 5 9-10\"><\/path><\/svg>\n          <span>ปิดเสียงเดิมของคลิปแล้ว จะได้ยินเฉพาะแทร็กที่แยกไว้ ทุกแทร็กเริ่มพร้อมกันตรงเวลาเดียวกัน ไม่ซ้อนกัน<\/span>\n        <\/div>\n        <sc-for list=\"{{res.parts}}\" as=\"q\" hint-placeholder-count=\"2\">\n          <div style=\"display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 14px; background: #0F1115; border: 1px solid {{q.border}}\">\n            <div style=\"display: flex; align-items: center; gap: 8px\">\n              <span style=\"width: 10px; height: 10px; border-radius: 5px; background: {{q.color}}; flex-shrink: 0\"><\/span>\n              <span style=\"flex: 1; min-width: 0; font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis\">{{q.name}}<\/span>\n              <button onClick=\"{{q.solo}}\" aria-pressed=\"{{q.soloOn}}\" style=\"height: 36px; padding: 0 12px; border-radius: 10px; border: 1px solid {{q.soloBorder}}; background: {{q.soloBg}}; color: {{q.soloFg}}; font-size: 12.5px; font-weight: 600\">ฟังแทร็กนี้<\/button>\n              <button onClick=\"{{q.mute}}\" aria-pressed=\"{{q.muteOn}}\" aria-label=\"ปิดเสียงแทร็กนี้\" style=\"width: 40px; height: 36px; border-radius: 10px; border: 1px solid {{q.muteBorder}}; background: {{q.muteBg}}; color: {{q.muteFg}}; display: flex; align-items: center; justify-content: center\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 9v6h4l5 4V5L8 9zM17 9l4 6M21 9l-4 6\"><\/path><\/svg><\/button>\n            <\/div>\n            <div style=\"display: flex; align-items: center; gap: 10px\">\n              <label for=\"{{q.vid}}\" style=\"font-size: 12px; color: #A9B1BE; width: 62px\">ดัง {{q.vol}}%<\/label>\n              <input id=\"{{q.vid}}\" type=\"range\" min=\"0\" max=\"200\" value=\"{{q.vol}}\" onInput=\"{{q.setVol}}\" style=\"flex: 1; accent-color: {{q.color}}\">\n            <\/div>\n          <\/div>\n        <\/sc-for>\n        <div style=\"display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 14px; background: #0F1115; border: 1px solid #22262E\">\n          <div style=\"display: flex; justify-content: space-between; align-items: center\"><span style=\"font-size: 13.5px; font-weight: 600\">ได้ยินเสียงซ้ำหรือไม่ตรงปาก?<\/span><span style=\"font-size: 12px; color: {{accent}}\">ขยับเสียงให้ตรงภาพ<\/span><\/div>\n          <div style=\"display: flex; align-items: center; gap: 8px\">\n            <button onClick=\"{{res.earlier}}\" style=\"flex: 1; height: 40px; border-radius: 10px; border: 1px solid #2A2F39; background: transparent; color: #EEF1F6; font-size: 13.5px\">◀ เร็วขึ้น 10 ms<\/button>\n            <div style=\"min-width: 72px; text-align: center; font-size: 15px; font-weight: 700; color: {{accent}}; font-variant-numeric: tabular-nums\">{{res.offText}}<\/div>\n            <button onClick=\"{{res.later}}\" style=\"flex: 1; height: 40px; border-radius: 10px; border: 1px solid #2A2F39; background: transparent; color: #EEF1F6; font-size: 13.5px\">ช้าลง 10 ms ▶<\/button>\n          <\/div>\n        <\/div>\n      <\/sc-if>\n      <sc-if value=\"{{res.off}}\" hint-placeholder-val=\"{{ true }}\">\n      <sc-for list=\"{{modes}}\" as=\"m\" hint-placeholder-count=\"3\">\n        <button onClick=\"{{m.pick}}\" style=\"display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px; border: 2px solid {{m.border}}; background: #0F1115; color: #EEF1F6; text-align: left\">\n          <span style=\"width: 18px; height: 18px; border-radius: 9px; border: 2px solid {{m.border}}; box-sizing: border-box; display: flex; align-items: center; justify-content: center; flex-shrink: 0\"><span style=\"width: 8px; height: 8px; border-radius: 4px; background: {{m.dot}}\"><\/span><\/span>\n          <span style=\"display: flex; flex-direction: column; gap: 2px\">\n            <span style=\"font-size: 14px; font-weight: 700\">{{m.name}}<\/span>\n            <span style=\"font-size: 12px; color: #A9B1BE; line-height: 1.4\">{{m.desc}}<\/span>\n          <\/span>\n        <\/button>\n      <\/sc-for>\n      <sc-if value=\"{{showStrength}}\" hint-placeholder-val=\"{{ false }}\">\n        <div style=\"display: flex; align-items: center; gap: 10px\">\n          <label for=\"xa-str\" style=\"font-size: 13px; color: #D5DAE1; white-space: nowrap\">ความแรงในการแยก<\/label>\n          <input id=\"xa-str\" type=\"range\" min=\"0\" max=\"100\" value=\"{{strength}}\" onInput=\"{{setStrength}}\" style=\"flex: 1; accent-color: {{accent}}\">\n          <span style=\"width: 34px; text-align: right; font-size: 12px; color: #A9B1BE\">{{strength}}<\/span>\n        <\/div>\n      <\/sc-if>\n      <label style=\"display: flex; align-items: center; gap: 10px; font-size: 13px; color: #D5DAE1\"><input type=\"checkbox\" checked=\"{{fade}}\" onChange=\"{{setFade}}\" style=\"width: 20px; height: 20px; accent-color: {{accent}}\">เฟดหัว–ท้ายสั้นๆ กันเสียงดังป๊อก<\/label>\n      <label style=\"display: flex; align-items: center; gap: 10px; font-size: 13px; color: #D5DAE1\"><input type=\"checkbox\" checked=\"{{link}}\" onChange=\"{{setLink}}\" style=\"width: 20px; height: 20px; accent-color: {{accent}}\">ผูกกับคลิป เลื่อน/ตัด/เปลี่ยนความเร็วคลิปแล้วเสียงตามไปด้วย<\/label>\n      <sc-if value=\"{{showDenoise}}\" hint-placeholder-val=\"{{ true }}\">\n        <label style=\"display: flex; align-items: center; gap: 10px; font-size: 13px; color: #D5DAE1\"><input type=\"checkbox\" checked=\"{{denoise}}\" onChange=\"{{setDenoise}}\" style=\"width: 20px; height: 20px; accent-color: {{accent}}\">ลดเสียงลม / เสียงรบกวนด้วย<\/label>\n      <\/sc-if>\n      <sc-if value=\"{{busy}}\" hint-placeholder-val=\"{{ false }}\">\n        <div style=\"display: flex; flex-direction: column; gap: 6px; padding: 10px 12px; border-radius: 12px; background: #0F1115\">\n          <div style=\"display: flex; justify-content: space-between; font-size: 12.5px\"><span>{{busyText}}<\/span><span style=\"color: #A9B1BE\">{{pct}}%<\/span><\/div>\n          <div style=\"height: 6px; border-radius: 3px; background: #22262E\"><div style=\"width: {{pct}}%; height: 6px; border-radius: 3px; background: {{accent}}\"><\/div><\/div>\n        <\/div>\n      <\/sc-if>\n      <sc-if value=\"{{hasErr}}\" hint-placeholder-val=\"{{ false }}\">\n        <div role=\"alert\" style=\"display: flex; gap: 10px; padding: 12px 14px; border-radius: 14px; background: #2A1719; border: 1px solid #6B2C33\">\n          <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#FFB4B4\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\" style=\"flex-shrink: 0; margin-top: 2px\"><circle cx=\"12\" cy=\"12\" r=\"9\"><\/circle><path d=\"M12 7v6M12 16.5v.5\"><\/path><\/svg>\n          <div style=\"font-size: 12.5px; line-height: 1.55; color: #FFD9D9\">{{errMsg}}<br><span style=\"color: #E8B4B4\">{{errHint}}<\/span><\/div>\n        <\/div>\n        <sc-if value=\"{{hasDetail}}\" hint-placeholder-val=\"{{ false }}\">\n          <button onClick=\"{{toggleDetail}}\" style=\"align-self: flex-start; border: 0; background: transparent; color: #8E97A6; font-size: 12px; padding: 2px 0; text-decoration: underline\">{{detailLabel}}<\/button>\n        <\/sc-if>\n        <sc-if value=\"{{showDetail}}\" hint-placeholder-val=\"{{ false }}\">\n          <div style=\"font-size: 11px; color: #A9B1BE; background: #0F1115; border-radius: 8px; padding: 8px 10px; white-space: pre-wrap; line-height: 1.5; -webkit-user-select: text; user-select: text\">{{errDetail}}<\/div>\n        <\/sc-if>\n      <\/sc-if>\n      <div style=\"font-size: 11.5px; color: #8E97A6; line-height: 1.6\">{{note}}<\/div>\n      <\/sc-if>\n    <\/div>\n    <div style=\"padding: 12px 20px 20px; flex-shrink: 0; border-top: 1px solid #22262E\">\n      <sc-if value=\"{{res.off}}\" hint-placeholder-val=\"{{ true }}\">\n        <button onClick=\"{{run}}\" style=\"width: 100%; border: 0; height: 50px; border-radius: 14px; background: {{runBg}}; color: #06201D; font-size: 15px; font-weight: 700\">{{runLabel}}<\/button>\n      <\/sc-if>\n      <sc-if value=\"{{res.on}}\" hint-placeholder-val=\"{{ false }}\">\n        <div style=\"display: flex; gap: 10px\">\n          <button onClick=\"{{res.listen}}\" style=\"flex: 1; height: 50px; border-radius: 14px; border: 1px solid #2A2F39; background: transparent; color: #C3CAD6; font-size: 14px\">▶ ฟัง 5 วินาที<\/button>\n          <button onClick=\"{{res.done}}\" style=\"flex: 1.3; height: 50px; border: 0; border-radius: 14px; background: {{accent}}; color: #06201D; font-size: 15px; font-weight: 700\">ใส่ลงโปรเจกต์<\/button>\n        <\/div>\n      <\/sc-if>\n    <\/div>\n  <\/section>\n<\/div>\n<\/x-dc>", props: {"accent": {"editor": "color", "default": "#2FD3C4"}, "$preview": {"width": 390, "height": 844}}, title: "KlipFox · แยกเสียงออกจากคลิป",
+KF_SCREENS["ExtractAudio"] = { tpl: "<div style=\"width: 390px; height: 844px; box-sizing: border-box; background: #0F1115; color: #EEF1F6; font-family: 'IBM Plex Sans Thai', sans-serif; display: flex; flex-direction: column; overflow: hidden; position: relative\">\n  <div style=\"flex: 1 1 0; min-height: 110px; max-height: 300px; background: #0B0D10; display: flex; align-items: center; justify-content: center; padding: 10px 0 20px\">\n    <canvas data-kf-preview width=\"{{kfCW}}\" height=\"{{kfCH}}\" onClick=\"{{togglePlay}}\" aria-label=\"ภาพตัวอย่าง แตะเพื่อเล่นหรือหยุด\" style=\"max-height: 100%; max-width: 100%; border-radius: 4px; background: #000; display: block\"><\/canvas>\n  <\/div>\n  <section aria-label=\"แยกเสียงออกจากคลิป\" style=\"flex: 0 1 560px; min-height: 420px; background: #171A20; border-radius: 20px 20px 0 0; margin-top: -12px; display: flex; flex-direction: column; overflow: hidden\">\n    <div style=\"display: flex; justify-content: center; padding-top: 8px\"><div style=\"width: 38px; height: 4px; border-radius: 2px; background: #3C4452\"><\/div><\/div>\n    <div style=\"display: flex; align-items: center; gap: 8px; padding: 6px 12px 0 20px\">\n      <h1 style=\"margin: 0; font-size: 17px; font-weight: 700; flex: 1\">แยกเสียงออกจากคลิป <span style=\"font-size: 12px; font-weight: 400; color: #A9B1BE\">{{clipLabel}}<\/span><\/h1>\n      <a href=\"Editor.dc.html\" aria-label=\"ปิด\" style=\"width: 44px; height: 44px; color: #C3CAD6; display: flex; align-items: center; justify-content: center\">\n        <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M6 6l12 12M18 6L6 18\"><\/path><\/svg>\n      <\/a>\n    <\/div>\n    <div class=\"noscroll col\" style=\"flex: 1 1 0; min-height: 0; overflow-y: auto; padding: 8px 20px 10px; display: flex; flex-direction: column; gap: 10px\">\n      <sc-if value=\"{{res.on}}\" hint-placeholder-val=\"{{ false }}\">\n        <div style=\"display: flex; gap: 10px; align-items: center; padding: 10px 12px; border-radius: 12px; background: #12302D; border: 1px solid #1F6E68; font-size: 13px; line-height: 1.45\">\n          <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"{{accent}}\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" style=\"flex-shrink: 0\"><path d=\"M5 12l5 5 9-10\"><\/path><\/svg>\n          <span>ปิดเสียงเดิมของคลิปแล้ว จะได้ยินเฉพาะแทร็กที่แยกไว้ ทุกแทร็กเริ่มพร้อมกันตรงเวลาเดียวกัน ไม่ซ้อนกัน<\/span>\n        <\/div>\n        <sc-for list=\"{{res.parts}}\" as=\"q\" hint-placeholder-count=\"2\">\n          <div style=\"display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 14px; background: #0F1115; border: 1px solid {{q.border}}\">\n            <div style=\"display: flex; align-items: center; gap: 8px\">\n              <span style=\"width: 10px; height: 10px; border-radius: 5px; background: {{q.color}}; flex-shrink: 0\"><\/span>\n              <span style=\"flex: 1; min-width: 0; font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis\">{{q.name}}<\/span>\n              <button onClick=\"{{q.solo}}\" aria-pressed=\"{{q.soloOn}}\" style=\"height: 36px; padding: 0 12px; border-radius: 10px; border: 1px solid {{q.soloBorder}}; background: {{q.soloBg}}; color: {{q.soloFg}}; font-size: 12.5px; font-weight: 600\">ฟังแทร็กนี้<\/button>\n              <button onClick=\"{{q.mute}}\" aria-pressed=\"{{q.muteOn}}\" aria-label=\"ปิดเสียงแทร็กนี้\" style=\"width: 40px; height: 36px; border-radius: 10px; border: 1px solid {{q.muteBorder}}; background: {{q.muteBg}}; color: {{q.muteFg}}; display: flex; align-items: center; justify-content: center\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 9v6h4l5 4V5L8 9zM17 9l4 6M21 9l-4 6\"><\/path><\/svg><\/button>\n            <\/div>\n            <div style=\"display: flex; align-items: center; gap: 10px\">\n              <label for=\"{{q.vid}}\" style=\"font-size: 12px; color: #A9B1BE; width: 62px\">ดัง {{q.vol}}%<\/label>\n              <input id=\"{{q.vid}}\" type=\"range\" min=\"0\" max=\"200\" value=\"{{q.vol}}\" onInput=\"{{q.setVol}}\" style=\"flex: 1; accent-color: {{q.color}}\">\n            <\/div>\n          <\/div>\n        <\/sc-for>\n        <div style=\"display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 14px; background: #0F1115; border: 1px solid #22262E\">\n          <div style=\"display: flex; justify-content: space-between; align-items: center\"><span style=\"font-size: 13.5px; font-weight: 600\">ได้ยินเสียงซ้ำหรือไม่ตรงปาก?<\/span><span style=\"font-size: 12px; color: {{accent}}\">ขยับเสียงให้ตรงภาพ<\/span><\/div>\n          <div style=\"display: flex; align-items: center; gap: 8px\">\n            <button onClick=\"{{res.earlier}}\" style=\"flex: 1; height: 40px; border-radius: 10px; border: 1px solid #2A2F39; background: transparent; color: #EEF1F6; font-size: 13.5px\">◀ เร็วขึ้น 10 ms<\/button>\n            <div style=\"min-width: 72px; text-align: center; font-size: 15px; font-weight: 700; color: {{accent}}; font-variant-numeric: tabular-nums\">{{res.offText}}<\/div>\n            <button onClick=\"{{res.later}}\" style=\"flex: 1; height: 40px; border-radius: 10px; border: 1px solid #2A2F39; background: transparent; color: #EEF1F6; font-size: 13.5px\">ช้าลง 10 ms ▶<\/button>\n          <\/div>\n        <\/div>\n      <\/sc-if>\n      <sc-if value=\"{{res.off}}\" hint-placeholder-val=\"{{ true }}\">\n      <sc-for list=\"{{modes}}\" as=\"m\" hint-placeholder-count=\"3\">\n        <button onClick=\"{{m.pick}}\" style=\"display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px; border: 2px solid {{m.border}}; background: #0F1115; color: #EEF1F6; text-align: left\">\n          <span style=\"width: 18px; height: 18px; border-radius: 9px; border: 2px solid {{m.border}}; box-sizing: border-box; display: flex; align-items: center; justify-content: center; flex-shrink: 0\"><span style=\"width: 8px; height: 8px; border-radius: 4px; background: {{m.dot}}\"><\/span><\/span>\n          <span style=\"display: flex; flex-direction: column; gap: 2px\">\n            <span style=\"font-size: 14px; font-weight: 700\">{{m.name}}<\/span>\n            <span style=\"font-size: 12px; color: #A9B1BE; line-height: 1.4\">{{m.desc}}<\/span>\n          <\/span>\n        <\/button>\n      <\/sc-for>\n      <sc-if value=\"{{showStrength}}\" hint-placeholder-val=\"{{ false }}\">\n        <div style=\"display: flex; align-items: center; gap: 10px\">\n          <label for=\"xa-str\" style=\"font-size: 13px; color: #D5DAE1; white-space: nowrap\">ความแรงในการแยก<\/label>\n          <input id=\"xa-str\" type=\"range\" min=\"0\" max=\"100\" value=\"{{strength}}\" onInput=\"{{setStrength}}\" style=\"flex: 1; accent-color: {{accent}}\">\n          <span style=\"width: 34px; text-align: right; font-size: 12px; color: #A9B1BE\">{{strength}}<\/span>\n        <\/div>\n      <\/sc-if>\n      <label style=\"display: flex; align-items: center; gap: 10px; font-size: 13px; color: #D5DAE1\"><input type=\"checkbox\" checked=\"{{fade}}\" onChange=\"{{setFade}}\" style=\"width: 20px; height: 20px; accent-color: {{accent}}\">เฟดหัว–ท้ายสั้นๆ กันเสียงดังป๊อก<\/label>\n      <label style=\"display: flex; align-items: center; gap: 10px; font-size: 13px; color: #D5DAE1\"><input type=\"checkbox\" checked=\"{{link}}\" onChange=\"{{setLink}}\" style=\"width: 20px; height: 20px; accent-color: {{accent}}\">ผูกกับคลิป เลื่อน/ตัด/เปลี่ยนความเร็วคลิปแล้วเสียงตามไปด้วย<\/label>\n      <sc-if value=\"{{showDenoise}}\" hint-placeholder-val=\"{{ true }}\">\n        <label style=\"display: flex; align-items: center; gap: 10px; font-size: 13px; color: #D5DAE1\"><input type=\"checkbox\" checked=\"{{denoise}}\" onChange=\"{{setDenoise}}\" style=\"width: 20px; height: 20px; accent-color: {{accent}}\">ลดเสียงลม / เสียงรบกวนด้วย<\/label>\n      <\/sc-if>\n      <sc-if value=\"{{showQ}}\" hint-placeholder-val=\"{{ false }}\">\n        <div style=\"display: flex; flex-direction: column; gap: 8px\">\n          <div style=\"display: flex; align-items: center; gap: 10px\">\n            <span style=\"width: 96px; font-size: 13px; color: #C3CAD6\">คุณภาพ<\/span>\n            <div style=\"flex: 1; display: flex; gap: 3px; padding: 3px; border-radius: 12px; background: #0F1115\">\n              <sc-for list=\"{{qopts}}\" as=\"o\" hint-placeholder-count=\"2\"><button onClick=\"{{o.pick}}\" style=\"flex: 1; height: 36px; border: 0; border-radius: 9px; background: {{o.bg}}; color: {{o.fg}}; font-size: 12.5px; font-weight: {{o.w}}\">{{o.t}}<\/button><\/sc-for>\n            <\/div>\n          <\/div>\n          <div style=\"font-size: 11.5px; color: #8E97A6; line-height: 1.55\">{{qnote}}<\/div>\n          <sc-if value=\"{{qBtn}}\" hint-placeholder-val=\"{{ false }}\"><button onClick=\"{{qDownload}}\" style=\"align-self: flex-start; height: 36px; padding: 0 14px; border-radius: 10px; border: 1px solid #2A2F39; background: transparent; color: #C3CAD6; font-size: 12.5px; font-weight: 700\">{{qBtnText}}<\/button><\/sc-if>\n        <\/div>\n      <\/sc-if>\n      <sc-if value=\"{{busy}}\" hint-placeholder-val=\"{{ false }}\">\n        <div style=\"display: flex; flex-direction: column; gap: 6px; padding: 10px 12px; border-radius: 12px; background: #0F1115\">\n          <div style=\"display: flex; justify-content: space-between; font-size: 12.5px\"><span>{{busyText}}<\/span><span style=\"color: #A9B1BE\">{{pct}}%<\/span><\/div>\n          <div style=\"height: 6px; border-radius: 3px; background: #22262E\"><div style=\"width: {{pct}}%; height: 6px; border-radius: 3px; background: {{accent}}\"><\/div><\/div>\n        <\/div>\n      <\/sc-if>\n      <sc-if value=\"{{hasErr}}\" hint-placeholder-val=\"{{ false }}\">\n        <div role=\"alert\" style=\"display: flex; gap: 10px; padding: 12px 14px; border-radius: 14px; background: #2A1719; border: 1px solid #6B2C33\">\n          <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#FFB4B4\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\" style=\"flex-shrink: 0; margin-top: 2px\"><circle cx=\"12\" cy=\"12\" r=\"9\"><\/circle><path d=\"M12 7v6M12 16.5v.5\"><\/path><\/svg>\n          <div style=\"font-size: 12.5px; line-height: 1.55; color: #FFD9D9\">{{errMsg}}<br><span style=\"color: #E8B4B4\">{{errHint}}<\/span><\/div>\n        <\/div>\n        <sc-if value=\"{{hasDetail}}\" hint-placeholder-val=\"{{ false }}\">\n          <button onClick=\"{{toggleDetail}}\" style=\"align-self: flex-start; border: 0; background: transparent; color: #8E97A6; font-size: 12px; padding: 2px 0; text-decoration: underline\">{{detailLabel}}<\/button>\n        <\/sc-if>\n        <sc-if value=\"{{showDetail}}\" hint-placeholder-val=\"{{ false }}\">\n          <div style=\"font-size: 11px; color: #A9B1BE; background: #0F1115; border-radius: 8px; padding: 8px 10px; white-space: pre-wrap; line-height: 1.5; -webkit-user-select: text; user-select: text\">{{errDetail}}<\/div>\n        <\/sc-if>\n      <\/sc-if>\n      <div style=\"font-size: 11.5px; color: #8E97A6; line-height: 1.6\">{{note}}<\/div>\n      <\/sc-if>\n    <\/div>\n    <div style=\"padding: 12px 20px 20px; flex-shrink: 0; border-top: 1px solid #22262E\">\n      <sc-if value=\"{{res.off}}\" hint-placeholder-val=\"{{ true }}\">\n        <button onClick=\"{{run}}\" style=\"width: 100%; border: 0; height: 50px; border-radius: 14px; background: {{runBg}}; color: #06201D; font-size: 15px; font-weight: 700\">{{runLabel}}<\/button>\n      <\/sc-if>\n      <sc-if value=\"{{res.on}}\" hint-placeholder-val=\"{{ false }}\">\n        <div style=\"display: flex; gap: 10px\">\n          <button onClick=\"{{res.listen}}\" style=\"flex: 1; height: 50px; border-radius: 14px; border: 1px solid #2A2F39; background: transparent; color: #C3CAD6; font-size: 14px\">▶ ฟัง 5 วินาที<\/button>\n          <button onClick=\"{{res.done}}\" style=\"flex: 1.3; height: 50px; border: 0; border-radius: 14px; background: {{accent}}; color: #06201D; font-size: 15px; font-weight: 700\">ใส่ลงโปรเจกต์<\/button>\n        <\/div>\n      <\/sc-if>\n    <\/div>\n  <\/section>\n<\/div>\n<\/x-dc>", props: {"accent": {"editor": "color", "default": "#2FD3C4"}, "$preview": {"width": 390, "height": 844}}, title: "KlipFox · แยกเสียงออกจากคลิป",
   Component: (function () {
 
 class Component extends DCLogic {
@@ -2788,6 +2805,7 @@ class Component extends DCLogic {
     ];
     const modes = MODES.map(([id, name, desc]) => ({ name, desc, border: s.mode === id ? accent : '#2A2F39', dot: s.mode === id ? accent : 'transparent', pick: () => this.setState({ mode: id }) }));
     const sep = s.mode !== 'all' || s.denoise;
+    const dqs = KF.dnq.get();
     // after a linked extraction: listen to each track, mute / volume, nudge the timing
     const R = s.res && c && c.id === s.res.clip ? s.res : null;
     const parts = R ? (c.xa || []).filter((q) => R.keys.includes(q.k)) : [];
@@ -2819,6 +2837,10 @@ class Component extends DCLogic {
       res,
       accent, modes, fade: s.fade, link: s.link, denoise: s.denoise, strength: s.strength,
       showDenoise: s.mode === 'all', showStrength: sep,
+      showQ: sep, qopts: [['fast', 'เร็ว'], ['ai', 'AI']].map(([v, t]) => ({ t, bg: (dqs === 'ai') === (v === 'ai') ? accent : 'transparent', fg: (dqs === 'ai') === (v === 'ai') ? '#06201D' : '#C3CAD6', w: (dqs === 'ai') === (v === 'ai') ? 700 : 400, pick: () => KF.dnq.set(v === 'ai' ? 'ai' : 'fast') })),
+      qnote: dqs !== 'ai' ? 'แบบเร็ว: คิดจากสูตรในเครื่อง ไม่ต้องโหลดอะไรเพิ่ม' : KF.dfn.status === 'ready' ? 'AI (DeepFilterNet) คิดในเครื่อง เสียงพูดสะอาดและเนียนกว่า ใช้เวลาประมาณ 0.3–1 เท่าของความยาวคลิป ขึ้นกับเครื่อง' : KF.dfn.status === 'downloading' ? 'กำลังโหลดโมเดล AI ' + KF.dfn.pct + '%' : KF.dfn.status === 'error' ? 'โหลดโมเดลไม่สำเร็จ: ' + KF.dfn.error : 'ต้องโหลดโมเดล AI ประมาณ 9 MB ครั้งเดียว (ถ้ากดแยกเสียงโดยยังไม่โหลด แอปจะโหลดให้เอง)',
+      qBtn: dqs === 'ai' && KF.dfn.status !== 'ready' && KF.dfn.status !== 'downloading', qBtnText: KF.dfn.status === 'error' ? 'ลองโหลดใหม่' : 'โหลดโมเดล AI',
+      qDownload: () => { KF.dfn.download().catch(() => {}); },
       setFade: (e) => this.setState({ fade: !!e.target.checked }), setLink: (e) => this.setState({ link: !!e.target.checked }),
       setDenoise: (e) => this.setState({ denoise: !!e.target.checked }), setStrength: (e) => this.setState({ strength: Number(e.target.value) }),
       clipLabel: c ? 'คลิปที่ ' + (P.clips.indexOf(c) + 1) + ' · ' + KF.fmtShort(KF.clipDur(c)) : '',
@@ -2841,7 +2863,7 @@ class Component extends DCLogic {
         this.setState({ busy: true, pct: 0, err: null, detail: false });
         try {
           const had = new Set((c.xa || []).map((q) => q.k));
-          const n = await KF.tools.extract(c.id, s.mode, { link: s.link, fade: s.fade, denoise: s.denoise, strength: s.strength / 100 }, (p) => this.setState({ pct: Math.round(p * 100) }));
+          const n = await KF.tools.extract(c.id, s.mode, { link: s.link, fade: s.fade, denoise: s.denoise, ai: dqs === 'ai' && sep, strength: s.strength / 100 }, (p) => this.setState({ pct: Math.round(p * 100) }));
           KF.toast(n > 1 ? 'แยกเสียงเป็น ' + n + ' แทร็กแล้ว' : 'แยกเสียงออกจากคลิปแล้ว');
           const c2 = KF.project().clips.find((k) => k.id === c.id);
           const keys = ((c2 && c2.xa) || []).filter((q) => !had.has(q.k)).map((q) => q.k);
@@ -2869,7 +2891,7 @@ class Component extends DCLogic {
 
   return Component;
 })() };
-KF_SCREENS["ClipEdit"] = { tpl: "<div style=\"width: 390px; height: 844px; box-sizing: border-box; background: #0F1115; color: #EEF1F6; font-family: 'IBM Plex Sans Thai', sans-serif; display: flex; flex-direction: column; overflow: hidden; position: relative\">\n  <div style=\"flex: 1 1 0; min-height: 150px; max-height: 330px; background: #0B0D10; display: flex; align-items: center; justify-content: center; padding: 10px 0 20px; position: relative\">\n    <canvas data-kf-preview width=\"{{kfCW}}\" height=\"{{kfCH}}\" onClick=\"{{tapPreview}}\" aria-label=\"ภาพตัวอย่าง\" style=\"max-height: 100%; max-width: 100%; border-radius: 4px; background: #000; display: block; cursor: {{cursor}}; touch-action: none\"><\/canvas>\n    <sc-if value=\"{{pvPct}}\" hint-placeholder-val=\"{{ false }}\">\n      <div style=\"position: absolute; left: 50%; top: 10px; transform: translateX(-50%); padding: 4px 10px; border-radius: 999px; background: rgba(15,17,21,.85); border: 1px solid {{accent}}; font-size: 12.5px; font-weight: 700; color: {{accent}}; pointer-events: none\">{{pvPct}}<\/div>\n    <\/sc-if>\n    <sc-if value=\"{{pickNote}}\" hint-placeholder-val=\"{{ false }}\">\n      <div style=\"position: absolute; left: 16px; right: 16px; top: 14px; padding: 8px 12px; border-radius: 12px; background: rgba(15,17,21,.9); border: 1px solid {{accent}}; font-size: 12.5px; text-align: center; pointer-events: none\">{{pickNote}}<\/div>\n    <\/sc-if>\n    <button onClick=\"{{togglePlay}}\" aria-label=\"{{playLabel}}\" style=\"position: absolute; right: 14px; bottom: 28px; width: 40px; height: 40px; border-radius: 20px; border: 0; background: #EEF1F6; color: #0F1115; display: flex; align-items: center; justify-content: center\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"{{playIcon}}\"><\/path><\/svg><\/button>\n  <\/div>\n  <section aria-label=\"ตั้งค่าคลิปวิดีโอ\" style=\"flex: 0 1 540px; min-height: 400px; background: #171A20; border-radius: 20px 20px 0 0; margin-top: -12px; display: flex; flex-direction: column; overflow: hidden\">\n    <div style=\"display: flex; justify-content: center; padding-top: 8px\"><div style=\"width: 38px; height: 4px; border-radius: 2px; background: #3C4452\"><\/div><\/div>\n    <div style=\"display: flex; align-items: center; justify-content: space-between; padding: 2px 8px 0 18px\">\n      <h1 style=\"margin: 0; font-size: 16px; font-weight: 700\">แก้คลิป <span style=\"font-size: 12px; font-weight: 400; color: #8E97A6\">{{subTitle}}<\/span><\/h1>\n      <a href=\"Editor.dc.html\" aria-label=\"เสร็จ\" style=\"width: 44px; height: 44px; color: {{accent}}; display: flex; align-items: center; justify-content: center\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12l5 5 9-10\"><\/path><\/svg><\/a>\n    <\/div>\n    <div class=\"noscroll\" role=\"tablist\" style=\"display: flex; gap: 6px; padding: 2px 14px 10px; overflow-x: auto; flex-shrink: 0\">\n      <sc-for list=\"{{tabs}}\" as=\"t\" hint-placeholder-count=\"6\"><button role=\"tab\" aria-selected=\"{{t.on}}\" onClick=\"{{t.pick}}\" style=\"height: 38px; padding: 0 14px; border-radius: 19px; border: 1px solid {{t.border}}; background: {{t.bg}}; color: {{t.fg}}; font-size: 13.5px; font-weight: 600; white-space: nowrap; flex-shrink: 0\">{{t.label}}<\/button><\/sc-for>\n    <\/div>\n    <sc-if value=\"{{noTarget}}\" hint-placeholder-val=\"{{ false }}\">\n      <div style=\"padding: 20px; font-size: 13px; color: #A9B1BE; line-height: 1.6\">{{noTargetText}}<\/div>\n    <\/sc-if>\n    <sc-if value=\"{{busy.on}}\" hint-placeholder-val=\"{{ false }}\">\n      <div style=\"margin: 0 18px 10px; padding: 12px; border-radius: 14px; background: #0F1115; border: 1px solid #23524C; display: flex; flex-direction: column; gap: 8px; flex-shrink: 0\">\n        <div style=\"display: flex; justify-content: space-between; font-size: 13px\"><span>{{busy.label}}<\/span><span style=\"color: {{accent}}; font-variant-numeric: tabular-nums\">{{busy.pct}}%<\/span><\/div>\n        <div style=\"height: 6px; border-radius: 3px; background: #22262E; overflow: hidden\"><div style=\"height: 100%; width: {{busy.pct}}%; background: {{accent}}\"><\/div><\/div>\n        <div style=\"font-size: 11.5px; color: #8E97A6\">{{busy.note}}<\/div>\n      <\/div>\n    <\/sc-if>\n    <div class=\"noscroll\" style=\"flex: 1; min-height: 0; overflow-y: auto; padding: 2px 18px 18px; display: flex; flex-direction: column; gap: 12px\">\n      <sc-if value=\"{{is_pic}}\" hint-placeholder-val=\"{{ false }}\">\n        <sc-for list=\"{{pic.sliders}}\" as=\"r\" hint-placeholder-count=\"3\">\n          <div style=\"display: flex; flex-direction: column; gap: 2px; flex-shrink: 0\">\n            <div style=\"display: flex; justify-content: space-between; font-size: 13px\"><label for=\"{{r.id}}\" style=\"color: #C3CAD6\">{{r.label}}<\/label><span style=\"color: {{accent}}; font-weight: 600; font-variant-numeric: tabular-nums\">{{r.text}}<\/span><\/div>\n            <input id=\"{{r.id}}\" type=\"range\" min=\"{{r.min}}\" max=\"{{r.max}}\" step=\"{{r.step}}\" value=\"{{r.v}}\" onInput=\"{{r.set}}\" aria-label=\"{{r.label}}\" style=\"width: 100%; accent-color: {{accent}}\">\n          <\/div>\n        <\/sc-for>\n        <sc-for list=\"{{pic.segs}}\" as=\"g\" hint-placeholder-count=\"2\">\n          <div style=\"display: flex; align-items: center; gap: 10px; flex-shrink: 0\">\n            <span style=\"width: 96px; font-size: 13px; color: #C3CAD6\">{{g.label}}<\/span>\n            <div style=\"flex: 1; display: flex; gap: 3px; padding: 3px; border-radius: 12px; background: #0F1115\">\n              <sc-for list=\"{{g.opts}}\" as=\"o\" hint-placeholder-count=\"3\"><button onClick=\"{{o.pick}}\" style=\"flex: 1; height: 36px; border: 0; border-radius: 9px; background: {{o.bg}}; color: {{o.fg}}; font-size: 12.5px; font-weight: {{o.w}}\">{{o.t}}<\/button><\/sc-for>\n            <\/div>\n          <\/div>\n        <\/sc-for>\n      <\/sc-if>\n      <sc-if value=\"{{is_aud}}\" hint-placeholder-val=\"{{ false }}\">\n        <sc-for list=\"{{aud.sliders}}\" as=\"r\" hint-placeholder-count=\"3\">\n          <div style=\"display: flex; flex-direction: column; gap: 2px; flex-shrink: 0\">\n            <div style=\"display: flex; justify-content: space-between; font-size: 13px\"><label for=\"{{r.id}}\" style=\"color: #C3CAD6\">{{r.label}}<\/label><span style=\"color: {{accent}}; font-weight: 600; font-variant-numeric: tabular-nums\">{{r.text}}<\/span><\/div>\n            <input id=\"{{r.id}}\" type=\"range\" min=\"{{r.min}}\" max=\"{{r.max}}\" step=\"{{r.step}}\" value=\"{{r.v}}\" onInput=\"{{r.set}}\" aria-label=\"{{r.label}}\" style=\"width: 100%; accent-color: {{accent}}\">\n          <\/div>\n        <\/sc-for>\n        <sc-for list=\"{{aud.rows}}\" as=\"a\" hint-placeholder-count=\"2\">\n          <div style=\"display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 14px; background: #0F1115; flex-shrink: 0\">\n            <div style=\"flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px\"><span style=\"font-size: 14px; font-weight: 600\">{{a.name}} <sc-if value=\"{{a.ai}}\" hint-placeholder-val=\"{{ false }}\"><span style=\"font-size: 9.5px; font-weight: 700; background: #2A3550; color: #9FC3FF; border-radius: 5px; padding: 0 4px; vertical-align: 2px\">AI<\/span><\/sc-if><\/span><span style=\"font-size: 11.5px; color: #A9B1BE; line-height: 1.4\">{{a.hint}}<\/span><\/div>\n            <sc-if value=\"{{a.isTog}}\" hint-placeholder-val=\"{{ false }}\">\n              <button onClick=\"{{a.pick}}\" role=\"switch\" aria-checked=\"{{a.checked}}\" aria-label=\"{{a.name}}\" style=\"width: 50px; height: 30px; border: 0; padding: 0; border-radius: 15px; background: {{a.bg}}; position: relative; flex-shrink: 0\"><span style=\"position: absolute; top: 3px; left: {{a.knob}}; width: 24px; height: 24px; border-radius: 12px; background: #FFFFFF\"><\/span><\/button>\n            <\/sc-if>\n            <sc-if value=\"{{a.isBtn}}\" hint-placeholder-val=\"{{ true }}\">\n              <button onClick=\"{{a.pick}}\" style=\"height: 36px; padding: 0 12px; border-radius: 10px; border: {{a.border}}; background: {{a.bg}}; color: {{a.fg}}; font-size: 12.5px; font-weight: 700; white-space: nowrap; flex-shrink: 0\">{{a.btn}}<\/button>\n            <\/sc-if>\n          <\/div>\n        <\/sc-for>\n      <\/sc-if>\n      <sc-if value=\"{{is_spd}}\" hint-placeholder-val=\"{{ false }}\">\n        <div style=\"display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; flex-shrink: 0\">\n          <sc-for list=\"{{spd.chips}}\" as=\"c\" hint-placeholder-count=\"5\"><button onClick=\"{{c.pick}}\" style=\"height: 42px; border: 0; border-radius: 12px; background: {{c.bg}}; color: {{c.fg}}; font-size: 14px; font-weight: 700\">{{c.t}}<\/button><\/sc-for>\n        <\/div>\n        <sc-for list=\"{{spd.sliders}}\" as=\"r\" hint-placeholder-count=\"3\">\n          <div style=\"display: flex; flex-direction: column; gap: 2px; flex-shrink: 0\">\n            <div style=\"display: flex; justify-content: space-between; font-size: 13px\"><label for=\"{{r.id}}\" style=\"color: #C3CAD6\">{{r.label}}<\/label><span style=\"color: {{accent}}; font-weight: 600; font-variant-numeric: tabular-nums\">{{r.text}}<\/span><\/div>\n            <input id=\"{{r.id}}\" type=\"range\" min=\"{{r.min}}\" max=\"{{r.max}}\" step=\"{{r.step}}\" value=\"{{r.v}}\" onInput=\"{{r.set}}\" aria-label=\"{{r.label}}\" style=\"width: 100%; accent-color: {{accent}}\">\n          <\/div>\n        <\/sc-for>\n        <sc-for list=\"{{spd.rows}}\" as=\"a\" hint-placeholder-count=\"2\">\n          <div style=\"display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 14px; background: #0F1115; flex-shrink: 0\">\n            <div style=\"flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px\"><span style=\"font-size: 14px; font-weight: 600\">{{a.name}} <sc-if value=\"{{a.ai}}\" hint-placeholder-val=\"{{ false }}\"><span style=\"font-size: 9.5px; font-weight: 700; background: #2A3550; color: #9FC3FF; border-radius: 5px; padding: 0 4px; vertical-align: 2px\">AI<\/span><\/sc-if><\/span><span style=\"font-size: 11.5px; color: #A9B1BE; line-height: 1.4\">{{a.hint}}<\/span><\/div>\n            <sc-if value=\"{{a.isTog}}\" hint-placeholder-val=\"{{ false }}\">\n              <button onClick=\"{{a.pick}}\" role=\"switch\" aria-checked=\"{{a.checked}}\" aria-label=\"{{a.name}}\" style=\"width: 50px; height: 30px; border: 0; padding: 0; border-radius: 15px; background: {{a.bg}}; position: relative; flex-shrink: 0\"><span style=\"position: absolute; top: 3px; left: {{a.knob}}; width: 24px; height: 24px; border-radius: 12px; background: #FFFFFF\"><\/span><\/button>\n            <\/sc-if>\n            <sc-if value=\"{{a.isBtn}}\" hint-placeholder-val=\"{{ true }}\">\n              <button onClick=\"{{a.pick}}\" style=\"height: 36px; padding: 0 12px; border-radius: 10px; border: {{a.border}}; background: {{a.bg}}; color: {{a.fg}}; font-size: 12.5px; font-weight: 700; white-space: nowrap; flex-shrink: 0\">{{a.btn}}<\/button>\n            <\/sc-if>\n          <\/div>\n        <\/sc-for>\n      <\/sc-if>\n      <sc-if value=\"{{is_mov}}\" hint-placeholder-val=\"{{ false }}\">\n        <div style=\"display: flex; gap: 3px; padding: 3px; border-radius: 12px; background: #0F1115; flex-shrink: 0\">\n          <sc-for list=\"{{an.tabs}}\" as=\"m\" hint-placeholder-count=\"3\"><button onClick=\"{{m.pick}}\" style=\"flex: 1; height: 36px; border: 0; border-radius: 9px; background: {{m.bg}}; color: {{m.fg}}; font-size: 13px; font-weight: 600\">{{m.t}}<\/button><\/sc-for>\n        <\/div>\n        <div style=\"display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; flex-shrink: 0\">\n          <sc-for list=\"{{an.presets}}\" as=\"p\" hint-placeholder-count=\"8\">\n            <button onClick=\"{{p.pick}}\" style=\"border: 0; background: transparent; padding: 0; display: flex; flex-direction: column; align-items: center; gap: 5px; color: {{p.fg}}; font-size: 11.5px\">\n              <span style=\"width: 100%; height: 52px; border-radius: 12px; background: #0F1115; border: 2px solid {{p.border}}; box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-size: 18px\">{{p.glyph}}<\/span>{{p.t}}\n            <\/button>\n          <\/sc-for>\n        <\/div>\n        <sc-for list=\"{{an.durs}}\" as=\"r\" hint-placeholder-count=\"3\">\n          <div style=\"display: flex; flex-direction: column; gap: 2px; flex-shrink: 0\">\n            <div style=\"display: flex; justify-content: space-between; font-size: 13px\"><label for=\"{{r.id}}\" style=\"color: #C3CAD6\">{{r.label}}<\/label><span style=\"color: {{accent}}; font-weight: 600; font-variant-numeric: tabular-nums\">{{r.text}}<\/span><\/div>\n            <input id=\"{{r.id}}\" type=\"range\" min=\"{{r.min}}\" max=\"{{r.max}}\" step=\"{{r.step}}\" value=\"{{r.v}}\" onInput=\"{{r.set}}\" aria-label=\"{{r.label}}\" style=\"width: 100%; accent-color: {{accent}}\">\n          <\/div>\n        <\/sc-for>\n      <\/sc-if>\n      <sc-if value=\"{{is_col}}\" hint-placeholder-val=\"{{ false }}\">\n        <div style=\"display: flex; gap: 3px; padding: 3px; border-radius: 12px; background: #0F1115; flex-shrink: 0\">\n          <sc-for list=\"{{cg.tabs}}\" as=\"m\" hint-placeholder-count=\"4\"><button onClick=\"{{m.pick}}\" style=\"flex: 1; height: 36px; border: 0; border-radius: 9px; background: {{m.bg}}; color: {{m.fg}}; font-size: 13px; font-weight: 600\">{{m.t}}<\/button><\/sc-for>\n        <\/div>\n        <sc-if value=\"{{cg.isBasic}}\" hint-placeholder-val=\"{{ true }}\">\n        <sc-for list=\"{{cg.basic}}\" as=\"r\" hint-placeholder-count=\"3\">\n          <div style=\"display: flex; flex-direction: column; gap: 2px; flex-shrink: 0\">\n            <div style=\"display: flex; justify-content: space-between; font-size: 13px\"><label for=\"{{r.id}}\" style=\"color: #C3CAD6\">{{r.label}}<\/label><span style=\"color: {{accent}}; font-weight: 600; font-variant-numeric: tabular-nums\">{{r.text}}<\/span><\/div>\n            <input id=\"{{r.id}}\" type=\"range\" min=\"{{r.min}}\" max=\"{{r.max}}\" step=\"{{r.step}}\" value=\"{{r.v}}\" onInput=\"{{r.set}}\" aria-label=\"{{r.label}}\" style=\"width: 100%; accent-color: {{accent}}\">\n          <\/div>\n        <\/sc-for>\n        <\/sc-if>\n        <sc-if value=\"{{cg.isHsl}}\" hint-placeholder-val=\"{{ false }}\">\n          <div style=\"display: flex; justify-content: space-between; gap: 4px; flex-shrink: 0\">\n            <sc-for list=\"{{cg.hues}}\" as=\"h\" hint-placeholder-count=\"8\"><button onClick=\"{{h.pick}}\" aria-label=\"{{h.name}}\" style=\"width: 36px; height: 36px; border-radius: 18px; padding: 0; background: {{h.c}}; border: 3px solid {{h.ring}}; box-sizing: border-box\"><\/button><\/sc-for>\n          <\/div>\n          <div style=\"font-size: 12.5px; color: #A9B1BE; flex-shrink: 0\">ปรับเฉพาะสี <b style=\"color: #EEF1F6\">{{cg.hueName}}<\/b><\/div>\n        <sc-for list=\"{{cg.hsl}}\" as=\"r\" hint-placeholder-count=\"3\">\n          <div style=\"display: flex; flex-direction: column; gap: 2px; flex-shrink: 0\">\n            <div style=\"display: flex; justify-content: space-between; font-size: 13px\"><label for=\"{{r.id}}\" style=\"color: #C3CAD6\">{{r.label}}<\/label><span style=\"color: {{accent}}; font-weight: 600; font-variant-numeric: tabular-nums\">{{r.text}}<\/span><\/div>\n            <input id=\"{{r.id}}\" type=\"range\" min=\"{{r.min}}\" max=\"{{r.max}}\" step=\"{{r.step}}\" value=\"{{r.v}}\" onInput=\"{{r.set}}\" aria-label=\"{{r.label}}\" style=\"width: 100%; accent-color: {{accent}}\">\n          <\/div>\n        <\/sc-for>\n        <\/sc-if>\n        <sc-if value=\"{{cg.isCurve}}\" hint-placeholder-val=\"{{ false }}\">\n          <div style=\"display: flex; gap: 6px; flex-shrink: 0\">\n            <sc-for list=\"{{cg.chans}}\" as=\"c\" hint-placeholder-count=\"4\"><button onClick=\"{{c.pick}}\" style=\"flex: 1; height: 36px; border-radius: 10px; border: 1.5px solid {{c.border}}; background: transparent; color: {{c.fg}}; font-size: 13px; font-weight: 700\">{{c.t}}<\/button><\/sc-for>\n          <\/div>\n          <div data-curve style=\"align-self: center; width: 240px; height: 240px; border-radius: 12px; background: #0F1115; border: 1px solid #22262E; position: relative; touch-action: none; flex-shrink: 0\">\n            <svg width=\"240\" height=\"240\" viewBox=\"0 0 240 240\" role=\"img\" aria-label=\"เส้นโค้งสี ลากจุดเพื่อปรับ\" style=\"position: absolute; inset: 0\">\n              <path d=\"M60 0V240M120 0V240M180 0V240M0 60H240M0 120H240M0 180H240\" stroke=\"#22262E\" stroke-width=\"1\" fill=\"none\"><\/path>\n              <path d=\"M0 240L240 0\" stroke=\"#3C4452\" stroke-width=\"1\" stroke-dasharray=\"4 4\" fill=\"none\"><\/path>\n              <path d=\"{{cg.path}}\" stroke=\"{{cg.color}}\" stroke-width=\"2.4\" fill=\"none\"><\/path>\n            <\/svg>\n            <sc-for list=\"{{cg.pts}}\" as=\"p\" hint-placeholder-count=\"2\"><span style=\"position: absolute; left: {{p.x}}px; top: {{p.y}}px; width: 18px; height: 18px; margin: -9px 0 0 -9px; border-radius: 9px; background: {{p.bg}}; border: 2px solid #0B0D11; box-sizing: border-box; pointer-events: none\"><\/span><\/sc-for>\n          <\/div>\n          <div style=\"display: flex; gap: 8px; flex-shrink: 0\">\n            <button onClick=\"{{cg.delPt}}\" style=\"flex: 1; height: 38px; border-radius: 10px; border: 1px solid #2A2F39; background: transparent; color: {{cg.delColor}}; font-size: 12.5px\">ลบจุดที่เลือก<\/button>\n            <button onClick=\"{{cg.resetCurve}}\" style=\"flex: 1; height: 38px; border-radius: 10px; border: 1px solid #2A2F39; background: transparent; color: #C3CAD6; font-size: 12.5px\">รีเซ็ตเส้นนี้<\/button>\n          <\/div>\n          <div style=\"font-size: 11.5px; color: #8E97A6; line-height: 1.5; flex-shrink: 0\">แตะบนเส้นเพื่อเพิ่มจุด ลากจุดขึ้นลงเพื่อปรับ · ซ้าย = เงา กลาง = โทนกลาง ขวา = ไฮไลต์<\/div>\n        <\/sc-if>\n        <sc-if value=\"{{cg.isWheel}}\" hint-placeholder-val=\"{{ false }}\">\n          <div style=\"display: flex; justify-content: space-between; gap: 6px; flex-shrink: 0\">\n            <sc-for list=\"{{cg.wheels}}\" as=\"w\" hint-placeholder-count=\"3\">\n              <div style=\"flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 0\">\n                <div data-wheel=\"{{w.id}}\" style=\"width: 100px; height: 100px; border-radius: 50px; background: conic-gradient(from 90deg, #FF5A5A, #FF5AA8, #B05AFF, #5A8BFF, #4DE0F2, #5AD97A, #F2E84D, #FF9F4D, #FF5A5A); position: relative; touch-action: none\">\n                  <div style=\"position: absolute; inset: 0; border-radius: 50px; background: radial-gradient(circle, rgba(128,128,128,1) 0%, rgba(128,128,128,0) 72%); pointer-events: none\"><\/div>\n                  <div style=\"position: absolute; left: {{w.hx}}px; top: {{w.hy}}px; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 8px; background: #FFFFFF; border: 2px solid #0B0D11; box-sizing: border-box; pointer-events: none\"><\/div>\n                <\/div>\n                <div style=\"font-size: 12.5px; font-weight: 600\">{{w.name}}<\/div>\n                <input type=\"range\" min=\"-100\" max=\"100\" value=\"{{w.l}}\" onInput=\"{{w.setL}}\" aria-label=\"{{w.lAria}}\" style=\"width: 100%; accent-color: {{accent}}\">\n              <\/div>\n            <\/sc-for>\n          <\/div>\n          <div style=\"font-size: 11.5px; color: #8E97A6; line-height: 1.5; flex-shrink: 0\">ลากจุดในวงล้อเพื่อใส่โทนสี แถบล่างปรับความสว่างของช่วงนั้น<\/div>\n        <\/sc-if>\n        <button onClick=\"{{cg.reset}}\" style=\"height: 38px; border-radius: 10px; border: 1px solid #2A2F39; background: transparent; color: #C3CAD6; font-size: 13px; flex-shrink: 0\">รีเซ็ตสีทั้งหมด<\/button>\n      <\/sc-if>\n      <sc-if value=\"{{is_ai}}\" hint-placeholder-val=\"{{ false }}\">\n        <sc-for list=\"{{ai.rows}}\" as=\"a\" hint-placeholder-count=\"2\">\n          <div style=\"display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 14px; background: #0F1115; flex-shrink: 0\">\n            <div style=\"flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px\"><span style=\"font-size: 14px; font-weight: 600\">{{a.name}} <sc-if value=\"{{a.ai}}\" hint-placeholder-val=\"{{ false }}\"><span style=\"font-size: 9.5px; font-weight: 700; background: #2A3550; color: #9FC3FF; border-radius: 5px; padding: 0 4px; vertical-align: 2px\">AI<\/span><\/sc-if><\/span><span style=\"font-size: 11.5px; color: #A9B1BE; line-height: 1.4\">{{a.hint}}<\/span><\/div>\n            <sc-if value=\"{{a.isTog}}\" hint-placeholder-val=\"{{ false }}\">\n              <button onClick=\"{{a.pick}}\" role=\"switch\" aria-checked=\"{{a.checked}}\" aria-label=\"{{a.name}}\" style=\"width: 50px; height: 30px; border: 0; padding: 0; border-radius: 15px; background: {{a.bg}}; position: relative; flex-shrink: 0\"><span style=\"position: absolute; top: 3px; left: {{a.knob}}; width: 24px; height: 24px; border-radius: 12px; background: #FFFFFF\"><\/span><\/button>\n            <\/sc-if>\n            <sc-if value=\"{{a.isBtn}}\" hint-placeholder-val=\"{{ true }}\">\n              <button onClick=\"{{a.pick}}\" style=\"height: 36px; padding: 0 12px; border-radius: 10px; border: {{a.border}}; background: {{a.bg}}; color: {{a.fg}}; font-size: 12.5px; font-weight: 700; white-space: nowrap; flex-shrink: 0\">{{a.btn}}<\/button>\n            <\/sc-if>\n          <\/div>\n        <\/sc-for>\n        <sc-for list=\"{{ai.sliders}}\" as=\"r\" hint-placeholder-count=\"3\">\n          <div style=\"display: flex; flex-direction: column; gap: 2px; flex-shrink: 0\">\n            <div style=\"display: flex; justify-content: space-between; font-size: 13px\"><label for=\"{{r.id}}\" style=\"color: #C3CAD6\">{{r.label}}<\/label><span style=\"color: {{accent}}; font-weight: 600; font-variant-numeric: tabular-nums\">{{r.text}}<\/span><\/div>\n            <input id=\"{{r.id}}\" type=\"range\" min=\"{{r.min}}\" max=\"{{r.max}}\" step=\"{{r.step}}\" value=\"{{r.v}}\" onInput=\"{{r.set}}\" aria-label=\"{{r.label}}\" style=\"width: 100%; accent-color: {{accent}}\">\n          <\/div>\n        <\/sc-for>\n      <\/sc-if>\n    <\/div>\n  <\/section>\n<\/div>\n<\/x-dc>", props: {"accent": {"editor": "color", "default": "#2FD3C4"}, "$preview": {"width": 390, "height": 844}}, title: "KlipFox · แก้คลิป",
+KF_SCREENS["ClipEdit"] = { tpl: "<div style=\"width: 390px; height: 844px; box-sizing: border-box; background: #0F1115; color: #EEF1F6; font-family: 'IBM Plex Sans Thai', sans-serif; display: flex; flex-direction: column; overflow: hidden; position: relative\">\n  <div style=\"flex: 1 1 0; min-height: 150px; max-height: 330px; background: #0B0D10; display: flex; align-items: center; justify-content: center; padding: 10px 0 20px; position: relative\">\n    <canvas data-kf-preview width=\"{{kfCW}}\" height=\"{{kfCH}}\" onClick=\"{{tapPreview}}\" aria-label=\"ภาพตัวอย่าง\" style=\"max-height: 100%; max-width: 100%; border-radius: 4px; background: #000; display: block; cursor: {{cursor}}; touch-action: none\"><\/canvas>\n    <sc-if value=\"{{pvPct}}\" hint-placeholder-val=\"{{ false }}\">\n      <div style=\"position: absolute; left: 50%; top: 10px; transform: translateX(-50%); padding: 4px 10px; border-radius: 999px; background: rgba(15,17,21,.85); border: 1px solid {{accent}}; font-size: 12.5px; font-weight: 700; color: {{accent}}; pointer-events: none\">{{pvPct}}<\/div>\n    <\/sc-if>\n    <sc-if value=\"{{pickNote}}\" hint-placeholder-val=\"{{ false }}\">\n      <div style=\"position: absolute; left: 16px; right: 16px; top: 14px; padding: 8px 12px; border-radius: 12px; background: rgba(15,17,21,.9); border: 1px solid {{accent}}; font-size: 12.5px; text-align: center; pointer-events: none\">{{pickNote}}<\/div>\n    <\/sc-if>\n    <button onClick=\"{{togglePlay}}\" aria-label=\"{{playLabel}}\" style=\"position: absolute; right: 14px; bottom: 28px; width: 40px; height: 40px; border-radius: 20px; border: 0; background: #EEF1F6; color: #0F1115; display: flex; align-items: center; justify-content: center\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"{{playIcon}}\"><\/path><\/svg><\/button>\n  <\/div>\n  <section aria-label=\"ตั้งค่าคลิปวิดีโอ\" style=\"flex: 0 1 540px; min-height: 400px; background: #171A20; border-radius: 20px 20px 0 0; margin-top: -12px; display: flex; flex-direction: column; overflow: hidden\">\n    <div style=\"display: flex; justify-content: center; padding-top: 8px\"><div style=\"width: 38px; height: 4px; border-radius: 2px; background: #3C4452\"><\/div><\/div>\n    <div style=\"display: flex; align-items: center; justify-content: space-between; padding: 2px 8px 0 18px\">\n      <h1 style=\"margin: 0; font-size: 16px; font-weight: 700\">แก้คลิป <span style=\"font-size: 12px; font-weight: 400; color: #8E97A6\">{{subTitle}}<\/span><\/h1>\n      <a href=\"Editor.dc.html\" aria-label=\"เสร็จ\" style=\"width: 44px; height: 44px; color: {{accent}}; display: flex; align-items: center; justify-content: center\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12l5 5 9-10\"><\/path><\/svg><\/a>\n    <\/div>\n    <div class=\"noscroll\" role=\"tablist\" style=\"display: flex; gap: 6px; padding: 2px 14px 10px; overflow-x: auto; flex-shrink: 0\">\n      <sc-for list=\"{{tabs}}\" as=\"t\" hint-placeholder-count=\"6\"><button role=\"tab\" aria-selected=\"{{t.on}}\" onClick=\"{{t.pick}}\" style=\"height: 38px; padding: 0 14px; border-radius: 19px; border: 1px solid {{t.border}}; background: {{t.bg}}; color: {{t.fg}}; font-size: 13.5px; font-weight: 600; white-space: nowrap; flex-shrink: 0\">{{t.label}}<\/button><\/sc-for>\n    <\/div>\n    <sc-if value=\"{{noTarget}}\" hint-placeholder-val=\"{{ false }}\">\n      <div style=\"padding: 20px; font-size: 13px; color: #A9B1BE; line-height: 1.6\">{{noTargetText}}<\/div>\n    <\/sc-if>\n    <sc-if value=\"{{busy.on}}\" hint-placeholder-val=\"{{ false }}\">\n      <div style=\"margin: 0 18px 10px; padding: 12px; border-radius: 14px; background: #0F1115; border: 1px solid #23524C; display: flex; flex-direction: column; gap: 8px; flex-shrink: 0\">\n        <div style=\"display: flex; justify-content: space-between; font-size: 13px\"><span>{{busy.label}}<\/span><span style=\"color: {{accent}}; font-variant-numeric: tabular-nums\">{{busy.pct}}%<\/span><\/div>\n        <div style=\"height: 6px; border-radius: 3px; background: #22262E; overflow: hidden\"><div style=\"height: 100%; width: {{busy.pct}}%; background: {{accent}}\"><\/div><\/div>\n        <div style=\"font-size: 11.5px; color: #8E97A6\">{{busy.note}}<\/div>\n      <\/div>\n    <\/sc-if>\n    <div class=\"noscroll\" style=\"flex: 1; min-height: 0; overflow-y: auto; padding: 2px 18px 18px; display: flex; flex-direction: column; gap: 12px\">\n      <sc-if value=\"{{is_pic}}\" hint-placeholder-val=\"{{ false }}\">\n        <sc-for list=\"{{pic.sliders}}\" as=\"r\" hint-placeholder-count=\"3\">\n          <div style=\"display: flex; flex-direction: column; gap: 2px; flex-shrink: 0\">\n            <div style=\"display: flex; justify-content: space-between; font-size: 13px\"><label for=\"{{r.id}}\" style=\"color: #C3CAD6\">{{r.label}}<\/label><span style=\"color: {{accent}}; font-weight: 600; font-variant-numeric: tabular-nums\">{{r.text}}<\/span><\/div>\n            <input id=\"{{r.id}}\" type=\"range\" min=\"{{r.min}}\" max=\"{{r.max}}\" step=\"{{r.step}}\" value=\"{{r.v}}\" onInput=\"{{r.set}}\" aria-label=\"{{r.label}}\" style=\"width: 100%; accent-color: {{accent}}\">\n          <\/div>\n        <\/sc-for>\n        <sc-for list=\"{{pic.segs}}\" as=\"g\" hint-placeholder-count=\"2\">\n          <div style=\"display: flex; align-items: center; gap: 10px; flex-shrink: 0\">\n            <span style=\"width: 96px; font-size: 13px; color: #C3CAD6\">{{g.label}}<\/span>\n            <div style=\"flex: 1; display: flex; gap: 3px; padding: 3px; border-radius: 12px; background: #0F1115\">\n              <sc-for list=\"{{g.opts}}\" as=\"o\" hint-placeholder-count=\"3\"><button onClick=\"{{o.pick}}\" style=\"flex: 1; height: 36px; border: 0; border-radius: 9px; background: {{o.bg}}; color: {{o.fg}}; font-size: 12.5px; font-weight: {{o.w}}\">{{o.t}}<\/button><\/sc-for>\n            <\/div>\n          <\/div>\n        <\/sc-for>\n      <\/sc-if>\n      <sc-if value=\"{{is_aud}}\" hint-placeholder-val=\"{{ false }}\">\n        <sc-for list=\"{{aud.sliders}}\" as=\"r\" hint-placeholder-count=\"3\">\n          <div style=\"display: flex; flex-direction: column; gap: 2px; flex-shrink: 0\">\n            <div style=\"display: flex; justify-content: space-between; font-size: 13px\"><label for=\"{{r.id}}\" style=\"color: #C3CAD6\">{{r.label}}<\/label><span style=\"color: {{accent}}; font-weight: 600; font-variant-numeric: tabular-nums\">{{r.text}}<\/span><\/div>\n            <input id=\"{{r.id}}\" type=\"range\" min=\"{{r.min}}\" max=\"{{r.max}}\" step=\"{{r.step}}\" value=\"{{r.v}}\" onInput=\"{{r.set}}\" aria-label=\"{{r.label}}\" style=\"width: 100%; accent-color: {{accent}}\">\n          <\/div>\n        <\/sc-for>\n        <sc-for list=\"{{aud.segs}}\" as=\"g\" hint-placeholder-count=\"2\">\n          <div style=\"display: flex; align-items: center; gap: 10px; flex-shrink: 0\">\n            <span style=\"width: 96px; font-size: 13px; color: #C3CAD6\">{{g.label}}<\/span>\n            <div style=\"flex: 1; display: flex; gap: 3px; padding: 3px; border-radius: 12px; background: #0F1115\">\n              <sc-for list=\"{{g.opts}}\" as=\"o\" hint-placeholder-count=\"3\"><button onClick=\"{{o.pick}}\" style=\"flex: 1; height: 36px; border: 0; border-radius: 9px; background: {{o.bg}}; color: {{o.fg}}; font-size: 12.5px; font-weight: {{o.w}}\">{{o.t}}<\/button><\/sc-for>\n            <\/div>\n          <\/div>\n        <\/sc-for>\n        <sc-for list=\"{{aud.rows}}\" as=\"a\" hint-placeholder-count=\"2\">\n          <div style=\"display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 14px; background: #0F1115; flex-shrink: 0\">\n            <div style=\"flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px\"><span style=\"font-size: 14px; font-weight: 600\">{{a.name}} <sc-if value=\"{{a.ai}}\" hint-placeholder-val=\"{{ false }}\"><span style=\"font-size: 9.5px; font-weight: 700; background: #2A3550; color: #9FC3FF; border-radius: 5px; padding: 0 4px; vertical-align: 2px\">AI<\/span><\/sc-if><\/span><span style=\"font-size: 11.5px; color: #A9B1BE; line-height: 1.4\">{{a.hint}}<\/span><\/div>\n            <sc-if value=\"{{a.isTog}}\" hint-placeholder-val=\"{{ false }}\">\n              <button onClick=\"{{a.pick}}\" role=\"switch\" aria-checked=\"{{a.checked}}\" aria-label=\"{{a.name}}\" style=\"width: 50px; height: 30px; border: 0; padding: 0; border-radius: 15px; background: {{a.bg}}; position: relative; flex-shrink: 0\"><span style=\"position: absolute; top: 3px; left: {{a.knob}}; width: 24px; height: 24px; border-radius: 12px; background: #FFFFFF\"><\/span><\/button>\n            <\/sc-if>\n            <sc-if value=\"{{a.isBtn}}\" hint-placeholder-val=\"{{ true }}\">\n              <button onClick=\"{{a.pick}}\" style=\"height: 36px; padding: 0 12px; border-radius: 10px; border: {{a.border}}; background: {{a.bg}}; color: {{a.fg}}; font-size: 12.5px; font-weight: 700; white-space: nowrap; flex-shrink: 0\">{{a.btn}}<\/button>\n            <\/sc-if>\n          <\/div>\n        <\/sc-for>\n      <\/sc-if>\n      <sc-if value=\"{{is_spd}}\" hint-placeholder-val=\"{{ false }}\">\n        <div style=\"display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; flex-shrink: 0\">\n          <sc-for list=\"{{spd.chips}}\" as=\"c\" hint-placeholder-count=\"5\"><button onClick=\"{{c.pick}}\" style=\"height: 42px; border: 0; border-radius: 12px; background: {{c.bg}}; color: {{c.fg}}; font-size: 14px; font-weight: 700\">{{c.t}}<\/button><\/sc-for>\n        <\/div>\n        <sc-for list=\"{{spd.sliders}}\" as=\"r\" hint-placeholder-count=\"3\">\n          <div style=\"display: flex; flex-direction: column; gap: 2px; flex-shrink: 0\">\n            <div style=\"display: flex; justify-content: space-between; font-size: 13px\"><label for=\"{{r.id}}\" style=\"color: #C3CAD6\">{{r.label}}<\/label><span style=\"color: {{accent}}; font-weight: 600; font-variant-numeric: tabular-nums\">{{r.text}}<\/span><\/div>\n            <input id=\"{{r.id}}\" type=\"range\" min=\"{{r.min}}\" max=\"{{r.max}}\" step=\"{{r.step}}\" value=\"{{r.v}}\" onInput=\"{{r.set}}\" aria-label=\"{{r.label}}\" style=\"width: 100%; accent-color: {{accent}}\">\n          <\/div>\n        <\/sc-for>\n        <sc-for list=\"{{spd.rows}}\" as=\"a\" hint-placeholder-count=\"2\">\n          <div style=\"display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 14px; background: #0F1115; flex-shrink: 0\">\n            <div style=\"flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px\"><span style=\"font-size: 14px; font-weight: 600\">{{a.name}} <sc-if value=\"{{a.ai}}\" hint-placeholder-val=\"{{ false }}\"><span style=\"font-size: 9.5px; font-weight: 700; background: #2A3550; color: #9FC3FF; border-radius: 5px; padding: 0 4px; vertical-align: 2px\">AI<\/span><\/sc-if><\/span><span style=\"font-size: 11.5px; color: #A9B1BE; line-height: 1.4\">{{a.hint}}<\/span><\/div>\n            <sc-if value=\"{{a.isTog}}\" hint-placeholder-val=\"{{ false }}\">\n              <button onClick=\"{{a.pick}}\" role=\"switch\" aria-checked=\"{{a.checked}}\" aria-label=\"{{a.name}}\" style=\"width: 50px; height: 30px; border: 0; padding: 0; border-radius: 15px; background: {{a.bg}}; position: relative; flex-shrink: 0\"><span style=\"position: absolute; top: 3px; left: {{a.knob}}; width: 24px; height: 24px; border-radius: 12px; background: #FFFFFF\"><\/span><\/button>\n            <\/sc-if>\n            <sc-if value=\"{{a.isBtn}}\" hint-placeholder-val=\"{{ true }}\">\n              <button onClick=\"{{a.pick}}\" style=\"height: 36px; padding: 0 12px; border-radius: 10px; border: {{a.border}}; background: {{a.bg}}; color: {{a.fg}}; font-size: 12.5px; font-weight: 700; white-space: nowrap; flex-shrink: 0\">{{a.btn}}<\/button>\n            <\/sc-if>\n          <\/div>\n        <\/sc-for>\n      <\/sc-if>\n      <sc-if value=\"{{is_mov}}\" hint-placeholder-val=\"{{ false }}\">\n        <div style=\"display: flex; gap: 3px; padding: 3px; border-radius: 12px; background: #0F1115; flex-shrink: 0\">\n          <sc-for list=\"{{an.tabs}}\" as=\"m\" hint-placeholder-count=\"3\"><button onClick=\"{{m.pick}}\" style=\"flex: 1; height: 36px; border: 0; border-radius: 9px; background: {{m.bg}}; color: {{m.fg}}; font-size: 13px; font-weight: 600\">{{m.t}}<\/button><\/sc-for>\n        <\/div>\n        <div style=\"display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; flex-shrink: 0\">\n          <sc-for list=\"{{an.presets}}\" as=\"p\" hint-placeholder-count=\"8\">\n            <button onClick=\"{{p.pick}}\" style=\"border: 0; background: transparent; padding: 0; display: flex; flex-direction: column; align-items: center; gap: 5px; color: {{p.fg}}; font-size: 11.5px\">\n              <span style=\"width: 100%; height: 52px; border-radius: 12px; background: #0F1115; border: 2px solid {{p.border}}; box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-size: 18px\">{{p.glyph}}<\/span>{{p.t}}\n            <\/button>\n          <\/sc-for>\n        <\/div>\n        <sc-for list=\"{{an.durs}}\" as=\"r\" hint-placeholder-count=\"3\">\n          <div style=\"display: flex; flex-direction: column; gap: 2px; flex-shrink: 0\">\n            <div style=\"display: flex; justify-content: space-between; font-size: 13px\"><label for=\"{{r.id}}\" style=\"color: #C3CAD6\">{{r.label}}<\/label><span style=\"color: {{accent}}; font-weight: 600; font-variant-numeric: tabular-nums\">{{r.text}}<\/span><\/div>\n            <input id=\"{{r.id}}\" type=\"range\" min=\"{{r.min}}\" max=\"{{r.max}}\" step=\"{{r.step}}\" value=\"{{r.v}}\" onInput=\"{{r.set}}\" aria-label=\"{{r.label}}\" style=\"width: 100%; accent-color: {{accent}}\">\n          <\/div>\n        <\/sc-for>\n      <\/sc-if>\n      <sc-if value=\"{{is_col}}\" hint-placeholder-val=\"{{ false }}\">\n        <div style=\"display: flex; gap: 3px; padding: 3px; border-radius: 12px; background: #0F1115; flex-shrink: 0\">\n          <sc-for list=\"{{cg.tabs}}\" as=\"m\" hint-placeholder-count=\"4\"><button onClick=\"{{m.pick}}\" style=\"flex: 1; height: 36px; border: 0; border-radius: 9px; background: {{m.bg}}; color: {{m.fg}}; font-size: 13px; font-weight: 600\">{{m.t}}<\/button><\/sc-for>\n        <\/div>\n        <sc-if value=\"{{cg.isBasic}}\" hint-placeholder-val=\"{{ true }}\">\n        <sc-for list=\"{{cg.basic}}\" as=\"r\" hint-placeholder-count=\"3\">\n          <div style=\"display: flex; flex-direction: column; gap: 2px; flex-shrink: 0\">\n            <div style=\"display: flex; justify-content: space-between; font-size: 13px\"><label for=\"{{r.id}}\" style=\"color: #C3CAD6\">{{r.label}}<\/label><span style=\"color: {{accent}}; font-weight: 600; font-variant-numeric: tabular-nums\">{{r.text}}<\/span><\/div>\n            <input id=\"{{r.id}}\" type=\"range\" min=\"{{r.min}}\" max=\"{{r.max}}\" step=\"{{r.step}}\" value=\"{{r.v}}\" onInput=\"{{r.set}}\" aria-label=\"{{r.label}}\" style=\"width: 100%; accent-color: {{accent}}\">\n          <\/div>\n        <\/sc-for>\n        <\/sc-if>\n        <sc-if value=\"{{cg.isHsl}}\" hint-placeholder-val=\"{{ false }}\">\n          <div style=\"display: flex; justify-content: space-between; gap: 4px; flex-shrink: 0\">\n            <sc-for list=\"{{cg.hues}}\" as=\"h\" hint-placeholder-count=\"8\"><button onClick=\"{{h.pick}}\" aria-label=\"{{h.name}}\" style=\"width: 36px; height: 36px; border-radius: 18px; padding: 0; background: {{h.c}}; border: 3px solid {{h.ring}}; box-sizing: border-box\"><\/button><\/sc-for>\n          <\/div>\n          <div style=\"font-size: 12.5px; color: #A9B1BE; flex-shrink: 0\">ปรับเฉพาะสี <b style=\"color: #EEF1F6\">{{cg.hueName}}<\/b><\/div>\n        <sc-for list=\"{{cg.hsl}}\" as=\"r\" hint-placeholder-count=\"3\">\n          <div style=\"display: flex; flex-direction: column; gap: 2px; flex-shrink: 0\">\n            <div style=\"display: flex; justify-content: space-between; font-size: 13px\"><label for=\"{{r.id}}\" style=\"color: #C3CAD6\">{{r.label}}<\/label><span style=\"color: {{accent}}; font-weight: 600; font-variant-numeric: tabular-nums\">{{r.text}}<\/span><\/div>\n            <input id=\"{{r.id}}\" type=\"range\" min=\"{{r.min}}\" max=\"{{r.max}}\" step=\"{{r.step}}\" value=\"{{r.v}}\" onInput=\"{{r.set}}\" aria-label=\"{{r.label}}\" style=\"width: 100%; accent-color: {{accent}}\">\n          <\/div>\n        <\/sc-for>\n        <\/sc-if>\n        <sc-if value=\"{{cg.isCurve}}\" hint-placeholder-val=\"{{ false }}\">\n          <div style=\"display: flex; gap: 6px; flex-shrink: 0\">\n            <sc-for list=\"{{cg.chans}}\" as=\"c\" hint-placeholder-count=\"4\"><button onClick=\"{{c.pick}}\" style=\"flex: 1; height: 36px; border-radius: 10px; border: 1.5px solid {{c.border}}; background: transparent; color: {{c.fg}}; font-size: 13px; font-weight: 700\">{{c.t}}<\/button><\/sc-for>\n          <\/div>\n          <div data-curve style=\"align-self: center; width: 240px; height: 240px; border-radius: 12px; background: #0F1115; border: 1px solid #22262E; position: relative; touch-action: none; flex-shrink: 0\">\n            <svg width=\"240\" height=\"240\" viewBox=\"0 0 240 240\" role=\"img\" aria-label=\"เส้นโค้งสี ลากจุดเพื่อปรับ\" style=\"position: absolute; inset: 0\">\n              <path d=\"M60 0V240M120 0V240M180 0V240M0 60H240M0 120H240M0 180H240\" stroke=\"#22262E\" stroke-width=\"1\" fill=\"none\"><\/path>\n              <path d=\"M0 240L240 0\" stroke=\"#3C4452\" stroke-width=\"1\" stroke-dasharray=\"4 4\" fill=\"none\"><\/path>\n              <path d=\"{{cg.path}}\" stroke=\"{{cg.color}}\" stroke-width=\"2.4\" fill=\"none\"><\/path>\n            <\/svg>\n            <sc-for list=\"{{cg.pts}}\" as=\"p\" hint-placeholder-count=\"2\"><span style=\"position: absolute; left: {{p.x}}px; top: {{p.y}}px; width: 18px; height: 18px; margin: -9px 0 0 -9px; border-radius: 9px; background: {{p.bg}}; border: 2px solid #0B0D11; box-sizing: border-box; pointer-events: none\"><\/span><\/sc-for>\n          <\/div>\n          <div style=\"display: flex; gap: 8px; flex-shrink: 0\">\n            <button onClick=\"{{cg.delPt}}\" style=\"flex: 1; height: 38px; border-radius: 10px; border: 1px solid #2A2F39; background: transparent; color: {{cg.delColor}}; font-size: 12.5px\">ลบจุดที่เลือก<\/button>\n            <button onClick=\"{{cg.resetCurve}}\" style=\"flex: 1; height: 38px; border-radius: 10px; border: 1px solid #2A2F39; background: transparent; color: #C3CAD6; font-size: 12.5px\">รีเซ็ตเส้นนี้<\/button>\n          <\/div>\n          <div style=\"font-size: 11.5px; color: #8E97A6; line-height: 1.5; flex-shrink: 0\">แตะบนเส้นเพื่อเพิ่มจุด ลากจุดขึ้นลงเพื่อปรับ · ซ้าย = เงา กลาง = โทนกลาง ขวา = ไฮไลต์<\/div>\n        <\/sc-if>\n        <sc-if value=\"{{cg.isWheel}}\" hint-placeholder-val=\"{{ false }}\">\n          <div style=\"display: flex; justify-content: space-between; gap: 6px; flex-shrink: 0\">\n            <sc-for list=\"{{cg.wheels}}\" as=\"w\" hint-placeholder-count=\"3\">\n              <div style=\"flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 0\">\n                <div data-wheel=\"{{w.id}}\" style=\"width: 100px; height: 100px; border-radius: 50px; background: conic-gradient(from 90deg, #FF5A5A, #FF5AA8, #B05AFF, #5A8BFF, #4DE0F2, #5AD97A, #F2E84D, #FF9F4D, #FF5A5A); position: relative; touch-action: none\">\n                  <div style=\"position: absolute; inset: 0; border-radius: 50px; background: radial-gradient(circle, rgba(128,128,128,1) 0%, rgba(128,128,128,0) 72%); pointer-events: none\"><\/div>\n                  <div style=\"position: absolute; left: {{w.hx}}px; top: {{w.hy}}px; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 8px; background: #FFFFFF; border: 2px solid #0B0D11; box-sizing: border-box; pointer-events: none\"><\/div>\n                <\/div>\n                <div style=\"font-size: 12.5px; font-weight: 600\">{{w.name}}<\/div>\n                <input type=\"range\" min=\"-100\" max=\"100\" value=\"{{w.l}}\" onInput=\"{{w.setL}}\" aria-label=\"{{w.lAria}}\" style=\"width: 100%; accent-color: {{accent}}\">\n              <\/div>\n            <\/sc-for>\n          <\/div>\n          <div style=\"font-size: 11.5px; color: #8E97A6; line-height: 1.5; flex-shrink: 0\">ลากจุดในวงล้อเพื่อใส่โทนสี แถบล่างปรับความสว่างของช่วงนั้น<\/div>\n        <\/sc-if>\n        <button onClick=\"{{cg.reset}}\" style=\"height: 38px; border-radius: 10px; border: 1px solid #2A2F39; background: transparent; color: #C3CAD6; font-size: 13px; flex-shrink: 0\">รีเซ็ตสีทั้งหมด<\/button>\n      <\/sc-if>\n      <sc-if value=\"{{is_ai}}\" hint-placeholder-val=\"{{ false }}\">\n        <sc-for list=\"{{ai.rows}}\" as=\"a\" hint-placeholder-count=\"2\">\n          <div style=\"display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 14px; background: #0F1115; flex-shrink: 0\">\n            <div style=\"flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px\"><span style=\"font-size: 14px; font-weight: 600\">{{a.name}} <sc-if value=\"{{a.ai}}\" hint-placeholder-val=\"{{ false }}\"><span style=\"font-size: 9.5px; font-weight: 700; background: #2A3550; color: #9FC3FF; border-radius: 5px; padding: 0 4px; vertical-align: 2px\">AI<\/span><\/sc-if><\/span><span style=\"font-size: 11.5px; color: #A9B1BE; line-height: 1.4\">{{a.hint}}<\/span><\/div>\n            <sc-if value=\"{{a.isTog}}\" hint-placeholder-val=\"{{ false }}\">\n              <button onClick=\"{{a.pick}}\" role=\"switch\" aria-checked=\"{{a.checked}}\" aria-label=\"{{a.name}}\" style=\"width: 50px; height: 30px; border: 0; padding: 0; border-radius: 15px; background: {{a.bg}}; position: relative; flex-shrink: 0\"><span style=\"position: absolute; top: 3px; left: {{a.knob}}; width: 24px; height: 24px; border-radius: 12px; background: #FFFFFF\"><\/span><\/button>\n            <\/sc-if>\n            <sc-if value=\"{{a.isBtn}}\" hint-placeholder-val=\"{{ true }}\">\n              <button onClick=\"{{a.pick}}\" style=\"height: 36px; padding: 0 12px; border-radius: 10px; border: {{a.border}}; background: {{a.bg}}; color: {{a.fg}}; font-size: 12.5px; font-weight: 700; white-space: nowrap; flex-shrink: 0\">{{a.btn}}<\/button>\n            <\/sc-if>\n          <\/div>\n        <\/sc-for>\n        <sc-for list=\"{{ai.sliders}}\" as=\"r\" hint-placeholder-count=\"3\">\n          <div style=\"display: flex; flex-direction: column; gap: 2px; flex-shrink: 0\">\n            <div style=\"display: flex; justify-content: space-between; font-size: 13px\"><label for=\"{{r.id}}\" style=\"color: #C3CAD6\">{{r.label}}<\/label><span style=\"color: {{accent}}; font-weight: 600; font-variant-numeric: tabular-nums\">{{r.text}}<\/span><\/div>\n            <input id=\"{{r.id}}\" type=\"range\" min=\"{{r.min}}\" max=\"{{r.max}}\" step=\"{{r.step}}\" value=\"{{r.v}}\" onInput=\"{{r.set}}\" aria-label=\"{{r.label}}\" style=\"width: 100%; accent-color: {{accent}}\">\n          <\/div>\n        <\/sc-for>\n      <\/sc-if>\n    <\/div>\n  <\/section>\n<\/div>\n<\/x-dc>", props: {"accent": {"editor": "color", "default": "#2FD3C4"}, "$preview": {"width": 390, "height": 844}}, title: "KlipFox · แก้คลิป",
   Component: (function () {
 
 class Component extends DCLogic {
@@ -3036,10 +3058,17 @@ class Component extends DCLogic {
     // เสียง
     const voice = c.voice && c.voice.mode;
     const vset = (mode, label) => this.job(label, 'คิดในเครื่อง ไม่ส่งคลิปออกไปไหน', (pr) => KF.motion.setVoice(c.id, mode, pr)).then(() => KF.changed());
+    const dq = KF.dnq ? KF.dnq.get() : 'fast', dst = KF.dfn ? KF.dfn.status : 'need';
+    const dlAi = () => this.job('กำลังโหลดโมเดล AI…', 'ไฟล์ราว 9 MB โหลดครั้งเดียว เก็บไว้ในเครื่อง', (pr) => KF.dfn.download(pr)).then(() => KF.changed());
     out.aud = {
       sliders: [S('c-vol', 'ระดับเสียง', c.vol == null ? 100 : c.vol, 0, 200, 1, (c.vol == null ? 100 : c.vol) + '%', (e) => { const v = Number(e.target.value); up((x) => { x.vol = v; }, 'vol'); })],
+      segs: isVid ? [SG('แบบลดเสียง', [['fast', 'เร็ว'], ['strong', 'เข้มขึ้น'], ['ai', 'AI']], dq, (v) => { KF.dnq.set(v); if (voice === 'denoise') vset('denoise', 'กำลังลดเสียงรบกวนใหม่…'); })] : [],
       rows: isVid ? [
-        Component.tog('ลดเสียงรบกวน', 'ลดเสียงลม แอร์ รถ เสียงจอแจในคลิป', voice === 'denoise', () => vset(voice === 'denoise' ? null : 'denoise', voice === 'denoise' ? 'กำลังคืนเสียงเดิม…' : 'กำลังลดเสียงรบกวน…'), false, accent),
+        Component.tog('ลดเสียงรบกวน', dq === 'ai' ? 'AI ลดเสียงลม แอร์ รถ เสียงจอแจ เหลือเสียงพูดชัด (ช้ากว่าแบบเร็ว)' : 'ลดเสียงลม แอร์ รถ เสียงจอแจในคลิป', voice === 'denoise', () => vset(voice === 'denoise' ? null : 'denoise', voice === 'denoise' ? 'กำลังคืนเสียงเดิม…' : 'กำลังลดเสียงรบกวน…'), dq === 'ai', accent),
+        ...(dq === 'ai' && dst !== 'ready' ? [Component.btn('โมเดล AI ลดเสียงรบกวน',
+          dst === 'downloading' ? 'กำลังโหลด ' + KF.dfn.pct + '%' : dst === 'error' ? 'โหลดไม่สำเร็จ: ' + KF.dfn.error : 'ประมาณ 9 MB โหลดครั้งเดียว เก็บไว้ในเครื่อง ใช้ออฟไลน์ได้',
+          dst === 'downloading' ? '…' : dst === 'error' ? 'ลองใหม่' : 'โหลด', dst === 'downloading' ? () => {} : dlAi, true, accent)] : []),
+        ...(voice === 'denoise' ? [Component.btn('ฟังเทียบ', c.voice.ab ? 'ตอนนี้ได้ยินเสียงเดิม เล่นคลิปแล้วฟังได้เลย' : 'ตอนนี้ได้ยินเสียงที่ลดแล้ว เล่นคลิปแล้วฟังได้เลย', c.voice.ab ? 'ฟังที่ลดแล้ว' : 'ฟังเสียงเดิม', () => KF.motion.abVoice(c.id), false, accent)] : []),
         Component.btn('แยกเสียงออกจากคลิป', 'ย้ายเสียงลงแทร็กเสียง หรือแยกเสียงพูด / พื้นหลัง', 'เปิด', () => KF.go('ExtractAudio'), false, accent),
       ] : [],
     };
@@ -6952,6 +6981,22 @@ void main(){
 
   // ------------------------------------------------------------------ the clip's voice: cleaner / speech only
   /** mode: 'denoise' (less wind / air-con / traffic) | 'speech' (voice only, clearer) | null (original sound) */
+  /** listen to the original sound / the cleaned sound by flipping the volumes (nothing is re-computed) */
+  E.abVoice = (cId) => {
+    KF.edit((p) => {
+      const x = p.clips.find((k) => k.id === cId);
+      if (!x || !x.voice) return;
+      const orig = !x.voice.ab;
+      x.voice.ab = orig;
+      const set = (q, v) => { q.vol = v; p.audios.forEach((a) => { if (a.xa === q.k) a.vol = v; }); };
+      (x.xa || []).forEach((q) => {
+        if (!q.voice) return;
+        if (orig) { q.vol0 = q.vol == null ? 100 : q.vol; set(q, 0); }
+        else set(q, q.vol0 == null ? 100 : q.vol0);
+      });
+      x.vol = orig ? (x.voice.vol == null ? 100 : x.voice.vol) : 0;
+    }, 'ab' + cId);
+  };
   E.setVoice = async (cId, mode, onProgress) => {
     const find = () => KF.project().clips.find((k) => k.id === cId);
     const c = find();
@@ -6969,11 +7014,12 @@ void main(){
     if (!mode) return;
     const c2 = find(), before = c2.vol == null ? 100 : c2.vol;
     const had = new Set((c2.xa || []).map((q) => q.k));
-    await KF.tools.extract(cId, mode === 'denoise' ? 'all' : 'speech', { link: true, fade: true, denoise: mode === 'denoise', strength: mode === 'speech' ? 0.75 : 0.7 }, onProgress);
+    const dq = KF.dnq ? KF.dnq.get() : 'fast';
+    await KF.tools.extract(cId, mode === 'denoise' ? 'all' : 'speech', { link: true, fade: true, denoise: mode === 'denoise', ai: dq === 'ai', strength: mode === 'speech' ? 0.75 : dq === 'strong' ? 0.95 : 0.7 }, onProgress);
     KF.edit((p) => {
       const x = p.clips.find((k) => k.id === cId);
       if (!x) return;
-      x.voice = { mode, vol: before };
+      x.voice = { mode, vol: before, q: dq };
       (x.xa || []).forEach((q) => { if (!had.has(q.k)) q.voice = mode; });
     });
   };
@@ -8316,7 +8362,422 @@ onmessage = (e) => {
     if (a) return { kind: 'audio', item: a, media: KF.media[a.src], name: a.name };
     return null;
   };
-  T.split = async (target, strength, onProgress) => {
+  /*UMX-BEGIN*/
+  const UMX_SRC = `var UMX = (function () {
+  var NFFT = 4096, HOP = 1024, NB = 2049, MAXB = 1487, IN2 = 2974, HID = 1024, HL = 512, G4 = 2048, LANES = 8, BLK = 64, NOUT = 4100;
+  var K = null;           // { mem, ex, f }
+  var M = null;           // loaded model offsets (float indices into wasm memory)
+  var top = 0;            // bump allocator (float index)
+  function alloc(n) { var p = top; top += (n + 3) & ~3; return p; }
+  function ensure(floats) {
+    var need = Math.ceil((floats * 4) / 65536) + 2, have = K.mem.buffer.byteLength / 65536;
+    if (need > have) K.mem.grow(need - have);
+    K.f = new Float32Array(K.mem.buffer);
+  }
+  function init(kernBytes, pages) {
+    if (typeof WebAssembly === 'undefined' || !WebAssembly.validate(kernBytes)) throw new Error('no wasm simd');
+    var mem = new WebAssembly.Memory({ initial: pages || 64 });
+    var inst = new WebAssembly.Instance(new WebAssembly.Module(kernBytes), { e: { m: mem } });
+    K = { mem: mem, ex: inst.exports, f: new Float32Array(mem.buffer) };
+    top = 16;
+    return true;
+  }
+  function gemm(w, x, o, b, O, C, P) { K.ex.gemm(w * 4, x * 4, o * 4, b * 4, O, C, P); }
+  function parseRecords(raw) {
+    var dv = new DataView(raw.buffer, raw.byteOffset, raw.byteLength);
+    if (dv.getUint32(0, true) !== 0x756d7867) throw new Error('bad model file');
+    var hid = dv.getUint32(4, true);
+    if (hid !== HID) throw new Error('unexpected model size');
+    var p = 8, T = {}, i;
+    while (p + 16 <= raw.length) {
+      var scale = dv.getFloat32(p, true), off = dv.getFloat32(p + 4, true), nd = dv.getInt32(p + 8, true), ln = dv.getInt32(p + 12, true);
+      p += 16;
+      var n = 1, shape = [];
+      for (i = 0; i < nd; i++) { var ne = dv.getInt32(p, true); p += 4; shape.unshift(ne); n *= ne; }
+      var name = ''; for (i = 0; i < ln; i++) name += String.fromCharCode(raw[p + i]); p += ln;
+      var u16 = /bn2|bn3|fc2|fc3/.test(name);
+      T[name] = { scale: scale, off: off, shape: shape, n: n, p: p, u16: u16 };
+      p += n * (u16 ? 2 : 1);
+    }
+    return T;
+  }
+  function deq(raw, t, dst, at) {          // dequantize tensor t into dst[at ...]
+    var s = t.scale, o = t.off, n = t.n, p = t.p, i;
+    if (t.u16) for (i = 0; i < n; i++) dst[at + i] = (raw[p + 2 * i] | (raw[p + 2 * i + 1] << 8)) * s + o;
+    else for (i = 0; i < n; i++) dst[at + i] = raw[p + i] * s + o;
+  }
+  function vec(raw, T, name) { var a = new Float32Array(T[name].n); deq(raw, T[name], a, 0); return a; }
+  function load(raw) {
+    var T = parseRecords(raw), i, r, c;
+    var need = ['fc1.weight', 'fc2.weight', 'fc3.weight', 'input_mean', 'input_scale', 'output_mean', 'output_scale'];
+    for (i = 0; i < need.length; i++) if (!T[need[i]]) throw new Error('model tensor missing: ' + need[i]);
+    var total = HID * IN2 + 6 * (G4 * HID + G4 * HL + G4) + HID * 2 * HID + NOUT * HID + 8 * 1024 + NOUT + 4096 + 64;
+    top = 16; ensure(top + total + 1024);
+    var f = K.f, m = { };
+    m.zero = alloc(G4);                                     // zero bias for the recurrent gemm
+    var a, bw = vec(raw, T, 'bn1.weight'), bb = vec(raw, T, 'bn1.bias'), rm = vec(raw, T, 'bn1.running_mean'), rv = vec(raw, T, 'bn1.running_var');
+    m.w1 = alloc(HID * IN2); m.b1 = alloc(HID);
+    deq(raw, T['fc1.weight'], f, m.w1);
+    for (r = 0; r < HID; r++) {
+      a = bw[r] / Math.sqrt(rv[r] + 1e-5);
+      for (c = 0; c < IN2; c++) f[m.w1 + r * IN2 + c] *= a;
+      f[m.b1 + r] = bb[r] - rm[r] * a;
+    }
+    m.wih = []; m.whh = []; m.bias = [];
+    for (var l = 0; l < 3; l++) {
+      m.wih[l] = []; m.whh[l] = []; m.bias[l] = [];
+      for (var d = 0; d < 2; d++) {
+        var sfx = '_l' + l + (d ? '_reverse' : '');
+        var wi = alloc(G4 * HID), wh = alloc(G4 * HL), bi = alloc(G4);
+        deq(raw, T['lstm.weight_ih' + sfx], f, wi); deq(raw, T['lstm.weight_hh' + sfx], f, wh);
+        var b1 = vec(raw, T, 'lstm.bias_ih' + sfx), b2 = vec(raw, T, 'lstm.bias_hh' + sfx);
+        for (i = 0; i < G4; i++) f[bi + i] = b1[i] + b2[i];
+        m.wih[l][d] = wi; m.whh[l][d] = wh; m.bias[l][d] = bi;
+      }
+    }
+    bw = vec(raw, T, 'bn2.weight'); bb = vec(raw, T, 'bn2.bias'); rm = vec(raw, T, 'bn2.running_mean'); rv = vec(raw, T, 'bn2.running_var');
+    m.w2 = alloc(HID * 2 * HID); m.b2 = alloc(HID);
+    deq(raw, T['fc2.weight'], f, m.w2);
+    for (r = 0; r < HID; r++) {
+      a = bw[r] / Math.sqrt(rv[r] + 1e-5);
+      for (c = 0; c < 2 * HID; c++) f[m.w2 + r * 2 * HID + c] *= a;
+      f[m.b2 + r] = bb[r] - rm[r] * a;
+    }
+    bw = vec(raw, T, 'bn3.weight'); bb = vec(raw, T, 'bn3.bias'); rm = vec(raw, T, 'bn3.running_mean'); rv = vec(raw, T, 'bn3.running_var');
+    var os = vec(raw, T, 'output_scale'), om = vec(raw, T, 'output_mean');
+    m.w3 = alloc(NOUT * HID); m.b3 = alloc(NOUT);
+    deq(raw, T['fc3.weight'], f, m.w3);
+    for (r = 0; r < 2 * NB; r++) {
+      var k = r % NB;
+      a = bw[r] / Math.sqrt(rv[r] + 1e-5);
+      var s = a * os[k];
+      for (c = 0; c < HID; c++) f[m.w3 + r * HID + c] *= s;
+      f[m.b3 + r] = (bb[r] - rm[r] * a) * os[k] + om[k];
+    }
+    for (r = 2 * NB; r < NOUT; r++) { for (c = 0; c < HID; c++) f[m.w3 + r * HID + c] = 0; f[m.b3 + r] = 0; }
+    var im = vec(raw, T, 'input_mean'), isc = vec(raw, T, 'input_scale');
+    m.inMean = im; m.inScale = isc; m.end = top;
+    M = m;
+    return true;
+  }
+  var tw = null, rev = null;
+  function fftInit() {
+    if (tw) return;
+    tw = new Float64Array(NFFT); rev = new Uint16Array(NFFT);
+    for (var i = 0; i < NFFT / 2; i++) { tw[2 * i] = Math.cos(-2 * Math.PI * i / NFFT); tw[2 * i + 1] = Math.sin(-2 * Math.PI * i / NFFT); }
+    for (i = 0; i < NFFT; i++) { var r = 0, x = i; for (var b = 0; b < 12; b++) { r = (r << 1) | (x & 1); x >>= 1; } rev[i] = r; }
+  }
+  function fft(re, im, inv) {              // in place, radix 2; inv: conjugate twiddles (no scaling)
+    var n = NFFT, i, j, t;
+    for (i = 0; i < n; i++) { j = rev[i]; if (j > i) { t = re[i]; re[i] = re[j]; re[j] = t; t = im[i]; im[i] = im[j]; im[j] = t; } }
+    var sg = inv ? -1 : 1;
+    for (var len = 2; len <= n; len <<= 1) {
+      var half = len >> 1, step = n / len;
+      for (i = 0; i < n; i += len) {
+        for (j = 0; j < half; j++) {
+          var wr = tw[2 * j * step], wi = sg * tw[2 * j * step + 1];
+          var a = i + j, b = a + half;
+          var xr = re[b] * wr - im[b] * wi, xi = re[b] * wi + im[b] * wr;
+          re[b] = re[a] - xr; im[b] = im[a] - xi; re[a] += xr; im[a] += xi;
+        }
+      }
+    }
+  }
+  var WIN = null;
+  function winInit() { if (WIN) return; WIN = new Float64Array(NFFT); for (var i = 0; i < NFFT; i++) WIN[i] = 0.5 - 0.5 * Math.cos(2 * Math.PI * i / NFFT); }
+  var zr = null, zi = null;
+  function stftFrame(L, R, f, Lr, Li, Rr, Ri) {
+    if (!zr) { zr = new Float64Array(NFFT); zi = new Float64Array(NFFT); }
+    var N = L.length, base = f * HOP - NFFT / 2, j, idx;
+    for (j = 0; j < NFFT; j++) {
+      idx = base + j;
+      if (idx < 0) idx = -idx; else if (idx >= N) idx = 2 * (N - 1) - idx;
+      if (idx < 0) idx = 0;
+      zr[j] = L[idx] * WIN[j]; zi[j] = R[idx] * WIN[j];
+    }
+    fft(zr, zi, false);
+    for (var k = 0; k < NB; k++) {
+      var k2 = (NFFT - k) & (NFFT - 1);
+      var ar = zr[k], ai = zi[k], br = zr[k2], bi = zi[k2];
+      Lr[k] = 0.5 * (ar + br); Li[k] = 0.5 * (ai - bi);
+      Rr[k] = 0.5 * (ai + bi); Ri[k] = 0.5 * (br - ar);
+    }
+  }
+  function istftFrame(Lr, Li, Rr, Ri, yl, yr) {
+    var k;
+    for (k = 0; k < NB; k++) { zr[k] = Lr[k] - Ri[k]; zi[k] = Li[k] + Rr[k]; }          // L + iR
+    for (k = 1; k < NB - 1; k++) { zr[NFFT - k] = Lr[k] + Ri[k]; zi[NFFT - k] = -Li[k] + Rr[k]; }
+    fft(zr, zi, true);
+    for (k = 0; k < NFFT; k++) { yl[k] = zr[k] / NFFT * WIN[k]; yr[k] = zi[k] / NFFT * WIN[k]; }
+  }
+  function sigm(x) { return 1 / (1 + Math.exp(-x)); }
+  function separate(L, R, opts) {
+    opts = opts || {};
+    fftInit(); winInit();
+    var N = L.length, F = 1 + Math.floor(N / HOP), t, b, lane, i, k, ch;
+    var ctx = opts.ctx != null ? opts.ctx : 32, core;
+    var perGroup = LANES * 192;
+    var nGroups = opts.core ? Math.ceil(F / (LANES * opts.core)) : Math.max(1, Math.ceil(F / perGroup));
+    core = opts.core || Math.max(8, (Math.ceil(F / (LANES * nGroups)) + 7) & ~7);
+    var Wf = core + 2 * ctx; if (Wf % 8) throw new Error('window must be a multiple of 8 frames');
+    var nbk = Wf / 8, nWin = Math.ceil(F / core), f, savedTop = top;
+    var cb = alloc(nbk * 2 * HID * BLK), A = alloc(nbk * HID * BLK), B = alloc(nbk * HID * BLK), GI = alloc(nbk * G4 * BLK);
+    var xin = alloc(IN2 * BLK), t1 = alloc(HID * BLK), t2 = alloc(NOUT * BLK), Hs = alloc(HL * LANES), Cs = alloc(HL * LANES), Gs = alloc(G4 * LANES);
+    ensure(top + 64);
+    var fl = K.f, m = M;
+    var ola = [new Float32Array(N), new Float32Array(N)];
+    var Lr = new Float64Array(NB), Li = new Float64Array(NB), Rr = new Float64Array(NB), Ri = new Float64Array(NB);
+    var yl = new Float64Array(NFFT), yr = new Float64Array(NFFT);
+    var magL = new Float32Array(NB), magR = new Float32Array(NB);
+    var inMean = m.inMean, inScale = m.inScale;
+    var nGr = nGroups, total = nGr * 28.3 * nbk;      // work units: fc1 3 / block, lstm 3.15*nbk per pass, fc2+fc3 6.3 / block
+    var done = 0, rep = function (n) { done += n; opts.progress && opts.progress(Math.min(1, done / total)); };
+    var winStart = new Int32Array(LANES), live = new Uint8Array(LANES);
+    for (var g = 0; g < nGr; g++) {
+      for (lane = 0; lane < LANES; lane++) { var wi = g * LANES + lane; live[lane] = wi < nWin ? 1 : 0; winStart[lane] = wi * core - ctx; }
+      for (b = 0; b < nbk; b++) {
+        for (k = 0; k < IN2 * BLK; k++) fl[xin + k] = 0;
+        for (var tt = 0; tt < 8; tt++) {
+          for (lane = 0; lane < LANES; lane++) {
+            f = winStart[lane] + b * 8 + tt;
+            var col = tt * 8 + lane;
+            if (!live[lane] || f < 0 || f >= F) { for (ch = 0; ch < 2; ch++) for (k = 0; k < MAXB; k++) fl[xin + (ch * MAXB + k) * BLK + col] = inMean[k] * inScale[k]; continue; }
+            stftFrame(L, R, f, Lr, Li, Rr, Ri);
+            for (k = 0; k < MAXB; k++) {
+              fl[xin + k * BLK + col] = (Math.sqrt(Lr[k] * Lr[k] + Li[k] * Li[k]) + inMean[k]) * inScale[k];
+              fl[xin + (MAXB + k) * BLK + col] = (Math.sqrt(Rr[k] * Rr[k] + Ri[k] * Ri[k]) + inMean[k]) * inScale[k];
+            }
+          }
+        }
+        var h1 = cb + b * 2 * HID * BLK;
+        gemm(m.w1, xin, h1, m.b1, HID, IN2, BLK);
+        for (k = 0; k < HID * BLK; k++) fl[h1 + k] = Math.tanh(fl[h1 + k]);
+        rep(3);
+      }
+      for (var l = 0; l < 3; l++) {
+        for (var dir = 0; dir < 2; dir++) {
+          for (b = 0; b < nbk; b++) {
+            var inp = l === 0 ? cb + b * 2 * HID * BLK : l === 1 ? A + b * HID * BLK : B + b * HID * BLK;
+            gemm(m.wih[l][dir], inp, GI + b * G4 * BLK, m.bias[l][dir], G4, HID, BLK);
+          }
+          for (k = 0; k < HL * LANES; k++) { fl[Hs + k] = 0; fl[Cs + k] = 0; }
+          var whh = m.whh[l][dir];
+          for (var s = 0; s < Wf; s++) {
+            t = dir === 0 ? s : Wf - 1 - s;
+            gemm(whh, Hs, Gs, m.zero, G4, HL, LANES);
+            b = t >> 3; var tc = (t & 7) * 8;
+            var gi = GI + b * G4 * BLK + tc;
+            var dst = (l === 0 ? A + b * HID * BLK : l === 1 ? B + b * HID * BLK : cb + b * 2 * HID * BLK + HID * BLK) + dir * HL * BLK + tc;
+            for (var u = 0; u < HL; u++) {
+              var gu = gi + u * BLK, gh = Gs + u * LANES, hu = Hs + u * LANES, cu = Cs + u * LANES, du = dst + u * BLK;
+              for (lane = 0; lane < LANES; lane++) {
+                var ig = sigm(fl[gu + lane] + fl[gh + lane]);
+                var fg = sigm(fl[gu + HL * BLK + lane] + fl[gh + HL * LANES + lane]);
+                var gg = Math.tanh(fl[gu + 2 * HL * BLK + lane] + fl[gh + 2 * HL * LANES + lane]);
+                var og = sigm(fl[gu + 3 * HL * BLK + lane] + fl[gh + 3 * HL * LANES + lane]);
+                var c = fg * fl[cu + lane] + ig * gg;
+                fl[cu + lane] = c;
+                var h = og * Math.tanh(c);
+                fl[hu + lane] = h; fl[du + lane] = h;
+              }
+            }
+          }
+          rep(3.15 * nbk);
+        }
+      }
+      for (b = 0; b < nbk; b++) {
+        gemm(m.w2, cb + b * 2 * HID * BLK, t1, m.b2, HID, 2 * HID, BLK);
+        for (k = 0; k < HID * BLK; k++) { var v = fl[t1 + k]; if (v < 0) fl[t1 + k] = 0; }
+        gemm(m.w3, t1, t2, m.b3, NOUT, HID, BLK);
+        for (tt = 0; tt < 8; tt++) {
+          t = b * 8 + tt;
+          if (t < ctx || t >= ctx + core) continue;
+          for (lane = 0; lane < LANES; lane++) {
+            if (!live[lane]) continue;
+            f = winStart[lane] + t;
+            if (f < 0 || f >= F) continue;
+            col = tt * 8 + lane;
+            stftFrame(L, R, f, Lr, Li, Rr, Ri);
+            for (k = 0; k < NB; k++) {
+              var ml = fl[t2 + k * BLK + col], mr = fl[t2 + (NB + k) * BLK + col];
+              if (ml < 0) ml = 0; if (mr < 0) mr = 0;
+              Lr[k] *= ml; Li[k] *= ml; Rr[k] *= mr; Ri[k] *= mr;
+            }
+            istftFrame(Lr, Li, Rr, Ri, yl, yr);
+            var o1 = f * HOP - NFFT / 2;
+            for (i = Math.max(0, -o1); i < NFFT && o1 + i < N; i++) { ola[0][o1 + i] += yl[i]; ola[1][o1 + i] += yr[i]; }
+          }
+        }
+        rep(6.3);
+      }
+    }
+    var outL = ola[0], outR = ola[1];
+    for (i = 0; i < N; i++) {                   // divide by the sum of squared windows of all frames covering sample i
+      var fa = Math.max(0, Math.floor((i - NFFT / 2) / HOP) + 1), fb = Math.min(F - 1, Math.floor((i + NFFT / 2) / HOP)), ws = 1e-8;
+      for (f = fa; f <= fb; f++) { var wv = WIN[i - (f * HOP - NFFT / 2)]; ws += wv * wv; }
+      outL[i] /= ws; outR[i] /= ws;
+    }
+    top = savedTop;
+    opts.progress && opts.progress(1);
+    return { L: outL, R: outR, F: F, nGroups: nGroups, core: core, ctx: ctx };
+  }
+  return { init: init, load: load, separate: separate, hasWasm: function () { return !!K; } };
+})();
+if (typeof module !== 'undefined') module.exports = UMX;
+var KERN_B64 = 'AGFzbQEAAAABEwJgBX9/f39/AGAHf39/f39/fwACCAEBZQFtAgABAwMCAAEHEQIGbWF0dmVjAAAEZ2VtbQABCr4HAqIDAgh/BXtBACEFIARBAnQhDAJAA0AgBSADTg0BIAUgDGwgAGohByAHIAxqIQggCCAMaiEJIAkgDGohCiABIQv9DAAAAAAAAAAAAAAAAAAAAAAhDf0MAAAAAAAAAAAAAAAAAAAAACEO/QwAAAAAAAAAAAAAAAAAAAAAIQ/9DAAAAAAAAAAAAAAAAAAAAAAhECAEQQJ1IQYCQANAIAZFDQEgC/0AAgAhESANIAf9AAIAIBH95gH95AEhDSAOIAj9AAIAIBH95gH95AEhDiAPIAn9AAIAIBH95gH95AEhDyAQIAr9AAIAIBH95gH95AEhECAHQRBqIQcgCEEQaiEIIAlBEGohCSAKQRBqIQogC0EQaiELIAZBAWshBgwACwsgBUECdCACaiEHIAcgDf0fACAN/R8BkiAN/R8CIA39HwOSkjgCACAHIA79HwAgDv0fAZIgDv0fAiAO/R8DkpI4AgQgByAP/R8AIA/9HwGSIA/9HwIgD/0fA5KSOAIIIAcgEP0fACAQ/R8BkiAQ/R8CIBD9HwOSkjgCDCAFQQRqIQUMAAsLC5cEAgt/C3sgBkECdCEPIAVBAnQhEEEAIQcCQANAIAcgBE4NAUEAIQgCQANAIAggBk4NASADIAdBAGpBAnRqKgIA/RMhEiASIRMgAyAHQQFqQQJ0aioCAP0TIRQgFCEVIAMgB0ECakECdGoqAgD9EyEWIBYhFyADIAdBA2pBAnRqKgIA/RMhGCAYIRkgByAFbEECdCAAaiEKIAogEGohCyALIBBqIQwgDCAQaiENIAhBAnQgAWohDiAFIQkCQANAIAlFDQEgDv0AAgAhGiAO/QACECEbIAoqAgD9EyEcIBIgHCAa/eYB/eQBIRIgEyAcIBv95gH95AEhEyAKQQRqIQogCyoCAP0TIRwgFCAcIBr95gH95AEhFCAVIBwgG/3mAf3kASEVIAtBBGohCyAMKgIA/RMhHCAWIBwgGv3mAf3kASEWIBcgHCAb/eYB/eQBIRcgDEEEaiEMIA0qAgD9EyEcIBggHCAa/eYB/eQBIRggGSAcIBv95gH95AEhGSANQQRqIQ0gDiAPaiEOIAlBAWshCQwACwsgByAGbCAIakECdCACaiERIBEgEv0LAgAgESAT/QsCECARIA9qIREgESAU/QsCACARIBX9CwIQIBEgD2ohESARIBb9CwIAIBEgF/0LAhAgESAPaiERIBEgGP0LAgAgESAZ/QsCECARIA9qIREgCEEIaiEIDAALCyAHQQRqIQcMAAsLCw==';
+function b64bytes(s) { var b = atob(s), u = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; }
+onmessage = function (e) {
+  var d = e.data;
+  if (d.type !== 'run') return;
+  (async function () {
+    try {
+      postMessage({ type: 'status', label: 'unpack', p: 0 });
+      if (typeof DecompressionStream === 'undefined') throw new Error('no gunzip');
+      var raw = new Uint8Array(await new Response(new Blob([d.gz]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer());
+      UMX.init(b64bytes(KERN_B64), 64);
+      UMX.load(raw);
+      raw = null;
+      postMessage({ type: 'status', label: 'run', p: 0 });
+      var last = 0;
+      var r = UMX.separate(d.L, d.R, { progress: function (p) { var t = Date.now(); if (t - last > 250) { last = t; postMessage({ type: 'progress', p: p }); } } });
+      var L = d.L, R = d.R, n = L.length, i;
+      for (i = 0; i < n; i++) { L[i] -= r.L[i]; R[i] -= r.R[i]; }       // music = mix - vocals
+      postMessage({ type: 'done', vL: r.L, vR: r.R, mL: L, mR: R, info: { F: r.F, groups: r.nGroups, core: r.core, ctx: r.ctx } }, [r.L.buffer, r.R.buffer, L.buffer, R.buffer]);
+    } catch (err) {
+      postMessage({ type: 'error', msg: String((err && err.message) || err) });
+    }
+  })();
+};`;
+  // ------------------------------------------------------------------ AI vocal / music separation (Open-Unmix L, runs in the browser)
+  // One file (~13 MB) is downloaded once from this site (lib/umx/) and kept in Cache Storage. A worker unpacks it and runs
+  // the network with WebAssembly SIMD on the phone. Needs WASM SIMD + gzip support (iOS 16.4+, current Android Chrome).
+  const UMX_REL = 'lib/umx/umxl-vocals.bin.gz', UMX_SIZE = 13261327, UMX_CACHE = 'klipfox-lib', UMX_MAX_SEC = 300;
+  const umxUrl = () => { try { return new URL(UMX_REL, document.baseURI).href; } catch (_) { return UMX_REL; } };
+  const UM = KF.umx = { status: 'checking', pct: 0, error: '', mem: null, busy: null, MB: 13 };
+  KF.vsq = {
+    get() { try { return localStorage.getItem('kf.vsq') === 'ai' ? 'ai' : 'fast'; } catch (_) { return 'fast'; } },
+    set(v) { try { localStorage.setItem('kf.vsq', v); } catch (_) {} KF.changed(); },
+  };
+  UM.supported = () => {
+    try {
+      if (window.KF_NO_UMX) return false;      // set window.KF_NO_UMX = true to switch the AI vocal separation off (e.g. for a commercial release: the weights are non-commercial)
+      return typeof WebAssembly !== 'undefined' && typeof DecompressionStream !== 'undefined' && typeof Blob !== 'undefined' && !!Blob.prototype.stream &&
+        WebAssembly.validate(new Uint8Array([0, 97, 115, 109, 1, 0, 0, 0, 1, 5, 1, 96, 0, 1, 123, 3, 2, 1, 0, 10, 10, 1, 8, 0, 65, 0, 253, 15, 253, 98, 11]));
+    } catch (_) { return false; }
+  };
+  UM.check = async () => {
+    if (!UM.supported()) { UM.status = 'unsupported'; KF.changed(); return false; }
+    if (UM.mem) { UM.status = 'ready'; return true; }
+    try {
+      const c = await caches.open(UMX_CACHE);
+      UM.status = (await c.match(umxUrl())) ? 'ready' : 'need';
+    } catch (_) { UM.status = 'need'; }
+    KF.changed();
+    return UM.status === 'ready';
+  };
+  UM.download = (onProgress) => {
+    if (UM.busy) return UM.busy;
+    UM.status = 'downloading'; UM.pct = 0; UM.error = ''; KF.changed();
+    UM.busy = (async () => {
+      try {
+        const r = await fetch(umxUrl());
+        if (!r.ok) throw new Error('โหลดโมเดลไม่ได้ (HTTP ' + r.status + ')');
+        const parts = []; let got = 0;
+        if (r.body && r.body.getReader) {
+          const rd = r.body.getReader();
+          for (;;) {
+            const { done, value } = await rd.read();
+            if (done) break;
+            parts.push(value); got += value.length;
+            const p = got / UMX_SIZE;
+            UM.pct = Math.min(99, Math.round(p * 100)); onProgress && onProgress(Math.min(0.99, p)); KF.changed();
+          }
+        } else { const b = new Uint8Array(await r.arrayBuffer()); parts.push(b); got = b.length; }
+        const u8 = new Uint8Array(got); let o = 0;
+        for (const p of parts) { u8.set(p, o); o += p.length; }
+        if (u8.length < 5e6 || u8[0] !== 0x1f || u8[1] !== 0x8b) throw new Error('ไฟล์โมเดลบนเว็บไม่ถูกต้อง (ต้องมีโฟลเดอร์ lib/umx ในเว็บ)');
+        let cached = false;
+        try {
+          const c = await caches.open(UMX_CACHE);
+          await c.put(umxUrl(), new Response(u8, { headers: { 'Content-Type': 'application/gzip' } }));
+          cached = true;
+        } catch (_) {}
+        UM.mem = cached ? null : u8;           // no Cache Storage (private tab, in-app browser): keep it in memory for this visit
+        UM.status = 'ready'; UM.pct = 100;
+      } catch (e) {
+        UM.status = 'error'; UM.error = String((e && e.message) || e);
+        throw e;
+      } finally { UM.busy = null; KF.changed(); }
+    })();
+    return UM.busy;
+  };
+  /** the model file as a fresh ArrayBuffer (it is handed over to the worker) */
+  UM.load = async () => {
+    if (UM.mem) return UM.mem.slice().buffer;
+    const c = await caches.open(UMX_CACHE);
+    const r = await c.match(umxUrl());
+    if (!r) throw new Error('ไม่พบไฟล์โมเดล AI ในเครื่อง');
+    return await r.arrayBuffer();
+  };
+  UM.ensure = async (onProgress) => {
+    if (UM.status !== 'ready') await UM.check();
+    if (UM.status === 'unsupported') throw new Error('unsupported');
+    if (UM.status !== 'ready') await UM.download(onProgress);
+  };
+  UM.check();
+
+  /** AI version of T.split: the singing voice and the music, from the part of the sound that is actually used */
+  async function splitAI(target, onProgress) {
+    const say = (p, label) => onProgress && onProgress(p, label);
+    say(0.01, 'กำลังเตรียมโมเดล AI…');
+    await UM.ensure((p) => say(0.01 + 0.04 * p, 'กำลังโหลดโมเดล AI…'));
+    const it = target.item;
+    const t0 = target.kind === 'clip' ? it.in : (it.from || 0), t1 = target.kind === 'clip' ? it.out : t0 + it.len;
+    if (t1 - t0 > UMX_MAX_SEC) throw new Error('long-ai');
+    say(0.05, 'กำลังอ่านเสียง…');
+    const a = await KF.decodeAudio(target.media, 44100, 2);
+    if (a.sr !== 44100) throw new Error('sample rate');
+    const s0 = Math.max(0, Math.floor(t0 * a.sr)), s1 = Math.min(a.data[0].length, Math.ceil(t1 * a.sr));
+    if (s1 - s0 < a.sr * 0.5) throw new Error('คลิปสั้นเกินไป');
+    const dual = a.srcChannels >= 2 && !!a.data[1];
+    const L = a.data[0].slice(s0, s1), R = dual ? a.data[1].slice(s0, s1) : L.slice();
+    const model = await UM.load();
+    const w = new Worker(URL.createObjectURL(new Blob([UMX_SRC], { type: 'text/javascript' })));
+    let out;
+    try {
+      out = await new Promise((res, rej) => {
+        w.onmessage = (e) => {
+          const d = e.data;
+          if (d.type === 'status') say(d.label === 'unpack' ? 0.06 : 0.08, d.label === 'unpack' ? 'กำลังแตกไฟล์โมเดล…' : 'AI กำลังแยกเสียงร้อง…');
+          else if (d.type === 'progress') say(0.08 + 0.88 * d.p, 'AI กำลังแยกเสียงร้อง…');
+          else if (d.type === 'done') res(d);
+          else if (d.type === 'error') rej(new Error(d.msg));
+        };
+        w.onerror = (e) => rej(new Error((e && e.message) || 'AI ไม่ทำงาน'));
+        w.postMessage({ type: 'run', gz: model, L, R }, [model, L.buffer, R.buffer]);
+      });
+    } finally { w.terminate(); }
+    say(0.97, 'กำลังสร้างไฟล์เสียง…');
+    const len = out.vL.length, fade = Math.min(len >> 1, Math.round(0.01 * a.sr));
+    const chs = dual ? [out.vL, out.vR, out.mL, out.mR] : [out.vL, out.mL];
+    for (const ch of chs) for (let i = 0; i < fade; i++) { const g = i / fade; ch[i] *= g; ch[len - 1 - i] *= g; }
+    const base = target.name.replace(/\.[^.]+$/, '').slice(0, 30);
+    return {
+      vocal: wav(dual ? [out.vL, out.vR] : [out.vL], a.sr), music: wav(dual ? [out.mL, out.mR] : [out.mL], a.sr),
+      base, off: s0 / a.sr,
+    };
+  }
+  /*UMX-END*/
+  T.split = async (target, strength, onProgress, opts) => {
+    if (opts && opts.ai) {
+      try { return await splitAI(target, onProgress); }
+      catch (e) {
+        if (e && e.message === 'long-ai') throw e;
+        console.warn('AI split failed, using the fast mode', e);
+        KF.toast('AI ใช้ไม่ได้บนเครื่องนี้ ใช้โหมดเร็วแทน');
+        onProgress && onProgress(0.02, '');
+      }
+    }
     const a = await KF.decodeAudio(target.media, 44100, 2);
     if (a.srcChannels < 2) throw new Error('mono');
     if (a.data[0].length > a.sr * 660) throw new Error('long');
@@ -8368,12 +8829,12 @@ onmessage = (e) => {
       if (target.kind === 'clip') {
         const c = p.clips.find((x) => x.id === target.item.id);
         if (!c) return;
-        start = KF.clipStart(c.id); from = c.in; len = KF.clipDur(c);
+        start = KF.clipStart(c.id); from = c.in - (out.off || 0); len = KF.clipDur(c);
         c.vol = 0;
       } else {
         const a = p.audios.find((x) => x.id === target.item.id);
         if (!a) return;
-        start = a.start; from = a.from || 0; len = a.len;
+        start = a.start; from = (a.from || 0) - (out.off || 0); len = a.len;
         p.audios = p.audios.filter((x) => x.id !== a.id);
       }
       add.forEach(([k, m]) => { if (m) p.audios.push({ id: KF.uid(), src: m.id, name: m.name, kind: 'music', start, from, len, vol: 100 }); });
@@ -8631,8 +9092,893 @@ onmessage = (e) => {
   }
   postMessage({ type: 'done', sL, sR, bL, bR }, [sL.buffer, sR.buffer, bL.buffer, bR.buffer]);
 };`;
+  /*DFN-BEGIN*/
+  const DFN_SRC = `(function (root) {
+  function Reader(buf) { this.b = buf; this.p = 0; this.dv = new DataView(buf.buffer, buf.byteOffset, buf.byteLength); }
+  Reader.prototype.varint = function () {
+    let r = 0, s = 0, b;
+    do { b = this.b[this.p++]; r += (b & 0x7f) * Math.pow(2, s); s += 7; } while (b & 0x80);
+    return r;
+  };
+  Reader.prototype.svarint64 = function () { // int64 แบบ two's complement
+    let lo = 0, hi = 0, s = 0, b, i = 0;
+    const bytes = [];
+    do { b = this.b[this.p++]; bytes.push(b & 0x7f); } while (b & 0x80);
+    let v = 0n;
+    for (let k = bytes.length - 1; k >= 0; k--) v = (v << 7n) | BigInt(bytes[k]);
+    v = BigInt.asIntN(64, v);
+    return Number(v);
+  };
+  function fields(buf, cb) {
+    const r = new Reader(buf);
+    while (r.p < buf.length) {
+      const key = r.varint(), f = Math.floor(key / 8), wt = key & 7;
+      if (wt === 0) { const st = r.p; cb(f, wt, r, st); if (r.p === st) r.varint(); }
+      else if (wt === 2) { const len = r.varint(); const sub = buf.subarray(r.p, r.p + len); r.p += len; cb(f, wt, sub); }
+      else if (wt === 5) { const v = r.dv.getFloat32(r.p, true); r.p += 4; cb(f, wt, v); }
+      else if (wt === 1) { r.p += 8; }
+      else throw new Error('wire type ' + wt);
+    }
+  }
+  const str = (u8) => new TextDecoder().decode(u8);
+  function packedVarints(u8) { const r = new Reader(u8), out = []; while (r.p < u8.length) out.push(r.svarint64()); return out; }
+  function tensor(buf) {
+    const t = { dims: [], type: 1, name: '', data: null };
+    let raw = null; const fl = [], i64 = [], i32 = [];
+    fields(buf, (f, wt, v, st) => {
+      if (f === 1) { if (wt === 2) t.dims.push(...packedVarints(v)); else { v.p = st; t.dims.push(v.svarint64()); } }
+      else if (f === 2) t.type = v.varint();
+      else if (f === 4) { if (wt === 2) { const dv = new DataView(v.buffer, v.byteOffset, v.byteLength); for (let k = 0; k < v.length; k += 4) fl.push(dv.getFloat32(k, true)); } else fl.push(v); }
+      else if (f === 5) { if (wt === 2) i32.push(...packedVarints(v)); else { v.p = st; i32.push(v.svarint64()); } }
+      else if (f === 7) { if (wt === 2) i64.push(...packedVarints(v)); else { v.p = st; i64.push(v.svarint64()); } }
+      else if (f === 8) t.name = str(v);
+      else if (f === 9) raw = v;
+    });
+    const n = t.dims.reduce((a, b) => a * b, 1);
+    if (t.type === 1) {
+      if (raw) { const c = new Uint8Array(raw); t.data = new Float32Array(c.buffer, 0, raw.length / 4); } else t.data = Float32Array.from(fl);
+    } else if (t.type === 7) {
+      if (raw) { const dv = new DataView(raw.buffer, raw.byteOffset, raw.byteLength); t.data = []; for (let k = 0; k < raw.length; k += 8) t.data.push(Number(dv.getBigInt64(k, true))); } else t.data = i64;
+    } else if (t.type === 6) {
+      if (raw) { const dv = new DataView(raw.buffer, raw.byteOffset, raw.byteLength); t.data = []; for (let k = 0; k < raw.length; k += 4) t.data.push(dv.getInt32(k, true)); } else t.data = i32;
+    } else if (t.type === 9) { t.data = raw ? Array.from(raw) : i32; }
+    else if (t.type === 10) { // float16
+      const dv = new DataView(raw.buffer, raw.byteOffset, raw.byteLength); t.data = new Float32Array(raw.length / 2);
+      for (let k = 0; k < t.data.length; k++) t.data[k] = h2f(dv.getUint16(k * 2, true));
+      t.type = 1;
+    } else throw new Error('tensor type ' + t.type);
+    if (t.data.length !== n && n > 0 && !(t.dims.length === 0 && t.data.length === 1)) throw new Error('tensor size ' + t.name);
+    return t;
+  }
+  function h2f(h) {
+    const s = (h & 0x8000) ? -1 : 1, e = (h >> 10) & 0x1f, m = h & 0x3ff;
+    if (e === 0) return s * Math.pow(2, -14) * (m / 1024);
+    if (e === 31) return m ? NaN : s * Infinity;
+    return s * Math.pow(2, e - 15) * (1 + m / 1024);
+  }
+  function attr(buf) {
+    const a = { name: '', ints: [], floats: [] };
+    fields(buf, (f, wt, v, st) => {
+      if (f === 1) a.name = str(v);
+      else if (f === 2) a.f = v;
+      else if (f === 3) { v.p = st; a.i = v.svarint64(); }
+      else if (f === 4) a.s = str(v);
+      else if (f === 5) a.t = tensor(v);
+      else if (f === 7) { if (wt === 2) { const dv = new DataView(v.buffer, v.byteOffset, v.byteLength); for (let k = 0; k < v.length; k += 4) a.floats.push(dv.getFloat32(k, true)); } else a.floats.push(v); }
+      else if (f === 8) { if (wt === 2) a.ints.push(...packedVarints(v)); else { v.p = st; a.ints.push(v.svarint64()); } }
+    });
+    return a;
+  }
+  function node(buf) {
+    const n = { inputs: [], outputs: [], op: '', name: '', attrs: {} };
+    fields(buf, (f, wt, v) => {
+      if (f === 1) n.inputs.push(str(v));
+      else if (f === 2) n.outputs.push(str(v));
+      else if (f === 3) n.name = str(v);
+      else if (f === 4) n.op = str(v);
+      else if (f === 5) { const a = attr(v); n.attrs[a.name] = a; }
+    });
+    return n;
+  }
+  function valueInfo(buf) { let name = ''; fields(buf, (f, wt, v) => { if (f === 1) name = str(v); }); return name; }
+  function parse(u8) {
+    const g = { nodes: [], inits: {}, inputs: [], outputs: [] };
+    let opset = 0;
+    fields(u8, (f, wt, v) => {
+      if (f === 7) fields(v, (gf, gwt, gv) => {
+        if (gf === 1) g.nodes.push(node(gv));
+        else if (gf === 5) { const t = tensor(gv); g.inits[t.name] = t; }
+        else if (gf === 11) g.inputs.push(valueInfo(gv));
+        else if (gf === 12) g.outputs.push(valueInfo(gv));
+      });
+      else if (f === 8) fields(v, (of, owt, ov, st) => { if (of === 2) { ov.p = st; opset = Math.max(opset, ov.svarint64()); } });
+    });
+    g.opset = opset;
+    g.inputs = g.inputs.filter((n) => !g.inits[n]);
+    return g;
+  }
+  const api = { parse };
+  if (typeof module !== 'undefined') module.exports = api; else root.ONNXParse = api;
+})(typeof self !== 'undefined' ? self : this);
+/* miniort — a small ONNX interpreter (CPU, JavaScript), just enough operators for DeepFilterNet3.
+   Tensors are { d: dims[], v: Float32Array | Array<number> }.  Integer tensors (shapes, indices) are plain Arrays. */
+var MiniORT = (function () {
+  'use strict';
+  var numel = function (d) { var n = 1; for (var i = 0; i < d.length; i++) n *= d[i]; return n; };
+  var isInt = function (v) { return Array.isArray(v); };
+  var mk = function (like, n) { return Array.isArray(like) ? new Array(n).fill(0) : new Float32Array(n); };
+  var strides = function (d) { var s = new Array(d.length), a = 1; for (var i = d.length - 1; i >= 0; i--) { s[i] = a; a *= d[i]; } return s; };
+  var ax = function (a, r) { return a < 0 ? a + r : a; };
+  var T = function (d, v) { return { d: d, v: v }; };
+  function relu(x) { var n = x.v.length, o = new Float32Array(n), v = x.v; for (var i = 0; i < n; i++) { var a = v[i]; o[i] = a > 0 ? a : 0; } return T(x.d.slice(), o); }
+  function elementwise(x, f) { var o = new Float32Array(x.v.length); for (var i = 0; i < o.length; i++) o[i] = f(x.v[i]); return T(x.d.slice(), o); }
+  function binary(a, b, f) {
+    var ints = isInt(a.v) && isInt(b.v);
+    var ra = a.d.length, rb = b.d.length, r = Math.max(ra, rb), od = new Array(r);
+    for (var i = 0; i < r; i++) {
+      var da = i - (r - ra) >= 0 ? a.d[i - (r - ra)] : 1, db = i - (r - rb) >= 0 ? b.d[i - (r - rb)] : 1;
+      od[i] = da === 1 ? db : da;
+    }
+    var n = numel(od), out = ints ? new Array(n) : new Float32Array(n);
+    if (a.v.length === n && b.v.length === n) { for (var k = 0; k < n; k++) out[k] = f(a.v[k], b.v[k]); return T(od, out); }
+    if (b.v.length === 1) { var bv = b.v[0]; for (var k2 = 0; k2 < n; k2++) out[k2] = f(a.v[k2], bv); return T(od, out); }
+    if (a.v.length === 1) { var av = a.v[0]; for (var k3 = 0; k3 < n; k3++) out[k3] = f(av, b.v[k3]); return T(od, out); }
+    var sa = strides(a.d), sb = strides(b.d), idx = new Array(r).fill(0);
+    for (var p = 0; p < n; p++) {
+      var ia = 0, ib = 0;
+      for (var q = 0; q < r; q++) {
+        var qa = q - (r - ra), qb = q - (r - rb);
+        if (qa >= 0 && a.d[qa] !== 1) ia += idx[q] * sa[qa];
+        if (qb >= 0 && b.d[qb] !== 1) ib += idx[q] * sb[qb];
+      }
+      out[p] = f(a.v[ia], b.v[ib]);
+      for (var z = r - 1; z >= 0; z--) { if (++idx[z] < od[z]) break; idx[z] = 0; }
+    }
+    return T(od, out);
+  }
+  function transpose(x, perm) {
+    var r = x.d.length; perm = perm || x.d.map(function (_, i) { return r - 1 - i; });
+    var od = perm.map(function (p) { return x.d[p]; }), n = numel(od), out = mk(x.v, n), si = strides(x.d);
+    var st = perm.map(function (p) { return si[p]; });
+    if (r === 2) { var R = od[0], C = od[1]; for (var i = 0; i < R; i++) for (var j = 0; j < C; j++) out[i * C + j] = x.v[i * st[0] + j * st[1]]; return T(od, out); }
+    var idx = new Array(r).fill(0);
+    for (var p = 0; p < n; p++) {
+      var s = 0; for (var q = 0; q < r; q++) s += idx[q] * st[q];
+      out[p] = x.v[s];
+      for (var z = r - 1; z >= 0; z--) { if (++idx[z] < od[z]) break; idx[z] = 0; }
+    }
+    return T(od, out);
+  }
+  function slice(x, starts, ends, axes, steps) {
+    var r = x.d.length, st = new Array(r).fill(0), en = x.d.slice(), sp = new Array(r).fill(1);
+    for (var k = 0; k < starts.length; k++) {
+      var a = ax(axes ? axes[k] : k, r), dim = x.d[a], step = steps ? steps[k] : 1, s = starts[k], e = ends[k];
+      if (s < 0) s += dim; if (e < 0) e += dim;
+      if (step > 0) { s = Math.min(Math.max(s, 0), dim); e = Math.min(Math.max(e, 0), dim); }
+      else { s = Math.min(Math.max(s, 0), dim - 1); e = Math.min(Math.max(e, -1), dim - 1); }
+      st[a] = s; en[a] = e; sp[a] = step;
+    }
+    var od = new Array(r);
+    for (var i = 0; i < r; i++) od[i] = sp[i] > 0 ? Math.max(0, Math.ceil((en[i] - st[i]) / sp[i])) : Math.max(0, Math.ceil((st[i] - en[i]) / -sp[i]));
+    var n = numel(od), out = mk(x.v, n), si = strides(x.d), idx = new Array(r).fill(0);
+    for (var p = 0; p < n; p++) {
+      var s2 = 0; for (var q = 0; q < r; q++) s2 += (st[q] + idx[q] * sp[q]) * si[q];
+      out[p] = x.v[s2];
+      for (var z = r - 1; z >= 0; z--) { if (++idx[z] < od[z]) break; idx[z] = 0; }
+    }
+    return T(od, out);
+  }
+  function concat(xs, axis) {
+    var r = xs[0].d.length; axis = ax(axis, r);
+    var od = xs[0].d.slice(); od[axis] = 0; for (var i = 0; i < xs.length; i++) od[axis] += xs[i].d[axis];
+    var outer = 1, inner = 1; for (var a = 0; a < axis; a++) outer *= od[a]; for (var b = axis + 1; b < r; b++) inner *= od[b];
+    var out = mk(xs[0].v, numel(od)), o = 0;
+    for (var u = 0; u < outer; u++) for (var j = 0; j < xs.length; j++) {
+      var len = xs[j].d[axis] * inner, base = u * len;
+      for (var k = 0; k < len; k++) out[o++] = xs[j].v[base + k];
+    }
+    return T(od, out);
+  }
+  function pad(x, pads, val) {
+    var r = x.d.length, od = new Array(r), i;
+    for (i = 0; i < r; i++) od[i] = x.d[i] + pads[i] + pads[i + r];
+    var n = numel(od), out = mk(x.v, n); if (val) out.fill(val);
+    var so = strides(od), last = x.d[r - 1], rows = x.v.length / (last || 1), idx = new Array(Math.max(0, r - 1)).fill(0);
+    for (var p = 0; p < rows; p++) {
+      var s0 = 0, ok = true;
+      for (var q = 0; q < r - 1; q++) { var c = idx[q] + pads[q]; if (c < 0 || c >= od[q]) { ok = false; break; } s0 += c * so[q]; }
+      if (ok) { s0 += pads[r - 1]; var src = p * last; for (var k = 0; k < last; k++) out[s0 + k] = x.v[src + k]; }
+      for (var z = r - 2; z >= 0; z--) { if (++idx[z] < x.d[z]) break; idx[z] = 0; }
+    }
+    return T(od, out);
+  }
+  function convPW(x, w, bias, O, C, P, N) {   // dense 1x1 conv, stride 1, groups 1: blocked 4 output channels x tile of positions
+    var out = new Float32Array(N * O * P), xv = x.v, wv = w.v, TILE = 512;
+    for (var n = 0; n < N; n++) {
+      var xb = n * C * P, ob = n * O * P;
+      for (var p0 = 0; p0 < P; p0 += TILE) {
+        var p1 = Math.min(P, p0 + TILE), oc = 0;
+        for (; oc + 3 < O; oc += 4) {
+          var o0 = ob + oc * P, o1 = o0 + P, o2 = o1 + P, o3 = o2 + P;
+          if (bias) { var b0 = bias.v[oc], b1 = bias.v[oc + 1], b2 = bias.v[oc + 2], b3 = bias.v[oc + 3]; for (var p = p0; p < p1; p++) { out[o0 + p] = b0; out[o1 + p] = b1; out[o2 + p] = b2; out[o3 + p] = b3; } }
+          for (var ic = 0; ic < C; ic++) {
+            var w0 = wv[oc * C + ic], w1 = wv[(oc + 1) * C + ic], w2 = wv[(oc + 2) * C + ic], w3 = wv[(oc + 3) * C + ic], xo = xb + ic * P;
+            for (var q = p0; q < p1; q++) { var v = xv[xo + q]; out[o0 + q] += w0 * v; out[o1 + q] += w1 * v; out[o2 + q] += w2 * v; out[o3 + q] += w3 * v; }
+          }
+        }
+        for (; oc < O; oc++) {
+          var oo = ob + oc * P;
+          if (bias) { var bb = bias.v[oc]; for (var p2 = p0; p2 < p1; p2++) out[oo + p2] = bb; }
+          for (var ic2 = 0; ic2 < C; ic2++) { var ww = wv[oc * C + ic2], xo2 = xb + ic2 * P; for (var q2 = p0; q2 < p1; q2++) out[oo + q2] += ww * xv[xo2 + q2]; }
+        }
+      }
+    }
+    return out;
+  }
+  var WK = null;
+  function wAlloc(n) {
+    n = (n + 3) & ~3;
+    var need = (WK.top + n) * 4, have = WK.mem.buffer.byteLength;
+    if (need > have) { WK.mem.grow(Math.ceil((need - have) / 65536) + 8); WK.f = new Float32Array(WK.mem.buffer); }
+    var p = WK.top; WK.top += n; return p;
+  }
+  function wPersist(arr) {
+    var p = WK.map.get(arr);
+    if (p === undefined) {
+      if (WK.top !== WK.ptop) return -1;
+      p = wAlloc(arr.length); WK.f.set(arr, p); WK.ptop = WK.top; WK.map.set(arr, p);
+    }
+    return p;
+  }
+  function initWasm(bytes) {
+    WK = null;
+    try {
+      if (typeof WebAssembly === 'undefined') return false;
+      var mem = new WebAssembly.Memory({ initial: 128 });
+      var inst = new WebAssembly.Instance(new WebAssembly.Module(bytes), { e: { m: mem } });
+      WK = { mem: mem, ex: inst.exports, f: new Float32Array(mem.buffer), top: 0, ptop: 0, map: new WeakMap() };
+      var O = 8, C = 13, P = 16, w = new Float32Array(O * C), x = new Float32Array(C * P), b = new Float32Array(O), i, o, c, p;
+      for (i = 0; i < w.length; i++) w[i] = Math.sin(i * 1.3); for (i = 0; i < x.length; i++) x[i] = Math.cos(i * 0.7); for (i = 0; i < O; i++) b[i] = i * 0.1;
+      var wi = wAlloc(w.length), xi = wAlloc(x.length), bi = wAlloc(O), oi = wAlloc(O * P), f = WK.f;
+      f.set(w, wi); f.set(x, xi); f.set(b, bi);
+      WK.ex.gemm(wi * 4, xi * 4, oi * 4, bi * 4, O, C, P);
+      var err = 0;
+      for (o = 0; o < O; o++) for (p = 0; p < P; p++) { var sum = b[o]; for (c = 0; c < C; c++) sum += w[o * C + c] * x[c * P + p]; err = Math.max(err, Math.abs(sum - f[oi + o * P + p])); }
+      var mi = wAlloc(8), mo = wAlloc(8);
+      f.set(x.subarray(0, 8), mi); WK.ex.matvec(wi * 4, mi * 4, mo * 4, 4, 8);
+      for (o = 0; o < 4; o++) { var s2 = 0; for (c = 0; c < 8; c++) s2 += w[o * 8 + c] * x[c]; err = Math.max(err, Math.abs(s2 - f[mo + o])); }
+      if (!(err < 1e-4)) { WK = null; return false; }
+      WK.top = 0; WK.ptop = 0;
+      return true;
+    } catch (e) { WK = null; return false; }
+  }
+  function convWasm(x, w, bias, at) {
+    var N = x.d[0], C = x.d[1], H = x.d[2], W = x.d[3], O = w.d[0], CG = w.d[1], KH = w.d[2], KW = w.d[3];
+    var g = at.group || 1, pads = at.pads || [0, 0, 0, 0], str = at.strides || [1, 1], dil = at.dilations || [1, 1];
+    var pt = pads[0], pl = pads[1], pb = pads[2], pr = pads[3], sh = str[0], sw = str[1], dh = dil[0], dw = dil[1];
+    var OH = Math.floor((H + pt + pb - dh * (KH - 1) - 1) / sh) + 1, OW = Math.floor((W + pl + pr - dw * (KW - 1) - 1) / sw) + 1;
+    var P = OH * OW, OG = O / g, OGp = (OG + 3) & ~3, CGK = CG * KH * KW, out = new Float32Array(N * O * P), xv = x.v, wv = w.v;
+    var plain = KH === 1 && KW === 1 && sh === 1 && sw === 1 && pt === 0 && pl === 0 && pb === 0 && pr === 0;
+    var TILE = 4096, m0 = WK.top, rowwise = sw === 1 && dw === 1, RPT = rowwise ? Math.max(1, Math.floor(TILE / OW)) : 0;
+    for (var gi = 0; gi < g; gi++) {
+      var wI = wAlloc(OGp * CGK), bI = wAlloc(OGp), f = WK.f, o, k;
+      f.fill(0, wI, wI + OGp * CGK); f.fill(0, bI, bI + OGp);
+      for (o = 0; o < OG; o++) { for (k = 0; k < CGK; k++) f[wI + o * CGK + k] = wv[(gi * OG + o) * CGK + k]; if (bias) f[bI + o] = bias.v[gi * OG + o]; }
+      var m1 = WK.top;
+      for (var n = 0; n < N; n++) for (var p0 = 0; p0 < P;) {
+        var np, npp, nrows = 0;
+        if (plain || !rowwise) np = Math.min(TILE, P - p0); else { nrows = Math.min(RPT, OH - ((p0 / OW) | 0)); np = nrows * OW; }
+        npp = (np + 7) & ~7;
+        var xI = wAlloc(CGK * npp), oI = wAlloc(OGp * npp), ff = WK.f;
+        for (var ci = 0; ci < CG; ci++) {
+          var xb = (n * C + gi * CG + ci) * H * W;
+          if (plain) { var rowI = xI + ci * npp; ff.set(xv.subarray(xb + p0, xb + p0 + np), rowI); if (npp > np) ff.fill(0, rowI + np, rowI + npp); continue; }
+          for (var ki = 0; ki < KH; ki++) for (var kj = 0; kj < KW; kj++) {
+            var rI = xI + ((ci * KH + ki) * KW + kj) * npp;
+            if (rowwise) {
+              var oh0 = (p0 / OW) | 0, off = kj * dw - pl, lo = Math.max(0, -off), hi = Math.min(OW, W - off);
+              for (var rr = 0; rr < nrows; rr++) {
+                var ih2 = (oh0 + rr) * sh - pt + ki * dh, dst = rI + rr * OW;
+                if (ih2 < 0 || ih2 >= H || hi <= lo) { ff.fill(0, dst, dst + OW); continue; }
+                if (lo > 0) ff.fill(0, dst, dst + lo);
+                if (hi < OW) ff.fill(0, dst + hi, dst + OW);
+                ff.set(xv.subarray(xb + ih2 * W + off + lo, xb + ih2 * W + off + hi), dst + lo);
+              }
+            } else {
+              var oh = (p0 / OW) | 0, ow = p0 - oh * OW;
+              for (var p = 0; p < np; p++) {
+                var ih = oh * sh - pt + ki * dh, iw = ow * sw - pl + kj * dw;
+                ff[rI + p] = (ih >= 0 && ih < H && iw >= 0 && iw < W) ? xv[xb + ih * W + iw] : 0;
+                if (++ow === OW) { ow = 0; oh++; }
+              }
+            }
+            if (npp > np) ff.fill(0, rI + np, rI + npp);
+          }
+        }
+        WK.ex.gemm(wI * 4, xI * 4, oI * 4, bI * 4, OGp, CGK, npp);
+        ff = WK.f;
+        for (o = 0; o < OG; o++) out.set(ff.subarray(oI + o * npp, oI + o * npp + np), (n * O + gi * OG + o) * P + p0);
+        WK.top = m1;
+        p0 += np;
+      }
+      WK.top = m0;
+    }
+    return T([N, O, OH, OW], out);
+  }
+  function conv(x, w, bias, at) {
+    var N = x.d[0], C = x.d[1], H = x.d[2], W = x.d[3], O = w.d[0], CG = w.d[1], KH = w.d[2], KW = w.d[3];
+    var g = at.group || 1, pads = at.pads || [0, 0, 0, 0], str = at.strides || [1, 1], dil = at.dilations || [1, 1];
+    var pt = pads[0], pl = pads[1], pb = pads[2], pr = pads[3], sh = str[0], sw = str[1], dh = dil[0], dw = dil[1];
+    var OH = Math.floor((H + pt + pb - dh * (KH - 1) - 1) / sh) + 1, OW = Math.floor((W + pl + pr - dw * (KW - 1) - 1) / sw) + 1;
+    if (WK && g <= 2 && (O / g) >= 2 && CG * KH * KW >= 4) return convWasm(x, w, bias, at);
+    if (g === 1 && KH === 1 && KW === 1 && sh === 1 && sw === 1 && pt === 0 && pl === 0 && pb === 0 && pr === 0) return T([N, O, OH, OW], convPW(x, w, bias, O, C, H * W, N));
+    var out = new Float32Array(N * O * OH * OW), xv = x.v, wv = w.v, OG = O / g;
+    for (var n = 0; n < N; n++) for (var oc = 0; oc < O; oc++) {
+      var gi = Math.floor(oc / OG), ob = (n * O + oc) * OH * OW;
+      if (bias) { var bb = bias.v[oc]; if (bb) for (var t = 0; t < OH * OW; t++) out[ob + t] = bb; }
+      for (var ic = 0; ic < CG; ic++) {
+        var xb = (n * C + gi * CG + ic) * H * W;
+        if (KH === 1 && KW === 1 && sh === 1 && sw === 1 && pt === 0 && pl === 0) {   // dense 1x1: long contiguous loop
+          var w1 = wv[(oc * CG + ic)], P = H * W;
+          if (w1 !== 0) for (var p = 0; p < P; p++) out[ob + p] += w1 * xv[xb + p];
+          continue;
+        }
+        for (var ki = 0; ki < KH; ki++) for (var kj = 0; kj < KW; kj++) {
+          var wt = wv[((oc * CG + ic) * KH + ki) * KW + kj]; if (wt === 0) continue;
+          var owLo = 0, owHi = OW - 1;
+          var off = kj * dw - pl;
+          if (off < 0) owLo = Math.ceil(-off / sw);
+          owHi = Math.min(OW - 1, Math.floor((W - 1 - off) / sw));
+          for (var oh = 0; oh < OH; oh++) {
+            var ih = oh * sh - pt + ki * dh; if (ih < 0 || ih >= H) continue;
+            var xr = xb + ih * W + off, orow = ob + oh * OW;
+            for (var ow = owLo; ow <= owHi; ow++) out[orow + ow] += wt * xv[xr + ow * sw];
+          }
+        }
+      }
+    }
+    return T([N, O, OH, OW], out);
+  }
+  function convT(x, w, bias, at) {
+    var N = x.d[0], C = x.d[1], H = x.d[2], W = x.d[3], KH = w.d[2], KW = w.d[3], g = at.group || 1, OCG = w.d[1], O = OCG * g, CG = C / g;
+    var pads = at.pads || [0, 0, 0, 0], str = at.strides || [1, 1], dil = at.dilations || [1, 1], op = at.output_padding || [0, 0];
+    var pt = pads[0], pl = pads[1], pb = pads[2], pr = pads[3];
+    var OH = (H - 1) * str[0] - pt - pb + dil[0] * (KH - 1) + op[0] + 1, OW = (W - 1) * str[1] - pl - pr + dil[1] * (KW - 1) + op[1] + 1;
+    var out = new Float32Array(N * O * OH * OW);
+    for (var n = 0; n < N; n++) {
+      if (bias) for (var oc0 = 0; oc0 < O; oc0++) { var b0 = bias.v[oc0]; if (b0) { var bs = (n * O + oc0) * OH * OW; for (var t = 0; t < OH * OW; t++) out[bs + t] = b0; } }
+      for (var ic = 0; ic < C; ic++) {
+        var gi = Math.floor(ic / CG);
+        for (var oc = 0; oc < OCG; oc++) {
+          var och = gi * OCG + oc, ob = (n * O + och) * OH * OW, xb = (n * C + ic) * H * W;
+          for (var ki = 0; ki < KH; ki++) for (var kj = 0; kj < KW; kj++) {
+            var wt = w.v[((ic * OCG + oc) * KH + ki) * KW + kj]; if (wt === 0) continue;
+            for (var ih = 0; ih < H; ih++) {
+              var oh = ih * str[0] - pt + ki * dil[0]; if (oh < 0 || oh >= OH) continue;
+              for (var iw = 0; iw < W; iw++) {
+                var ow = iw * str[1] - pl + kj * dil[1]; if (ow < 0 || ow >= OW) continue;
+                out[ob + oh * OW + ow] += wt * x.v[xb + ih * W + iw];
+              }
+            }
+          }
+        }
+      }
+    }
+    return T([N, O, OH, OW], out);
+  }
+  function einsumWasm(x, w) {
+    var B = x.d[0], Tt = x.d[1], G = x.d[2], I = x.d[3], Hh = w.d[2], M = B * Tt, Mp = (M + 7) & ~7, Hp = (Hh + 3) & ~3;
+    var out = new Float32Array(M * G * Hh), m0 = WK.top, TILE = 4096, xv = x.v, wv = w.v;
+    var wI = wAlloc(Hp * I), bI = wAlloc(Hp), xI = wAlloc(I * Math.min(Mp, TILE)), oI = wAlloc(Hp * Math.min(Mp, TILE)), f = WK.f, g, i, h, m, p0;
+    f.fill(0, bI, bI + Hp);
+    for (g = 0; g < G; g++) {
+      f.fill(0, wI, wI + Hp * I);
+      for (i = 0; i < I; i++) for (h = 0; h < Hh; h++) f[wI + h * I + i] = wv[(g * I + i) * Hh + h];
+      for (p0 = 0; p0 < M; p0 += TILE) {
+        var np = Math.min(TILE, M - p0), npp = (np + 7) & ~7;
+        for (i = 0; i < I; i++) { var ro = xI + i * npp; for (m = 0; m < np; m++) f[ro + m] = xv[((p0 + m) * G + g) * I + i]; for (m = np; m < npp; m++) f[ro + m] = 0; }
+        WK.ex.gemm(wI * 4, xI * 4, oI * 4, bI * 4, Hp, I, npp);
+        for (h = 0; h < Hh; h++) { var ho = oI + h * npp; for (m = 0; m < np; m++) out[((p0 + m) * G + g) * Hh + h] = f[ho + m]; }
+      }
+    }
+    WK.top = m0;
+    return T([B, Tt, G, Hh], out);
+  }
+  function einsumBTGI(x, w) {   // "btgi,gih->btgh"
+    var B = x.d[0], Tt = x.d[1], G = x.d[2], I = x.d[3], Hh = w.d[2], out = new Float32Array(B * Tt * G * Hh), xv = x.v, wv = w.v;
+    for (var bt = 0; bt < B * Tt; bt++) for (var g = 0; g < G; g++) {
+      var xo = (bt * G + g) * I, oo = (bt * G + g) * Hh, wo = g * I * Hh;
+      for (var i = 0; i < I; i++) {
+        var xi = xv[xo + i]; if (xi === 0) continue;
+        var wi = wo + i * Hh;
+        for (var h = 0; h < Hh; h++) out[oo + h] += xi * wv[wi + h];
+      }
+    }
+    return T([B, Tt, G, Hh], out);
+  }
+  function matmul(a, b) {   // a [..., K] x b [K, N]
+    var K = a.d[a.d.length - 1], N = b.d[1], M = a.v.length / K, out = new Float32Array(M * N);
+    for (var m = 0; m < M; m++) for (var k = 0; k < K; k++) {
+      var av = a.v[m * K + k]; if (av === 0) continue;
+      for (var n = 0; n < N; n++) out[m * N + n] += av * b.v[k * N + n];
+    }
+    var od = a.d.slice(0, -1); od.push(N);
+    return T(od, out);
+  }
+  var sig = function (x) { return 1 / (1 + Math.exp(-x)); };
+  function gru(X, Wt, Rt, Bt, H0, at) {
+    var S = X.d[0], I = X.d[2], Hs = at.hidden_size, H3 = 3 * Hs, lbr = !!at.linear_before_reset;
+    if (WK && I % 4 === 0 && Hs % 4 === 0) {
+      var wI = wPersist(Wt.v), rI = wPersist(Rt.v), m0 = WK.top;
+      if (wI >= 0 && rI >= 0) {
+        var xI = wAlloc(S * I), gI = wAlloc(S * H3), hI = wAlloc(Hs), ghI = wAlloc(H3), f = WK.f, ex = WK.ex, t, c;
+        f.set(X.v, xI); f.fill(0, hI, hI + Hs); if (H0) f.set(H0.v.subarray(0, Hs), hI);
+        for (t = 0; t < S; t++) ex.matvec(wI * 4, (xI + t * I) * 4, (gI + t * H3) * 4, H3, I);
+        var Bv2 = Bt ? Bt.v : null, Y2 = new Float32Array(S * Hs);
+        for (t = 0; t < S; t++) {
+          ex.matvec(rI * 4, hI * 4, ghI * 4, H3, Hs);
+          var go = gI + t * H3;
+          for (c = 0; c < Hs; c++) {
+            var gz = f[go + c] + (Bv2 ? Bv2[c] : 0) + f[ghI + c] + (Bv2 ? Bv2[H3 + c] : 0);
+            var gr = f[go + Hs + c] + (Bv2 ? Bv2[Hs + c] : 0) + f[ghI + Hs + c] + (Bv2 ? Bv2[H3 + Hs + c] : 0);
+            var z = sig(gz), rr = sig(gr);
+            var gn = f[ghI + 2 * Hs + c] + (Bv2 ? Bv2[H3 + 2 * Hs + c] : 0);
+            var hh = Math.tanh(f[go + 2 * Hs + c] + (Bv2 ? Bv2[2 * Hs + c] : 0) + (lbr ? rr * gn : gn));
+            var hn = (1 - z) * hh + z * f[hI + c];
+            f[hI + c] = hn; Y2[t * Hs + c] = hn;
+          }
+        }
+        var hf = f.slice(hI, hI + Hs);
+        WK.top = m0;
+        return [T([S, 1, 1, Hs], Y2), T([1, 1, Hs], hf)];
+      }
+      WK.top = m0;
+    }
+    var Y = new Float32Array(S * Hs), h = new Float32Array(Hs), gh = new Float32Array(H3);
+    if (H0) h.set(H0.v.subarray ? H0.v.subarray(0, Hs) : H0.v.slice(0, Hs));
+    var W = Wt.v, R = Rt.v, Bv = Bt ? Bt.v : null, Xv = X.v;
+    var wb = new Float32Array(H3), rb = new Float32Array(H3);
+    if (Bv) for (var q = 0; q < H3; q++) { wb[q] = Bv[q]; rb[q] = Bv[H3 + q]; }
+    var GI = new Float32Array(S * H3), TL = 8;
+    for (var t0 = 0; t0 < S; t0 += TL) {
+      var nt = Math.min(TL, S - t0);
+      for (var j = 0; j < H3; j++) {
+        var wo = j * I;
+        for (var tt = 0; tt < nt; tt++) {
+          var xo = (t0 + tt) * I, a0 = 0, a1 = 0, a2 = 0, a3 = 0, k = 0;
+          for (; k + 3 < I; k += 4) { a0 += W[wo + k] * Xv[xo + k]; a1 += W[wo + k + 1] * Xv[xo + k + 1]; a2 += W[wo + k + 2] * Xv[xo + k + 2]; a3 += W[wo + k + 3] * Xv[xo + k + 3]; }
+          for (; k < I; k++) a0 += W[wo + k] * Xv[xo + k];
+          GI[(t0 + tt) * H3 + j] = a0 + a1 + a2 + a3 + wb[j];
+        }
+      }
+    }
+    for (var t = 0; t < S; t++) {
+      var go = t * H3;
+      for (var r = 0; r < H3; r += 4) {
+        var r0 = r * Hs, r1 = r0 + Hs, r2 = r1 + Hs, r3 = r2 + Hs, s0 = 0, s1 = 0, s2 = 0, s3 = 0;
+        for (var m = 0; m < Hs; m++) { var hv = h[m]; s0 += R[r0 + m] * hv; s1 += R[r1 + m] * hv; s2 += R[r2 + m] * hv; s3 += R[r3 + m] * hv; }
+        gh[r] = s0 + rb[r]; gh[r + 1] = s1 + rb[r + 1]; gh[r + 2] = s2 + rb[r + 2]; gh[r + 3] = s3 + rb[r + 3];
+      }
+      for (var c = 0; c < Hs; c++) {
+        var z = sig(GI[go + c] + gh[c]), rr = sig(GI[go + Hs + c] + gh[Hs + c]);
+        var hh = Math.tanh(GI[go + 2 * Hs + c] + (lbr ? rr * gh[2 * Hs + c] : gh[2 * Hs + c]));
+        h[c] = (1 - z) * hh + z * h[c];
+        Y[t * Hs + c] = h[c];
+      }
+    }
+    return [T([S, 1, 1, Hs], Y), T([1, 1, Hs], h.slice())];
+  }
+  function reshape(x, shape) {
+    var od = shape.slice(), n = x.v.length, known = 1, neg = -1;
+    for (var i = 0; i < od.length; i++) { if (od[i] === 0) od[i] = x.d[i]; if (od[i] === -1) neg = i; else known *= od[i]; }
+    if (neg >= 0) od[neg] = n / known;
+    return T(od, x.v);
+  }
+  function prepare(g) {
+    var consts = {}, k;
+    for (k in g.inits) consts[k] = T(g.inits[k].dims.slice(), g.inits[k].data);
+    for (var i = 0; i < g.nodes.length; i++) {
+      var nd = g.nodes[i];
+      if (nd.op === 'Constant') { var a = nd.attrs.value; consts[nd.outputs[0]] = T(a.t.dims.slice(), a.t.data); }
+    }
+    return { g: g, consts: consts };
+  }
+  function run(P, feeds, outNames, hooks) {
+    var env = Object.assign({}, P.consts, feeds), nodes = P.g.nodes;
+    for (var i = 0; i < nodes.length; i++) {
+      var nd = nodes[i], op = nd.op, at = {}, k;
+      if (op === 'Constant') continue;
+      for (k in nd.attrs) { var A = nd.attrs[k]; at[k] = A.ints && A.ints.length ? A.ints : (A.s !== undefined ? A.s : (A.i !== undefined ? A.i : (A.f !== undefined ? A.f : (A.t ? A.t : A.floats)))); }
+      var inp = nd.inputs.map(function (n) { return n === '' ? null : env[n]; }), x = inp[0], r;
+      switch (op) {
+        case 'Shape': r = T([x.d.length], x.d.slice()); break;
+        case 'Gather': {
+          var idx = inp[1], axis = ax(at.axis || 0, x.d.length);
+          if (x.d.length !== 1 || axis !== 0) throw new Error('Gather');
+          r = idx.d.length === 0 ? T([], [x.v[idx.v[0] < 0 ? idx.v[0] + x.d[0] : idx.v[0]]]) : T(idx.d.slice(), idx.v.map(function (j) { return x.v[j < 0 ? j + x.d[0] : j]; }));
+          break;
+        }
+        case 'Unsqueeze': {
+          var axs = at.axes || inp[1].v, rr = x.d.length + axs.length, od = [], src = 0;
+          var norm = axs.map(function (a) { return ax(a, rr); });
+          for (var d = 0; d < rr; d++) od.push(norm.indexOf(d) >= 0 ? 1 : x.d[src++]);
+          r = T(od, x.v); break;
+        }
+        case 'Squeeze': {
+          var sa = at.axes || (inp[1] ? inp[1].v : null), nrm = sa ? sa.map(function (a) { return ax(a, x.d.length); }) : null;
+          r = T(x.d.filter(function (v, j) { return nrm ? nrm.indexOf(j) < 0 : v !== 1; }), x.v); break;
+        }
+        case 'Concat': r = concat(inp, at.axis); break;
+        case 'Reshape': r = reshape(x, inp[1].v); break;
+        case 'Slice': r = slice(x, inp[1].v, inp[2].v, inp[3] ? inp[3].v : null, inp[4] ? inp[4].v : null); break;
+        case 'Transpose': r = transpose(x, at.perm); break;
+        case 'Cast': r = at.to === 1 ? T(x.d, Float32Array.from(x.v)) : T(x.d, Array.from(x.v)); break;
+        case 'Pad': r = pad(x, inp[1].v, inp[2] ? inp[2].v[0] : 0); break;
+        case 'ConstantOfShape': { var shp = x.v, val = at.value ? at.value : { dims: [1], data: new Float32Array([0]) }; var nn = numel(shp), fv = val.data[0], arr = isInt(val.data) ? new Array(nn).fill(fv) : new Float32Array(nn).fill(fv); r = T(shp.slice(), arr); break; }
+        case 'Conv': r = conv(x, inp[1], inp[2] || null, at); break;
+        case 'ConvTranspose': r = convT(x, inp[1], inp[2] || null, at); break;
+        case 'Relu': r = relu(x); break;
+        case 'Sigmoid': r = elementwise(x, sig); break;
+        case 'Tanh': r = elementwise(x, Math.tanh); break;
+        case 'Add': r = binary(x, inp[1], function (a, b) { return a + b; }); break;
+        case 'Mul': r = binary(x, inp[1], function (a, b) { return a * b; }); break;
+        case 'Einsum':
+          if (at.equation !== 'btgi,gih->btgh') throw new Error('Einsum ' + at.equation);
+          r = (WK && x.d[3] % 1 === 0) ? einsumWasm(x, inp[1]) : einsumBTGI(x, inp[1]); break;
+        case 'MatMul': r = matmul(x, inp[1]); break;
+        case 'GRU': {
+          var o = gru(x, inp[1], inp[2], inp[3], inp[5], at);
+          if (nd.outputs[0]) env[nd.outputs[0]] = o[0];
+          if (nd.outputs[1]) env[nd.outputs[1]] = o[1];
+          continue;
+        }
+        default: throw new Error('op ' + op);
+      }
+      env[nd.outputs[0]] = r;
+      if (hooks && hooks.node) hooks.node(i, nodes.length);
+    }
+    var res = {}; outNames.forEach(function (n) { res[n] = env[n]; });
+    return res;
+  }
+  return { prepare: prepare, run: run, initWasm: initWasm, hasWasm: function () { return !!WK; } };
+})();
+if (typeof module !== 'undefined') module.exports = MiniORT;
+/* DeepFilterNet3 offline speech enhancement in plain JavaScript (48 kHz, FFT 960, hop 480).
+   Mirrors libDF (STFT, ERB / complex features) and DfNet.forward; the three ONNX graphs are run by MiniORT. */
+var DFN = (function () {
+  'use strict';
+  var SR = 48000, NFFT = 960, HOP = 480, NF = 481, NERB = 32, NDF = 96, ORDER = 5, LOOK = 2;
+  var WNORM = 1 / (NFFT * NFFT / (2 * HOP));
+  var freq2erb = function (f) { return 9.265 * Math.log(1 + f / (24.7 * 9.265)); };
+  var erb2freq = function (e) { return 24.7 * 9.265 * (Math.exp(e / 9.265) - 1); };
+  function erbWidths() {
+    var nyq = SR / 2, fw = SR / NFFT, lo = freq2erb(0), hi = freq2erb(nyq), step = (hi - lo) / NERB;
+    var erb = new Array(NERB).fill(0), prev = 0, over = 0;
+    for (var i = 1; i <= NERB; i++) {
+      var f = erb2freq(lo + i * step), fb = Math.round(f / fw), n = fb - prev - over;
+      if (n < 2) { over = 2 - n; n = 2; } else over = 0;
+      erb[i - 1] = n; prev = fb;
+    }
+    erb[NERB - 1] += 1;
+    var tl = erb.reduce(function (a, b) { return a + b; }, 0) - NF;
+    if (tl > 0) erb[NERB - 1] -= tl;
+    return erb;
+  }
+  var ERB = erbWidths(), ERB0 = [];
+  (function () { var s = 0; for (var i = 0; i < NERB; i++) { ERB0.push(s); s += ERB[i]; } })();
+  var WIN = new Float32Array(NFFT);
+  for (var wi = 0; wi < NFFT; wi++) { var sn = Math.sin(0.5 * Math.PI * (wi + 0.5) / (NFFT / 2)); WIN[wi] = Math.sin(0.5 * Math.PI * sn * sn); }
+  var ALPHA = (function () { var a = Math.exp(-(HOP / SR) / 1.0), r = 1, p = 3; while (r >= 1) { r = Math.round(a * Math.pow(10, p)) / Math.pow(10, p); p++; } return r; })();
+  var FN = NFFT, TWc = new Float64Array(FN), TWs = new Float64Array(FN);
+  for (var tk = 0; tk < FN; tk++) { TWc[tk] = Math.cos(2 * Math.PI * tk / FN); TWs[tk] = -Math.sin(2 * Math.PI * tk / FN); }
+  var FACT = [5, 3, 2, 2, 2, 2, 2, 2];
+  var tr = new Float64Array(8), ti = new Float64Array(8);
+  function rec(xr, xi, xo, xs, yr, yi, yo, m, fi) {
+    if (m === 1) { yr[yo] = xr[xo]; yi[yo] = xi[xo]; return; }
+    var p = FACT[fi], l = m / p, q, k, r;
+    for (q = 0; q < p; q++) rec(xr, xi, xo + q * xs, xs * p, yr, yi, yo + q * l, l, fi + 1);
+    var step = FN / m, pstep = FN / p;
+    for (k = 0; k < l; k++) {
+      for (q = 0; q < p; q++) {
+        var idx = (q * k * step) % FN, a = yr[yo + q * l + k], b = yi[yo + q * l + k];
+        tr[q] = a * TWc[idx] - b * TWs[idx]; ti[q] = a * TWs[idx] + b * TWc[idx];
+      }
+      for (r = 0; r < p; r++) {
+        var sr = 0, si = 0;
+        for (q = 0; q < p; q++) { var j = ((q * r) % p) * pstep; sr += tr[q] * TWc[j] - ti[q] * TWs[j]; si += tr[q] * TWs[j] + ti[q] * TWc[j]; }
+        yr[yo + k + r * l] = sr; yi[yo + k + r * l] = si;
+      }
+    }
+  }
+  var fr = new Float64Array(FN), fi_ = new Float64Array(FN), gr = new Float64Array(FN), gi = new Float64Array(FN);
+  function fft(inv) {   // fr/fi_ in -> gr/gi out (unnormalised); inverse = swap trick
+    if (inv) rec(fi_, fr, 0, 1, gi, gr, 0, FN, 0); else rec(fr, fi_, 0, 1, gr, gi, 0, FN, 0);
+  }
+  /** STFT of frames t0..t1-1 of x (frame t covers xp[t*HOP .. +NFFT), xp = HOP zeros + x + zeros). returns {re, im} Float32Array((t1-t0)*NF) */
+  function stft(x, t0, t1) {
+    var n = x.length, cnt = t1 - t0, re = new Float32Array(cnt * NF), im = new Float32Array(cnt * NF);
+    for (var t = t0; t < t1; t += 2) {
+      var two = t + 1 < t1;
+      for (var i = 0; i < NFFT; i++) {
+        var a = t * HOP + i - HOP, b = a + HOP;
+        fr[i] = a >= 0 && a < n ? x[a] * WIN[i] : 0;
+        fi_[i] = two && b >= 0 && b < n ? x[b] * WIN[i] : 0;
+      }
+      fft(false);
+      var o1 = (t - t0) * NF, o2 = o1 + NF;
+      for (var k = 0; k < NF; k++) {
+        var k2 = (NFFT - k) % NFFT, ar = gr[k], ai = gi[k], br = gr[k2], bi = gi[k2];
+        re[o1 + k] = (ar + br) * 0.5 * WNORM; im[o1 + k] = (ai - bi) * 0.5 * WNORM;
+        if (two) { re[o2 + k] = (ai + bi) * 0.5 * WNORM; im[o2 + k] = (br - ar) * 0.5 * WNORM; }
+      }
+    }
+    return { re: re, im: im };
+  }
+  /** inverse of two frames at once, overlap-added into out (xp coordinates) */
+  function istft(sre, sim, t0, cnt, out) {
+    for (var t = 0; t < cnt; t += 2) {
+      var two = t + 1 < cnt, o1 = t * NF, o2 = o1 + NF;
+      for (var k = 0; k < NF; k++) {
+        var a_r = sre[o1 + k], a_i = sim[o1 + k], b_r = two ? sre[o2 + k] : 0, b_i = two ? sim[o2 + k] : 0;
+        fr[k] = a_r - b_i; fi_[k] = a_i + b_r;                    // X1 + i X2
+        if (k > 0 && k < NFFT / 2) { var k2 = NFFT - k; fr[k2] = a_r + b_i; fi_[k2] = -a_i + b_r; }   // conj(X1) + i conj(X2)
+      }
+      fft(true);
+      var base = (t0 + t) * HOP;
+      for (var i = 0; i < NFFT; i++) {
+        out[base + i] += gr[i] * WIN[i];
+        if (two) out[base + HOP + i] += gi[i] * WIN[i];
+      }
+    }
+  }
+  /** features for all frames: erb [T*32] (already normalised), cre/cim [T*96] */
+  function features(x, T, onProg) {
+    var fe = new Float32Array(T * NERB), cre = new Float32Array(T * NDF), cim = new Float32Array(T * NDF);
+    var ms = new Float64Array(NERB), us = new Float64Array(NDF), e = new Float64Array(NERB);
+    for (var b = 0; b < NERB; b++) ms[b] = -60 + (-90 + 60) * b / (NERB - 1);
+    for (var f = 0; f < NDF; f++) us[f] = 0.001 + (0.0001 - 0.001) * f / (NDF - 1);
+    var BLK = 200;
+    for (var t0 = 0; t0 < T; t0 += BLK) {
+      var t1 = Math.min(T, t0 + BLK), S = stft(x, t0, t1);
+      for (var t = t0; t < t1; t++) {
+        var o = (t - t0) * NF;
+        for (var bb = 0; bb < NERB; bb++) {
+          var s = 0, w = ERB[bb], st = ERB0[bb];
+          for (var j = 0; j < w; j++) { var rr = S.re[o + st + j], ii = S.im[o + st + j]; s += rr * rr + ii * ii; }
+          var db = 10 * Math.log10(s / w + 1e-10);
+          ms[bb] = db * (1 - ALPHA) + ms[bb] * ALPHA;
+          fe[t * NERB + bb] = (db - ms[bb]) / 40;
+        }
+        for (var q = 0; q < NDF; q++) {
+          var xr = S.re[o + q], xi = S.im[o + q], mag = Math.sqrt(xr * xr + xi * xi);
+          us[q] = mag * (1 - ALPHA) + us[q] * ALPHA;
+          var d = 1 / Math.sqrt(us[q]);
+          cre[t * NDF + q] = xr * d; cim[t * NDF + q] = xi * d;
+        }
+      }
+      if (onProg) onProg(t1 / T);
+    }
+    return { fe: fe, cre: cre, cim: cim };
+  }
+  /** run the three graphs on shifted feature rows [r0, r1) */
+  function network(nets, F, T, r0, r1, hook) {
+    var n = r1 - r0, erb = new Float32Array(n * NERB), spec = new Float32Array(2 * n * NDF);
+    for (var r = 0; r < n; r++) {
+      var src = r0 + r + LOOK;
+      if (src < T) {
+        erb.set(F.fe.subarray(src * NERB, (src + 1) * NERB), r * NERB);
+        spec.set(F.cre.subarray(src * NDF, (src + 1) * NDF), r * NDF);
+        spec.set(F.cim.subarray(src * NDF, (src + 1) * NDF), n * NDF + r * NDF);
+      }
+    }
+    var o = MiniORT.run(nets.enc, { feat_erb: { d: [1, 1, n, NERB], v: erb }, feat_spec: { d: [1, 2, n, NDF], v: spec } }, ['e0', 'e1', 'e2', 'e3', 'emb', 'c0'], hook);
+    var m = MiniORT.run(nets.erb, { emb: o.emb, e3: o.e3, e2: o.e2, e1: o.e1, e0: o.e0 }, ['m'], hook).m;
+    var c = MiniORT.run(nets.df, { emb: o.emb, c0: o.c0 }, ['coefs'], hook).coefs;
+    return { m: m.v, c: c.v };   // m [n*32], c [n*96*10] (re,im pairs: [t][f][order][2])
+  }
+  /** x: Float32Array at 48 kHz. opts: { atten (dB, 0 = none), chunk, ctx, progress(p) }. returns Float32Array same length */
+  function enhance(nets, x, opts) {
+    opts = opts || {};
+    var n = x.length, T = Math.ceil((n + NFFT) / HOP), CH = opts.chunk || 1200, CTX = opts.ctx || 400, prog = opts.progress || function () {};
+    var lim = opts.atten > 0 ? Math.pow(10, -opts.atten / 20) : 0;
+    var F = features(x, T, function (p) { prog(p * 0.08); });
+    var out = new Float32Array((T + 2) * HOP);
+    var single = T <= CH + CTX;
+    var nch = single ? 1 : Math.ceil(T / CH);
+    for (var ci = 0; ci < nch; ci++) {
+      var a = single ? 0 : ci * CH, b = single ? T : Math.min(T, a + CH), a0 = Math.max(0, a - CTX);
+      var base = 0.08 + 0.92 * ci / nch, span = 0.92 / nch;
+      var net = network(nets, F, T, a0, b, { node: function () {} });
+      prog(base + span * 0.7);
+      var s0 = Math.max(0, a - (ORDER - 1 - LOOK)), s1 = Math.min(T, b + LOOK);
+      var S = stft(x, s0, s1), cnt = b - a;
+      var yre = new Float32Array(cnt * NF), yim = new Float32Array(cnt * NF);
+      for (var t = a; t < b; t++) {
+        var row = t - a0, yo = (t - a) * NF, so = (t - s0) * NF;
+        for (var bb = 0; bb < NERB; bb++) {
+          var g = net.m[row * NERB + bb], w = ERB[bb], st = ERB0[bb];
+          for (var j = 0; j < w; j++) { yre[yo + st + j] = S.re[so + st + j] * g; yim[yo + st + j] = S.im[so + st + j] * g; }
+        }
+        for (var f = 0; f < NDF; f++) {
+          var ar = 0, ai = 0;
+          for (var k = 0; k < ORDER; k++) {
+            var tt = t - (ORDER - 1 - LOOK) + k;
+            if (tt < 0 || tt >= T) continue;
+            var sr = S.re[(tt - s0) * NF + f], si = S.im[(tt - s0) * NF + f], cb = ((row * NDF + f) * ORDER + k) * 2, cr = net.c[cb], ci2 = net.c[cb + 1];
+            ar += sr * cr - si * ci2; ai += sr * ci2 + si * cr;
+          }
+          yre[yo + f] = ar; yim[yo + f] = ai;
+        }
+        if (lim > 0) { for (var q = 0; q < NF; q++) { yre[yo + q] = S.re[so + q] * lim + yre[yo + q] * (1 - lim); yim[yo + q] = S.im[so + q] * lim + yim[yo + q] * (1 - lim); } }
+      }
+      istft(yre, yim, a, cnt, out);
+      prog(base + span);
+    }
+    return out.slice(HOP, HOP + n);
+  }
+  return { enhance: enhance, stft: stft, features: features, ERB: ERB, ALPHA: ALPHA, SR: SR, HOP: HOP, NFFT: NFFT };
+})();
+if (typeof module !== 'undefined') module.exports = DFN;
+/* worker glue */
+var KERN_B64 = 'AGFzbQEAAAABEwJgBX9/f39/AGAHf39/f39/fwACCAEBZQFtAgABAwMCAAEHEQIGbWF0dmVjAAAEZ2VtbQABCr4HAqIDAgh/BXtBACEFIARBAnQhDAJAA0AgBSADTg0BIAUgDGwgAGohByAHIAxqIQggCCAMaiEJIAkgDGohCiABIQv9DAAAAAAAAAAAAAAAAAAAAAAhDf0MAAAAAAAAAAAAAAAAAAAAACEO/QwAAAAAAAAAAAAAAAAAAAAAIQ/9DAAAAAAAAAAAAAAAAAAAAAAhECAEQQJ1IQYCQANAIAZFDQEgC/0AAgAhESANIAf9AAIAIBH95gH95AEhDSAOIAj9AAIAIBH95gH95AEhDiAPIAn9AAIAIBH95gH95AEhDyAQIAr9AAIAIBH95gH95AEhECAHQRBqIQcgCEEQaiEIIAlBEGohCSAKQRBqIQogC0EQaiELIAZBAWshBgwACwsgBUECdCACaiEHIAcgDf0fACAN/R8BkiAN/R8CIA39HwOSkjgCACAHIA79HwAgDv0fAZIgDv0fAiAO/R8DkpI4AgQgByAP/R8AIA/9HwGSIA/9HwIgD/0fA5KSOAIIIAcgEP0fACAQ/R8BkiAQ/R8CIBD9HwOSkjgCDCAFQQRqIQUMAAsLC5cEAgt/C3sgBkECdCEPIAVBAnQhEEEAIQcCQANAIAcgBE4NAUEAIQgCQANAIAggBk4NASADIAdBAGpBAnRqKgIA/RMhEiASIRMgAyAHQQFqQQJ0aioCAP0TIRQgFCEVIAMgB0ECakECdGoqAgD9EyEWIBYhFyADIAdBA2pBAnRqKgIA/RMhGCAYIRkgByAFbEECdCAAaiEKIAogEGohCyALIBBqIQwgDCAQaiENIAhBAnQgAWohDiAFIQkCQANAIAlFDQEgDv0AAgAhGiAO/QACECEbIAoqAgD9EyEcIBIgHCAa/eYB/eQBIRIgEyAcIBv95gH95AEhEyAKQQRqIQogCyoCAP0TIRwgFCAcIBr95gH95AEhFCAVIBwgG/3mAf3kASEVIAtBBGohCyAMKgIA/RMhHCAWIBwgGv3mAf3kASEWIBcgHCAb/eYB/eQBIRcgDEEEaiEMIA0qAgD9EyEcIBggHCAa/eYB/eQBIRggGSAcIBv95gH95AEhGSANQQRqIQ0gDiAPaiEOIAlBAWshCQwACwsgByAGbCAIakECdCACaiERIBEgEv0LAgAgESAT/QsCECARIA9qIREgESAU/QsCACARIBX9CwIQIBEgD2ohESARIBb9CwIAIBEgF/0LAhAgESAPaiERIBEgGP0LAgAgESAZ/QsCECARIA9qIREgCEEIaiEIDAALCyAHQQRqIQcMAAsLCw==';
+function b64bytes(s) { var b = atob(s), u = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; }
+onmessage = function (e) {
+  var d = e.data;
+  try {
+    if (d.type !== 'run') return;
+    var wasm = MiniORT.initWasm(b64bytes(KERN_B64));
+    var nets = { enc: MiniORT.prepare(ONNXParse.parse(new Uint8Array(d.enc))), erb: MiniORT.prepare(ONNXParse.parse(new Uint8Array(d.erb))), df: MiniORT.prepare(ONNXParse.parse(new Uint8Array(d.df))) };
+    var outs = [], n = d.chs.length, i;
+    var one = function (k) {
+      return DFN.enhance(nets, d.chs[k], { atten: d.atten, progress: function (p) { postMessage({ type: 'progress', p: (k + p) / n }); } });
+    };
+    for (i = 0; i < n; i++) outs.push(one(i));
+    postMessage({ type: 'done', chs: outs, wasm: wasm }, outs.map(function (o) { return o.buffer; }));
+  } catch (err) {
+    postMessage({ type: 'error', msg: String((err && err.message) || err) });
+  }
+};`;
+  // ------------------------------------------------------------------ AI noise removal (DeepFilterNet3, runs in the browser)
+  // Same model as the PC app. Three small ONNX files (~9 MB) are downloaded once from this site (lib/dfn3/) and kept in
+  // Cache Storage. A worker runs them with a tiny built-in ONNX interpreter (WebAssembly SIMD when the phone has it).
+  const DFN_FILES = ['enc', 'erb_dec', 'df_dec'];
+  const DFN_SIZES = { enc: 1954042, erb_dec: 3292397, df_dec: 3340803 };
+  const DFN_CACHE = 'klipfox-lib';
+  const dfnUrl = (n) => { try { return new URL('lib/dfn3/' + n + '.onnx', document.baseURI).href; } catch (_) { return 'lib/dfn3/' + n + '.onnx'; } };
+  const DF = KF.dfn = { status: 'checking', pct: 0, error: '', mem: null, busy: null, MB: 9 };
+  // quality choice for "reduce noise": fast (formula) | strong (formula, harder) | ai
+  const DNQ = KF.dnq = {
+    get() { try { const v = localStorage.getItem('kf.dnq'); return v === 'strong' || v === 'ai' ? v : 'fast'; } catch (_) { return 'fast'; } },
+    set(v) { try { localStorage.setItem('kf.dnq', v); } catch (_) {} KF.changed(); },
+  };
+  DF.check = async () => {
+    if (DF.mem) { DF.status = 'ready'; return true; }
+    try {
+      const c = await caches.open(DFN_CACHE);
+      const r = await Promise.all(DFN_FILES.map((n) => c.match(dfnUrl(n))));
+      DF.status = r.every(Boolean) ? 'ready' : 'need';
+    } catch (_) { DF.status = 'need'; }
+    KF.changed();
+    return DF.status === 'ready';
+  };
+  DF.download = (onProgress) => {
+    if (DF.busy) return DF.busy;
+    DF.status = 'downloading'; DF.pct = 0; DF.error = ''; KF.changed();
+    DF.busy = (async () => {
+      try {
+        const total = DFN_FILES.reduce((a, n) => a + DFN_SIZES[n], 0);
+        let done = 0;
+        const bufs = {};
+        for (const n of DFN_FILES) {
+          const r = await fetch(dfnUrl(n));
+          if (!r.ok) throw new Error('โหลดโมเดลไม่ได้ (HTTP ' + r.status + ')');
+          const parts = []; let got = 0;
+          if (r.body && r.body.getReader) {
+            const rd = r.body.getReader();
+            for (;;) {
+              const { done: fin, value } = await rd.read();
+              if (fin) break;
+              parts.push(value); got += value.length;
+              const p = (done + got) / total;
+              DF.pct = Math.min(99, Math.round(p * 100)); onProgress && onProgress(Math.min(0.99, p)); KF.changed();
+            }
+          } else { const b = new Uint8Array(await r.arrayBuffer()); parts.push(b); got = b.length; }
+          done += got;
+          const u8 = new Uint8Array(got); let o = 0;
+          for (const p of parts) { u8.set(p, o); o += p.length; }
+          if (u8.length < 1e6 || u8[0] === 0x3c) throw new Error('ไฟล์โมเดลบนเว็บไม่ถูกต้อง (ต้องมีโฟลเดอร์ lib/dfn3 ในเว็บ)');
+          bufs[n] = u8;
+        }
+        let cached = false;
+        try {
+          const c = await caches.open(DFN_CACHE);
+          for (const n of DFN_FILES) await c.put(dfnUrl(n), new Response(bufs[n], { headers: { 'Content-Type': 'application/octet-stream' } }));
+          cached = true;
+        } catch (_) {}
+        DF.mem = cached ? null : bufs;     // no Cache Storage here (private tab, in-app browser): keep it in memory for this visit
+        DF.status = 'ready'; DF.pct = 100;
+      } catch (e) {
+        DF.status = 'error'; DF.error = String((e && e.message) || e);
+        throw e;
+      } finally { DF.busy = null; KF.changed(); }
+    })();
+    return DF.busy;
+  };
+  /** the three model files as fresh ArrayBuffers (they are handed over to the worker) */
+  DF.load = async () => {
+    const out = {};
+    if (DF.mem) { DFN_FILES.forEach((n) => { out[n] = DF.mem[n].slice().buffer; }); return out; }
+    const c = await caches.open(DFN_CACHE);
+    for (const n of DFN_FILES) {
+      const r = await c.match(dfnUrl(n));
+      if (!r) throw new Error('ไม่พบไฟล์โมเดล AI ในเครื่อง');
+      out[n] = await r.arrayBuffer();
+    }
+    return out;
+  };
+  DF.ensure = async (onProgress) => {
+    if (DF.status !== 'ready') await DF.check();
+    if (DF.status !== 'ready') await DF.download(onProgress);
+  };
+  DF.check();
+
+  /** AI version of T.separate: the cleaned voice (speech) and, for 'split', what is left (bg) */
+  async function separateAI(c, mode, opts, onProgress) {
+    const rep = (a, b) => (p) => onProgress && onProgress(a + (b - a) * p);
+    KF.audioStage = { label: 'กำลังเตรียมโมเดล AI…', p: 0 };
+    await DF.ensure(rep(0, 0.06));
+    const m = KF.media[c.src];
+    const a = await KF.decodeAudio(m, 48000, 2);
+    if (a.sr !== 48000) throw new Error('sample rate');
+    const s0 = Math.max(0, Math.floor(c.in * a.sr)), s1 = Math.min(a.data[0].length, Math.ceil(c.out * a.sr));
+    if (s1 - s0 < a.sr * 0.2) throw new Error('คลิปสั้นเกินไป');
+    const L = a.data[0].slice(s0, s1), R = (a.data[1] || a.data[0]).slice(s0, s1);
+    let ll = 0, rr = 0, lr = 0;
+    for (let i = 0; i < L.length; i += 7) { ll += L[i] * L[i]; rr += R[i] * R[i]; lr += L[i] * R[i]; }
+    const dual = a.srcChannels >= 2 && ll > 0 && rr > 0 && lr / Math.sqrt(ll * rr) < 0.995;   // the two channels really differ
+    const s = Math.min(1, Math.max(0, opts.strength == null ? 0.7 : opts.strength));
+    const atten = mode === 'speech' || mode === 'split' ? 0 : Math.round(8 + 42 * s);       // dB the noise may be reduced by (0 = as much as the model wants)
+    const models = await DF.load();
+    const chs = (dual ? [L, R] : [L]).map((x) => (mode === 'split' ? x.slice() : x));   // 'split' still needs the originals after the worker took its copy
+    const w = new Worker(URL.createObjectURL(new Blob([DFN_SRC], { type: 'text/javascript' })));
+    let out;
+    try {
+      out = await new Promise((res, rej) => {
+        w.onmessage = (e) => {
+          const d = e.data;
+          if (d.type === 'progress') { onProgress && onProgress(0.06 + 0.92 * d.p); KF.audioStage = { label: 'AI กำลังลดเสียงรบกวน…', p: 0.06 + 0.92 * d.p }; KF.changed(); }
+          else if (d.type === 'done') res(d);
+          else if (d.type === 'error') rej(new Error(d.msg));
+        };
+        w.onerror = (e) => rej(new Error((e && e.message) || 'AI ไม่ทำงาน'));
+        w.postMessage({ type: 'run', enc: models.enc, erb: models.erb_dec, df: models.df_dec, chs, atten }, [models.enc, models.erb_dec, models.df_dec, ...chs.map((x) => x.buffer)]);
+      });
+    } finally { w.terminate(); KF.audioStage = null; }
+    const len = s1 - s0;
+    const sL = out.chs[0], sR = dual ? out.chs[1] : null, all = sR ? [sL, sR] : [sL];
+    if (mode !== 'split' && mode !== 'speech') {                 // cleaned speech sounds a bit quieter: give back up to +2 dB, never clipping
+      let pk = 1e-6; for (const ch of all) for (let i = 0; i < len; i++) { const v = Math.abs(ch[i]); if (v > pk) pk = v; }
+      const g = Math.max(1, Math.min(1.26, 0.97 / pk));
+      if (g > 1) for (const ch of all) for (let i = 0; i < len; i++) ch[i] *= g;
+    }
+    // what is left over (background): the original minus the cleaned voice
+    let bg = null;
+    if (mode === 'split') {
+      const bL = new Float32Array(len); for (let i = 0; i < len; i++) bL[i] = L[i] - sL[i];
+      const bR = sR ? new Float32Array(len) : null; if (sR) for (let i = 0; i < len; i++) bR[i] = R[i] - sR[i];
+      bg = [bL, bR].filter(Boolean);
+    }
+    const fade = opts.fade ? Math.min(len >> 1, Math.round(0.03 * a.sr)) : 0;
+    if (fade > 0) for (const ch of all.concat(bg || [])) for (let i = 0; i < fade; i++) { const g = i / fade; ch[i] *= g; ch[len - 1 - i] *= g; }
+    return { speech: wav(all, a.sr), bg: bg ? wav(bg, a.sr) : null, off: s0 / a.sr, fileDur: len / a.sr };
+  }
+  /*DFN-END*/
   /** separate the sound of clip c. mode: 'split' (speech + background) | 'speech' | 'denoise' */
   T.separate = async (c, mode, opts, onProgress) => {
+    if (opts && opts.ai) {
+      try { return await separateAI(c, mode, opts, onProgress); }
+      catch (e) { console.warn('AI noise removal failed, using the fast mode', e); KF.audioStage = null; KF.toast && KF.toast('AI ใช้ไม่ได้บนเครื่องนี้ ใช้โหมดเร็วแทน'); }
+    }
     const m = KF.media[c.src];
     const a = await KF.decodeAudio(m, 44100, 2);
     const s0 = Math.max(0, Math.floor(c.in * a.sr)), s1 = Math.min(a.data[0].length, Math.ceil(c.out * a.sr));
