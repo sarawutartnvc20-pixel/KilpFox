@@ -476,7 +476,8 @@ class Component extends DCLogic {
           KF.edit((p) => { const o = p.audios.find((k) => k.id === a.id); const r = o.rate || 1; const b = { ...o, id: KF.uid(), start: o.start + cut, from: (o.from || 0) + cut * r, len: o.len - cut }; o.len = cut; p.audios.push(b); });
         }));
       }
-      const fromClip = linked || (KF.media[a.src] && KF.media[a.src].lib === 'xa');
+      const nm0 = a.name || (KF.media[a.src] && KF.media[a.src].name) || '';
+      const fromClip = linked || (KF.media[a.src] && KF.media[a.src].lib === 'xa') || /^(เสียงร้อง|ดนตรี|เสียงพูด|พื้นหลัง|เสียง)/.test(nm0);   // already separated: split it again makes no sense, transcribe it
       if (fromClip) tools.push(tool('ซับ AI', I.ai, () => { KF.ui.subClip = a.clip || null; KF.ui.subAudio = a.id; KF.ui.capTab = 'lines'; KF.go('Captions'); }));
       else tools.push(tool('เสียงร้อง/ดนตรี', I.mic, () => KF.go('VocalSplit')));
       tools.push(tool('เพลงอื่น', I.music, () => KF.go('Music')));
@@ -4365,7 +4366,7 @@ setVidSound(v, vidGainOf(c, PL.t));
     if (!box) { box = document.createElement('pre'); box.id = 'kf-hud'; box.style.cssText = 'position:fixed;left:4px;bottom:4px;z-index:99999;margin:0;padding:6px 8px;background:rgba(0,0,0,.78);color:#7CFFB2;font:10.5px/1.35 monospace;border-radius:6px;pointer-events:none;max-width:96vw;white-space:pre-wrap'; document.body.appendChild(box); }
     const v = PL.el, q = v && v.getVideoPlaybackQuality ? v.getVideoPlaybackQuality() : null;
     const nfc = v ? (v.__nfc || 0) : 0, fps = hudTick.nfc != null && dt ? Math.round((nfc - hudTick.nfc) * 1000 / dt) : 0; hudTick.nfc = nfc;
-    box.textContent = 'build v50 · mode ' + (DV.mode ? 'DIRECT' : 'canvas') + ' · play ' + PL.playing + ' · mixer ' + MX.on + '\n'
+    box.textContent = 'build v51 · mode ' + (DV.mode ? 'DIRECT' : 'canvas') + ' · play ' + PL.playing + ' · mixer ' + MX.on + '\n'
       + (v ? 'video ' + v.videoWidth + 'x' + v.videoHeight + ' ready ' + v.readyState + ' paused ' + v.paused + ' rate ' + v.playbackRate.toFixed(2) + '\n'
       + 'v.t ' + v.currentTime.toFixed(2) + ' PL.t ' + PL.t.toFixed(2) + ' diff ' + (v.currentTime - PL.t).toFixed(2) + '\n'
       + 'pictures/s ' + fps + (q ? ' · dropped ' + q.droppedVideoFrames + '/' + q.totalVideoFrames : '') + ' · stuck ' + (v.__stuck || 0) : 'no video') + '\n'
