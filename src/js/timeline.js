@@ -413,14 +413,21 @@
       return { track: it.track };
     }
     if (hit.type === 'newlayer') return { insert: top + 1 };
-    if (hit.type === 'overlay') {
-      const edge = 7;
-      if (e.clientY - hit.rect.top < edge) return { insert: hit.track + 1, line: hit.rect.top };
-      if (hit.rect.bottom - e.clientY < edge) return { insert: hit.track, line: hit.rect.bottom };
-      return { track: hit.track, lane: hit.lane };
-    }
+    if (hit.type === 'overlay') return slotTarget(hit, e, it.start, it.start + it.dur, it.id, it.track);
     if (hit.type === 'main') return { insert: 0, line: hit.rect.top };
     return { track: it.track };
+  }
+
+  // ปลายทางแบบ CapCut: ลากไปวางบนเลเยอร์ที่ว่างช่วงเวลานั้น → ลงเลเยอร์นั้น
+  // เลเยอร์ที่มีของทับเวลาอยู่ → สร้างเลเยอร์ใหม่ "เหนือ" (ครึ่งบนของแถว) หรือ "ใต้" (ครึ่งล่าง) แถวนั้นตามตำแหน่งเมาส์
+  // ขอบบน/ล่างของแถว → สร้างเลเยอร์ใหม่คั่นตรงนั้นเสมอ
+  function slotTarget(hit, e, start, end, exceptId, curTrack) {
+    const edge = 8;
+    const y = e.clientY - hit.rect.top, h = hit.rect.height;
+    if (y < edge) return { insert: hit.track + 1, line: hit.rect.top };
+    if (h - y < edge) return { insert: hit.track, line: hit.rect.bottom };
+    if (hit.track === curTrack || S.trackFree(hit.track, start, end, exceptId)) return { track: hit.track, lane: hit.lane };
+    return y < h / 2 ? { insert: hit.track + 1, line: hit.rect.top } : { insert: hit.track, line: hit.rect.bottom };
   }
 
   // ตั้งรายการหลัก (สำหรับแผงปรับแต่ง) โดยไม่ล้างกลุ่มที่เลือก
@@ -635,12 +642,15 @@
         d.node.style.transform = `translate(${e.clientX - d.x0}px, ${e.clientY - d.y0}px)`;
         const hit = rowAt(e.clientY);
         if (hit && (hit.type === 'overlay' || hit.type === 'newlayer')) {
-          d.toLayer = hit.type === 'overlay' ? { track: hit.track } : { insert: (S.tracks().slice(-1)[0] ?? -1) + 1 };
+          const ce = S.layout().find((x) => x.clip === it);
+          d.toLayer = hit.type === 'overlay' && ce ? slotTarget(hit, e, ce.start, ce.end, null, null) : { insert: (S.tracks().slice(-1)[0] ?? -1) + 1, line: rowsBox.firstChild.getBoundingClientRect().bottom };
           TL.dropMarker = null; drawDropMarker();
           rowsBox.querySelectorAll('.tl-row.drop-hl').forEach((x) => x.classList.remove('drop-hl'));
-          hit.row.classList.add('drop-hl');
+          if (d.toLayer.insert != null) showInsertLine(d.toLayer.line);
+          else { showInsertLine(null); hit.row.classList.add('drop-hl'); }
           return;
         }
+        showInsertLine(null);
         d.toLayer = null;
         rowsBox.querySelectorAll('.tl-row.drop-hl').forEach((x) => x.classList.remove('drop-hl'));
         const lay = S.layout();
